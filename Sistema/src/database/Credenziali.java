@@ -2,19 +2,19 @@ package database;
 
 import java.io.Serializable;
 
-public class CredenzialiServer implements Serializable {
+public class Credenziali implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String url;
 	private String nome;
 	private String password;
 		
-	public CredenzialiServer() {
+	public Credenziali() {
 		
 		this("", "", "");
 	}
 	
-	public CredenzialiServer(String url, String nome, String password) {
+	public Credenziali(String url, String nome, String password) {
 		
 		setUrl(url);
 		setNome(nome);

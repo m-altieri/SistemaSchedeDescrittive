@@ -1,39 +1,17 @@
 package database;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Server {
+public class Server extends Entit‡SQL {
 
-	private CredenzialiServer credenziali;
 	private ArrayList<Database> databases;
-	private File fileCredenziali;
 	
-	public Server(CredenzialiServer credenziali) throws CredenzialiInvalideException, IOException {
+	public Server(Credenziali credenziali) throws ClassNotFoundException, SQLException, IOException {
 		
-		this(credenziali, new ArrayList<Database>());
-	}
-
-	public Server(CredenzialiServer credenziali, ArrayList<Database> databases) throws CredenzialiInvalideException, IOException {
-		
-		setCredenziali(credenziali);
-		setDatabases(databases);
-		
-		if (credenziali.isValid())
-			salvaCredenziali();
-	}
-
-	public CredenzialiServer getCredenziali() {
-		
-		return credenziali;
-	}
-
-	public void setCredenziali(CredenzialiServer credenziali) throws IOException {
-		
-		this.credenziali = credenziali;
+		super(credenziali);
 	}
 
 	public ArrayList<Database> getDatabases() {
@@ -45,24 +23,21 @@ public class Server {
 		
 		this.databases = databases;
 	}
-	
-	private void salvaCredenziali() throws IOException {
+
+	//AGGIUSTARE IL FATTO CHE NON PASSA CREDENZIALI
+	private void popolaDatabases() throws SQLException, ClassNotFoundException, IOException {
 		
-		FileOutputStream fos = new FileOutputStream(fileCredenziali);
-		ObjectOutputStream ous = new ObjectOutputStream(fos);
-		ous.writeObject(credenziali);
-		ous.close();
-		fos.close();
+		Query q = new Query(this, "SHOW DATABASES;");
+		ResultSet rs = q.eseguiResult();
+		while (rs.next()) {
+			
+			aggiungiDatabase(new Database(rs.getString(1), new Credenziali()));
+		}
 	}
-	
-	public void connetti() {
+
+	public void aggiungiDatabase(Database db) {
 		
-		
-	}
-	
-	private void popolaDatabases() {
-		
-		
+		databases.add(db);
 	}
 	
 }
