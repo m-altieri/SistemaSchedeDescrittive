@@ -4,6 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Crea, gestisce, ed esegue oggetti query rivolti al server o a un database.
+ * @author PC
+ *
+ */
 public class Query {
 
 	private String query; 
@@ -18,8 +23,7 @@ public class Query {
 	
 	public Query(Server server, String query) throws SQLException {
 
-		this.server = server;
-		this.query = query;
+		this(server, null, query);
 	}
 	
 	public Query(Server server, Database db, String query) throws SQLException {
@@ -27,7 +31,6 @@ public class Query {
 		this.server = server;
 		this.db = db;
 		this.query = query;
-		usaDatabase();
 	}
 	
 	private Statement preparaQuery() throws SQLException {
@@ -49,13 +52,20 @@ public class Query {
 	
 	public ResultSet eseguiResult() throws ClassNotFoundException, SQLException {
 		
+		if (db != null)
+			usaDatabase();
+		
 		preparaQuery();
 		ResultSet rs = stmt.executeQuery(query);
+		rs.close();
 		chiudi();
 		return rs;
 	}
 	
 	public void esegui() throws SQLException {
+		
+		if (db != null)
+			usaDatabase();
 		
 		preparaQuery();
 		stmt.execute(query);

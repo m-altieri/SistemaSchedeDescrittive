@@ -8,6 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 
+/**
+ * Rappresenta una generica entit‡ SQL: Server e Database sono sottoclassi di Entit‡SQL.
+ * Ne gestisce le credenziali e la connessione.
+ * @author PC
+ *
+ */
 public abstract class Entit‡SQL {
 
 	private Credenziali credenziali;

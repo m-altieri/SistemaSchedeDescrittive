@@ -2,6 +2,11 @@ package entità;
 
 import java.util.ArrayList;
 
+/**
+ * Entità spazio. Può essere contenuto nelle schede descrittive.
+ * @author PC
+ *
+ */
 public class Spazio extends Elemento {
 
 	private String nome;

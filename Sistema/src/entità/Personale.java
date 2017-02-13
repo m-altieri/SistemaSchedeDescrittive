@@ -2,6 +2,11 @@ package entità;
 
 import java.util.ArrayList;
 
+/**
+ * Entità personale. Può essere contenuto nelle schede descrittive.
+ * @author PC
+ *
+ */
 public class Personale extends Elemento {
 
 	private String nome;

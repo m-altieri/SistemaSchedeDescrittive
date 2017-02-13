@@ -2,8 +2,16 @@ package database;
 
 import java.io.Serializable;
 
+/**
+ * Modella le credenziali utilizzate per connettersi al server e ai database.
+ * @author PC
+ *
+ */
 public class Credenziali implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String url;
 	private String nome;
@@ -16,9 +24,9 @@ public class Credenziali implements Serializable {
 	
 	public Credenziali(String url, String nome, String password) {
 		
-		setUrl(url);
-		setNome(nome);
-		setPassword(password);
+		this.url = url;
+		this.nome = nome;
+		this.password = password;
 	}
 
 	public String getUrl() {
@@ -47,7 +55,7 @@ public class Credenziali implements Serializable {
 	
 	public boolean isValid() {
 		
-		return nome != "" && password != "" && url != "";
+		return !url.equals("") && !nome.equals("") && !password.equals("");
 	}
 	
 }

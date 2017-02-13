@@ -2,6 +2,13 @@ package entità;
 
 import java.util.HashMap;
 
+/**
+ * Layout della scheda descrittiva.
+ * Contiene il testo statico (cioè il testo fisso a prescindere dagli elementi contenuti),
+ * e un'indicazione di quali informazioni visualizzare, ovvero quali attributi di ogni entità.
+ * @author PC
+ *
+ */
 public class Template {
 
 	private String testoStatico;

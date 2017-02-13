@@ -5,6 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Rappresenta il server.
+ * @author PC
+ *
+ */
 public class Server extends Entit‡SQL {
 
 	private ArrayList<Database> databases;
@@ -12,6 +17,8 @@ public class Server extends Entit‡SQL {
 	public Server(Credenziali credenziali) throws ClassNotFoundException, SQLException, IOException {
 		
 		super(credenziali);
+		
+		popolaDatabases();
 	}
 
 	public ArrayList<Database> getDatabases() {

@@ -1,5 +1,8 @@
 package database;
 
+/**
+ * Rappresenta un database.
+ */
 import java.io.IOException;
 import java.sql.SQLException;
 

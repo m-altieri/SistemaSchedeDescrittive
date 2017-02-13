@@ -1,5 +1,10 @@
 package entità;
 
+/**
+ * Rappresenta una scheda descrittiva.
+ * @author PC
+ *
+ */
 public class Scheda {
 
 	private static int schedeCreate;

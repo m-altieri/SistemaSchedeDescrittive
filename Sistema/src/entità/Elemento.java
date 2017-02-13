@@ -1,5 +1,10 @@
 package entità;
 
+/**
+ * Può essere un personale, una strumentazione o uno spazio.
+ * @author PC
+ *
+ */
 public abstract class Elemento {
 
 	private static int elementiCreati;

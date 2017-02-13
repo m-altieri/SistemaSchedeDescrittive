@@ -2,6 +2,11 @@ package entità;
 
 import java.util.ArrayList;
 
+/**
+ * Entità strumentazione. Può essere contenuto nelle schede descrittive.
+ * @author PC
+ *
+ */
 public class Strumentazione extends Elemento {
 
 	private String nome;

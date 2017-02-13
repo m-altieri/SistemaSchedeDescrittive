@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Modella la connessione al server o a un database.
+ * Invocare getConnessione() per utilizzare la connessione.
+ * @author PC
+ *
+ */
 public class Connessione {
 
 	private Connection conn;
@@ -23,7 +29,8 @@ public class Connessione {
 	
 	private void connetti() throws SQLException, ClassNotFoundException {
 		
-		Class.forName("com.mysql.jdbc.Driver");
+		ClassLoader.getSystemClassLoader().loadClass("com.mysql.jdbc.Driver");
+		
 		this.conn = DriverManager.getConnection(credenziali.getUrl(), credenziali.getNome(), credenziali.getPassword());
 	}
 	
