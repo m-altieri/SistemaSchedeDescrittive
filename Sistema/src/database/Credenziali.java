@@ -1,5 +1,9 @@
 package database;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -27,6 +31,17 @@ public class Credenziali implements Serializable {
 		this.url = url;
 		this.nome = nome;
 		this.password = password;
+	}
+	
+	public void salva(File file) throws IOException {
+		
+		FileOutputStream fos = new FileOutputStream(file);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		
+		oos.writeObject(this);
+		
+		oos.close();
+		fos.close();
 	}
 
 	public String getUrl() {

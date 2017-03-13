@@ -13,12 +13,21 @@ import java.sql.SQLException;
 public class Connessione {
 
 	private Connection conn;
-	private Credenziali credenziali;
+	private String connectionString;
 	
 	public Connessione(Credenziali credenziali) throws SQLException, ClassNotFoundException {
-		
-		this.credenziali = credenziali;
-		
+				
+		connectionString = "";
+		connectionString += credenziali.getUrl() + ";";
+		connectionString += "database=DBElementi;";
+		connectionString += "user=" + credenziali.getNome() + ";";
+		connectionString += "password=" + credenziali.getPassword() + ";";
+		connectionString += "encrypt=true;";
+		connectionString += "trustServerCertificate=false;";
+		connectionString += "hostNameInCertificate=*.database.windows.net;";
+		connectionString += "loginTimeout=30;";
+
+		System.out.println(connectionString);
 		connetti();
 	}
 	
@@ -29,9 +38,9 @@ public class Connessione {
 	
 	private void connetti() throws SQLException, ClassNotFoundException {
 		
-		ClassLoader.getSystemClassLoader().loadClass("com.mysql.jdbc.Driver");
+//		ClassLoader.getSystemClassLoader().loadClass("com.mysql.jdbc.Driver");
 		
-		this.conn = DriverManager.getConnection(credenziali.getUrl(), credenziali.getNome(), credenziali.getPassword());
+		this.conn = DriverManager.getConnection(connectionString);
 	}
 	
 	

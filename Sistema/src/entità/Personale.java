@@ -18,7 +18,7 @@ public class Personale extends Elemento {
 	private String cittaNascita;
 	
 	private ArrayList<Strumentazione> strumentazioni;
-	private ArrayList<Spazio> spazi;
+	private Spazio spazio;
 	
 	public Personale() {
 		
@@ -39,7 +39,7 @@ public class Personale extends Elemento {
 		setCittaNascita(cittaNascita);
 		
 		setStrumentazioni(new ArrayList<Strumentazione>());
-		setSpazi(new ArrayList<Spazio>());
+		setSpazio(new Spazio());
 	}
 
 	public String getNome() {
@@ -122,14 +122,14 @@ public class Personale extends Elemento {
 		this.strumentazioni = strumentazioniUsate;
 	}
 
-	public ArrayList<Spazio> getSpazi() {
+	public Spazio getSpazio() {
 		
-		return spazi;
+		return spazio;
 	}
 
-	public void setSpazi(ArrayList<Spazio> spaziOccupati) {
+	public void setSpazio(Spazio spazioOccupato) {
 		
-		this.spazi = spaziOccupati;
+		this.spazio = spazioOccupato;
 	}
 		
 }
