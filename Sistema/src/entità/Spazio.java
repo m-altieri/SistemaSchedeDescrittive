@@ -1,6 +1,10 @@
 package entità;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import database.Database;
 
 /**
  * Entità spazio. Può essere contenuto nelle schede descrittive.
@@ -15,9 +19,6 @@ public class Spazio extends Elemento {
 	private int numeroPorte;
 	private double grandezza;
 	
-	private ArrayList<Personale> occupatori;
-	private ArrayList<Strumentazione> strumentazioni;
-	
 	public Spazio() {
 		
 		this("", "", 0, 0, 0);
@@ -27,14 +28,11 @@ public class Spazio extends Elemento {
 		
 		super();
 		
-		setNome(nome);
-		setUbicazione(ubicazione);
-		setNumeroFinestre(numeroFinestre);
-		setNumeroPorte(numeroPorte);
-		setGrandezza(grandezza);
-		
-		setOccupatori(new ArrayList<Personale>());
-		setStrumentazioni(new ArrayList<Strumentazione>());
+		this.nome = nome;
+		this.ubicazione = ubicazione;
+		this.numeroFinestre = numeroFinestre;
+		this.numeroPorte = numeroPorte;
+		this.grandezza = grandezza;
 	}
 
 	public String getNome() {
@@ -87,24 +85,26 @@ public class Spazio extends Elemento {
 		this.grandezza = grandezza;
 	}
 
-	public ArrayList<Personale> getOccupatori() {
-		
-		return occupatori;
-	}
+	@Override
+	public void crea() {
 
-	public void setOccupatori(ArrayList<Personale> occupatori) {
-		
-		this.occupatori = occupatori;
-	}
-
-	public ArrayList<Strumentazione> getStrumentazioni() {
-		
-		return strumentazioni;
-	}
-
-	public void setStrumentazioni(ArrayList<Strumentazione> strumentazioni) {
-		
-		this.strumentazioni = strumentazioni;
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			queryInserimento = "INSERT INTO Spazio(nome, ubicazione, numeroFinestre, numeroPorte, grandezza) "
+					+ "VALUES ( " + 
+			"'" + nome + "', " +
+			"'" + ubicazione + "', " +
+			numeroFinestre + ", " +
+			numeroPorte + ", " +
+			grandezza + ")";
+			
+			dbElementi.eseguiQuery(queryInserimento);
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 }

@@ -1,6 +1,10 @@
 package entità;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import database.Database;
 
 /**
  * Entità strumentazione. Può essere contenuto nelle schede descrittive.
@@ -15,8 +19,7 @@ public class Strumentazione extends Elemento {
 	private String tipologia;
 	private int annoAcquisto;
 	
-	private ArrayList<Personale> utilizzatori;
-	private Spazio spazio;
+	private int idSpazio;
 	
 	public Strumentazione() {
 		
@@ -27,14 +30,11 @@ public class Strumentazione extends Elemento {
 		
 		super();
 		
-		setNome(nome);
-		setModello(modello);
-		setMarca(marca);
-		setTipologia(tipologia);
-		setAnnoAcquisto(annoAcquisto);
-		
-		setUtilizzatori(new ArrayList<Personale>());
-		setSpazio(new Spazio());
+		this.nome = nome;
+		this.modello = modello;
+		this.marca = marca;
+		this.tipologia = tipologia;
+		this.annoAcquisto = annoAcquisto;
 	}
 	
 	public String getNome() {
@@ -87,24 +87,42 @@ public class Strumentazione extends Elemento {
 		this.annoAcquisto = annoAcquisto;
 	}
 	
-	public ArrayList<Personale> getUtilizzatori() {
-	
-		return utilizzatori;
+	public void setSpazio(int id) {
+		
+		this.idSpazio = id;
 	}
-	
-	public void setUtilizzatori(ArrayList<Personale> utilizzatori) {
-	
-		this.utilizzatori = utilizzatori;
-	}
-	
-	public Spazio getSpazio() {
-	
-		return spazio;
-	}
-	
-	public void setSpazio(Spazio ubicazione) {
-	
-		this.spazio = ubicazione;
+
+	@Override
+	public void crea() {
+
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			if (idSpazio != 0) {
+				queryInserimento = "INSERT INTO Strumentazione(nome, modello, marca, tipologia, annoAcquisto, spazio) "
+						+ "VALUES ( " + 
+				"'" + nome + "', " +
+				"'" + modello + "', " +
+				"'" + marca + "', " +
+				"'" + tipologia + "', " +
+				annoAcquisto + ", " +
+				idSpazio + ")";
+			} else {
+				queryInserimento = "INSERT INTO Personale(nome, modello, marca, tipologia, annoAcquisto) "
+						+ "VALUES ( " + 
+				"'" + nome + "', " +
+				"'" + modello + "', " +
+				"'" + marca + "', " +
+				"'" + tipologia + "', " +
+				annoAcquisto + ")";
+			}
+			
+			dbElementi.eseguiQuery(queryInserimento);
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 }

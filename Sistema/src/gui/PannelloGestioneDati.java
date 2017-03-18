@@ -16,9 +16,9 @@ public abstract class PannelloGestioneDati extends JPanel implements ActionListe
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel radioButtons;
-	private JRadioButton rdPersonale;
-	private JRadioButton rdStrumentazione;
-	private JRadioButton rdSpazio;
+	protected JRadioButton rdPersonale;
+	protected JRadioButton rdStrumentazione;
+	protected JRadioButton rdSpazio;
 	private ButtonGroup buttons;
 	private Font fontRadioButtons;
 

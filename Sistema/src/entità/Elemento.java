@@ -15,6 +15,8 @@ public abstract class Elemento {
 		elementiCreati = 0;
 	}
 	
+	public abstract void crea();
+	
 	protected Elemento() {
 		
 		elementiCreati++;

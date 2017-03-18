@@ -1,6 +1,10 @@
 package entità;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import database.Database;
 
 /**
  * Entità personale. Può essere contenuto nelle schede descrittive.
@@ -17,8 +21,7 @@ public class Personale extends Elemento {
 	private String mansione;
 	private String cittaNascita;
 	
-	private ArrayList<Strumentazione> strumentazioni;
-	private Spazio spazio;
+	private int idSpazio;
 	
 	public Personale() {
 		
@@ -30,16 +33,50 @@ public class Personale extends Elemento {
 		
 		super();
 		
-		setNome(nome);
-		setCognome(cognome);
-		setEmail(email);
-		setTelefono(telefono);
-		setResidenza(residenza);
-		setMansione(mansione);
-		setCittaNascita(cittaNascita);
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.telefono = telefono;
+		this.residenza = residenza;
+		this.mansione = mansione;
+		this.cittaNascita = cittaNascita;
+	}
+	
+	@Override
+	public void crea() {
 		
-		setStrumentazioni(new ArrayList<Strumentazione>());
-		setSpazio(new Spazio());
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			if (idSpazio != 0) {
+				queryInserimento = "INSERT INTO Personale(nome, cognome, email, telefono, residenza, mansione, cittaNascita, spazio) "
+						+ "VALUES ( " + 
+				"'" + nome + "', " +
+				"'" + cognome + "', " +
+				"'" + email + "', " +
+				"'" + telefono + "', " +
+				"'" + residenza + "', " +
+				"'" + mansione + "', " +
+				"'" + cittaNascita + "', " +
+				idSpazio + ")";
+			} else {
+				queryInserimento = "INSERT INTO Personale(nome, cognome, email, telefono, residenza, mansione, cittaNascita) "
+						+ "VALUES ( " + 
+				"'" + nome + "', " +
+				"'" + cognome + "', " +
+				"'" + email + "', " +
+				"'" + telefono + "', " +
+				"'" + residenza + "', " +
+				"'" + mansione + "', " +
+				"'" + cittaNascita + "')";
+			}
+			
+			dbElementi.eseguiQuery(queryInserimento);
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	public String getNome() {
@@ -111,25 +148,10 @@ public class Personale extends Elemento {
 		
 		this.cittaNascita = cittaNascita;
 	}
-
-	public ArrayList<Strumentazione> getStrumentazioni() {
+	
+	public void setSpazio(int id) {
 		
-		return strumentazioni;
-	}
-
-	public void setStrumentazioni(ArrayList<Strumentazione> strumentazioniUsate) {
-		
-		this.strumentazioni = strumentazioniUsate;
-	}
-
-	public Spazio getSpazio() {
-		
-		return spazio;
-	}
-
-	public void setSpazio(Spazio spazioOccupato) {
-		
-		this.spazio = spazioOccupato;
+		this.idSpazio = id;
 	}
 		
 }

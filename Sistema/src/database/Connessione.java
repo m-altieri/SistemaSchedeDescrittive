@@ -27,7 +27,6 @@ public class Connessione {
 		connectionString += "hostNameInCertificate=*.database.windows.net;";
 		connectionString += "loginTimeout=30;";
 
-		System.out.println(connectionString);
 		connetti();
 	}
 	
@@ -37,9 +36,7 @@ public class Connessione {
 	}
 	
 	private void connetti() throws SQLException, ClassNotFoundException {
-		
-//		ClassLoader.getSystemClassLoader().loadClass("com.mysql.jdbc.Driver");
-		
+				
 		this.conn = DriverManager.getConnection(connectionString);
 	}
 	

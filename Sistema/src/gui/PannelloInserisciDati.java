@@ -3,15 +3,19 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
+import entità.Personale;
+import entità.Spazio;
+import entità.Strumentazione;
+
 public class PannelloInserisciDati extends PannelloGestioneDati {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private TabellaPersonale tPersonale;
-	private TabellaStrumentazione tStrumentazione;
-	private TabellaSpazio tSpazio;
+	private VisualizzaTabella tPersonale;
+	private VisualizzaTabella tStrumentazione;
+	private VisualizzaTabella tSpazio;
 	private FormInserisciPersonale fPersonale;
 	private FormInserisciStrumentazione fStrumentazione;
 	private FormInserisciSpazio fSpazio;
@@ -20,18 +24,23 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 		
 		super();
 		
-		tPersonale = new TabellaPersonale();
-		tStrumentazione = new TabellaStrumentazione();
-		tSpazio = new TabellaSpazio();
-		fPersonale = new FormInserisciPersonale();
-		fStrumentazione = new FormInserisciStrumentazione();
-		fSpazio = new FormInserisciSpazio();
+		tPersonale = new VisualizzaTabella(Personale.class);
+		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
+		tSpazio = new VisualizzaTabella(Spazio.class);
+		fPersonale = new FormInserisciPersonale(tPersonale);
+		fStrumentazione = new FormInserisciStrumentazione(tStrumentazione);
+		fSpazio = new FormInserisciSpazio(tSpazio);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getActionCommand().equals("Personale")) {
+			
+			this.remove(tStrumentazione);
+			this.remove(tSpazio);
+			this.remove(fStrumentazione);
+			this.remove(fSpazio);
 			
 			this.add(tPersonale, BorderLayout.CENTER);
 			this.add(fPersonale, BorderLayout.SOUTH);
@@ -40,12 +49,22 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 		
 		if (e.getActionCommand().equals("Strumentazione")) {
 			
+			this.remove(tPersonale);
+			this.remove(tSpazio);
+			this.remove(fPersonale);
+			this.remove(fSpazio);
+			
 			this.add(tStrumentazione, BorderLayout.CENTER);
 			this.add(fStrumentazione, BorderLayout.SOUTH);
 			this.paintAll(this.getGraphics());
 		}
 		
 		if (e.getActionCommand().equals("Spazio")) {
+			
+			this.remove(tPersonale);
+			this.remove(tStrumentazione);
+			this.remove(fPersonale);
+			this.remove(fStrumentazione);
 			
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.add(fSpazio, BorderLayout.SOUTH);

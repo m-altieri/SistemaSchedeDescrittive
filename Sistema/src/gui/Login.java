@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +31,8 @@ public class Login extends JFrame implements ActionListener {
 		
 		super();
 		
+		this.setResizable(false);
+		this.setIconImage(new ImageIcon("icon.png").getImage());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		this.setTitle("Login");

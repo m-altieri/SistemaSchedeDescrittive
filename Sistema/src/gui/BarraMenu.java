@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -39,6 +40,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	private PannelloInserisciDati pid;
 	private PannelloModificaDati pmd;
 	private PannelloVisualizzaDati pvd;
+	private PannelloEliminaDati ped;
 	
 	public BarraMenu(JFrame finestra) {
 		
@@ -52,6 +54,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		this.pid = new PannelloInserisciDati();
 		this.pmd = new PannelloModificaDati();
 		this.pvd = new PannelloVisualizzaDati();
+		this.ped = new PannelloEliminaDati();
 		
 		this.dati = new JMenu("Dati");
 		this.amministrazione = new JMenu("Amministrazione");
@@ -131,8 +134,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			try {
 				finestra.remove(pmd);
 				finestra.remove(pvd);
-				pvd = new PannelloVisualizzaDati();
-				pmd = new PannelloModificaDati();
+				finestra.remove(ped);
 			} catch (Exception f) {
 				
 			}
@@ -143,9 +145,8 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		if (command.equals("Modifica dati")) {
 			try {
 				finestra.remove(pid);
+				finestra.remove(ped);
 				finestra.remove(pvd);
-				pid = new PannelloInserisciDati();
-				pvd = new PannelloVisualizzaDati();
 			} catch (Exception f) {
 				
 			}
@@ -157,17 +158,30 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			try {
 				finestra.remove(pmd);
 				finestra.remove(pid);
-				pid = new PannelloInserisciDati();
-				pmd = new PannelloModificaDati();
+				finestra.remove(ped);
 			} catch (Exception f) {
 				
+			}
+			try {
+				pvd.aggiorna();
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			finestra.add(pvd, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}
 		
 		if (command.equals("Elimina dati")) {
-			
+			try {
+				finestra.remove(pid);
+				finestra.remove(pmd);
+				finestra.remove(pvd);
+			} catch (Exception f) {
+				
+			}
+			finestra.add(ped, BorderLayout.CENTER);
+			finestra.paintAll(finestra.getGraphics());
 		}
 		
 		if (command.equals("Importa dati")) {

@@ -109,8 +109,6 @@ public class Database {
 	public ResultSet eseguiQueryRitorno(String q) throws SQLException {
 		
 		java.sql.Statement stmt = connessione.getConnessione().createStatement();
-		ResultSet rs = stmt.executeQuery(q);
-		stmt.close();
-		return rs;
+		return stmt.executeQuery(q);
 	}
 }

@@ -32,6 +32,7 @@ public class Registrazione extends JFrame implements ActionListener {
 		
 		super();
 		
+		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.setTitle("Registrazione");

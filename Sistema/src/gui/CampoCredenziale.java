@@ -18,6 +18,11 @@ public class CampoCredenziale extends JPanel {
 	private JTextField testo;
 	private String hint = "";
 	
+	public String get() {
+		
+		return testo.getText();
+	}
+	
 	public CampoCredenziale(String x) {
 		
 		this(x, false);
