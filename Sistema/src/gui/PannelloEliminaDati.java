@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import database.Database;
@@ -44,12 +45,15 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 
 		if (e.getActionCommand().equals("Personale")) {
 			
 			this.remove(tStrumentazione);
 			this.remove(tSpazio);
+			this.remove(tPersonale);
 			
+			tPersonale = new VisualizzaTabella(Personale.class);
 			this.add(tPersonale, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
@@ -58,7 +62,9 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 			
 			this.remove(tPersonale);
 			this.remove(tSpazio);
+			this.remove(tStrumentazione);
 			
+			tStrumentazione = new VisualizzaTabella(Strumentazione.class);
 			this.add(tStrumentazione, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
@@ -67,12 +73,19 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 			
 			this.remove(tPersonale);
 			this.remove(tStrumentazione);
-			
+			this.remove(tSpazio);
+
+			tSpazio = new VisualizzaTabella(Spazio.class);
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
 		
 		if (e.getActionCommand().equals("cmdConferma")) {
+		
+			int risposta = JOptionPane.showConfirmDialog(this, "Sicuro?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION) {
+				return;
+			}
 			
 			Database dbElementi = null;
 			String query = null;

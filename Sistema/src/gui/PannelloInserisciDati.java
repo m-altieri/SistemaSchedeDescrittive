@@ -42,6 +42,7 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 			this.remove(fStrumentazione);
 			this.remove(fSpazio);
 			
+			tPersonale = new VisualizzaTabella(Personale.class);
 			this.add(tPersonale, BorderLayout.CENTER);
 			this.add(fPersonale, BorderLayout.SOUTH);
 			this.paintAll(this.getGraphics());
@@ -54,6 +55,7 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 			this.remove(fPersonale);
 			this.remove(fSpazio);
 			
+			tStrumentazione = new VisualizzaTabella(Strumentazione.class);
 			this.add(tStrumentazione, BorderLayout.CENTER);
 			this.add(fStrumentazione, BorderLayout.SOUTH);
 			this.paintAll(this.getGraphics());
@@ -66,6 +68,7 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 			this.remove(fPersonale);
 			this.remove(fStrumentazione);
 			
+			tSpazio = new VisualizzaTabella(Spazio.class);
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.add(fSpazio, BorderLayout.SOUTH);
 			this.paintAll(this.getGraphics());

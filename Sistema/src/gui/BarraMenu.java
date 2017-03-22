@@ -180,6 +180,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			} catch (Exception f) {
 				
 			}
+//			ped = new PannelloEliminaDati();
 			finestra.add(ped, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}

@@ -1,8 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -85,15 +87,20 @@ public class Login extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getActionCommand().equals("Registrati")) {
-			this.dispose();
+			
 			Registrazione fr = new Registrazione();
 			fr.setVisible(true);
+			this.dispose();
 		}
 		
 		if (e.getActionCommand().equals("Login")) {
-			this.dispose();
+			
+			this.cmdLogin.setEnabled(false);
+			this.cmdRegistrati.setEnabled(false);
+			this.paintAll(getGraphics());
 			Client c = new Client();
 			c.setVisible(true);
+			this.dispose();
 		}
 	}
 	

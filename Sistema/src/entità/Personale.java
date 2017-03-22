@@ -78,6 +78,47 @@ public class Personale extends Elemento {
 			e1.printStackTrace();
 		}
 	}
+	
+	public void crea(int id) {
+
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			if (idSpazio != 0) {
+				queryInserimento = "SET IDENTITY_INSERT Personale ON"
+						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita) VALUES ( " + 
+				id + ", " +
+				"'" + nome + "', " +
+				"'" + cognome + "', " +
+				"'" + email + "', " +
+				"'" + telefono + "', " +
+				"'" + residenza + "', " +
+				"'" + mansione + "', " +
+				"'" + cittaNascita + "', " +
+				idSpazio + ")"
+						+ " SET IDENTITY_INSERT Personale OFF";
+			} else {
+				queryInserimento = "SET IDENTITY_INSERT Personale ON"
+						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita) VALUES ( " + 
+				id + ", " +
+				"'" + nome + "', " +
+				"'" + cognome + "', " +
+				"'" + email + "', " +
+				"'" + telefono + "', " +
+				"'" + residenza + "', " +
+				"'" + mansione + "', " +
+				"'" + cittaNascita + "')"
+						+ " SET IDENTITY_INSERT Personale OFF";
+			}
+			
+			dbElementi.eseguiQuery(queryInserimento);
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+	}
 
 	public String getNome() {
 		
