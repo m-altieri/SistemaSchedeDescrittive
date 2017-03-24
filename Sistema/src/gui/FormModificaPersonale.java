@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import database.Database;
 import entità.Personale;
 
-public class FormModificaPersonale extends JPanel implements ActionListener, FocusListener, MouseListener {
+public class FormModificaPersonale extends JPanel implements ActionListener {
 
 	/**
 	 * 
@@ -29,13 +29,13 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 	private static final long serialVersionUID = 1L;
 	
 	private JComboBox<Integer> cmbId;
-	private JTextField txtNome;
-	private JTextField txtCognome;
-	private JTextField txtEmail;
-	private JTextField txtTelefono;
-	private JTextField txtResidenza;
-	private JTextField txtMansione;
-	private JTextField txtCittaNascita;
+	private CampoCredenziale txtNome;
+	private CampoCredenziale txtCognome;
+	private CampoCredenziale txtEmail;
+	private CampoCredenziale txtTelefono;
+	private CampoCredenziale txtResidenza;
+	private CampoCredenziale txtMansione;
+	private CampoCredenziale txtCittaNascita;
 	private JComboBox<String> cmbSpazio;
 	private JButton cmdConferma;
 	
@@ -55,28 +55,29 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 		
 		fontCampi = new Font("Arial", Font.PLAIN, 16);
 		cmbId = new JComboBox<Integer>();
-		txtNome = new JTextField();
+		txtNome = new CampoCredenziale("Nome");
 		txtNome.setPreferredSize(new Dimension(0, ALTEZZA_CAMPI)); 
 		//mettendo 0 alla lunghezza, si adatterà comunque secondo il GridLayout
 		//basta impostare l'altezza di un solo campo e tutti gli altri si allineeranno a esso automaticamente
 		txtNome.setFont(fontCampi);
-		txtCognome = new JTextField();
+		txtCognome = new CampoCredenziale("Cognome");
 		txtCognome.setFont(fontCampi);
-		txtEmail = new JTextField();
+		txtEmail = new CampoCredenziale("Email");
 		txtEmail.setFont(fontCampi);
-		txtTelefono = new JTextField();
+		txtTelefono = new CampoCredenziale("Telefono");
 		txtTelefono.setFont(fontCampi);
-		txtResidenza = new JTextField();
+		txtResidenza = new CampoCredenziale("Residenza");
 		txtResidenza.setFont(fontCampi);
-		txtMansione = new JTextField();
+		txtMansione = new CampoCredenziale("Mansione");
 		txtMansione.setFont(fontCampi);
-		txtCittaNascita = new JTextField();
+		txtCittaNascita = new CampoCredenziale("Città di nascita");
 		txtCittaNascita.setFont(fontCampi);
 		cmbSpazio = new JComboBox<String>();
 		cmbSpazio.setEditable(true);
 		cmbSpazio.setSelectedItem(new String("Spazio occupato"));
-		cmbSpazio.addFocusListener(this);
 		cmbSpazio.setFont(fontCampi);
+		
+		popolaId();
 		popolaSpazi();
 		
 		cmdConferma = new JButton("Conferma");
@@ -86,37 +87,6 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 		
 		cmbId.setEditable(true);
 		cmbId.setSelectedItem(new String("ID"));
-		cmbId.addMouseListener(this);
-		cmbId.addFocusListener(this);
-		txtNome.setText("Nome");
-		txtCognome.setText("Cognome");
-		txtEmail.setText("Email");
-		txtTelefono.setText("Telefono");
-		txtResidenza.setText("Residenza");
-		txtMansione.setText("Mansione");
-		txtCittaNascita.setText("Città di nascita");
-		txtNome.addMouseListener(this);
-		txtNome.addFocusListener(this);
-		txtCognome.addMouseListener(this);
-		txtCognome.addFocusListener(this);
-		txtEmail.addMouseListener(this);
-		txtEmail.addFocusListener(this);
-		txtTelefono.addMouseListener(this);
-		txtTelefono.addFocusListener(this);
-		txtResidenza.addMouseListener(this);
-		txtResidenza.addFocusListener(this);
-		txtMansione.addMouseListener(this);
-		txtMansione.addFocusListener(this);
-		txtCittaNascita.addMouseListener(this);
-		txtCittaNascita.addFocusListener(this);
-		cmbId.setName("cmbId");
-		txtNome.setName("txtNome");
-		txtCognome.setName("txtCognome");
-		txtEmail.setName("txtEmail");
-		txtTelefono.setName("txtTelefono");
-		txtResidenza.setName("txtResidenza");
-		txtMansione.setName("txtMansione");
-		txtCittaNascita.setName("txtCittaNascita");
 		
 		this.add(cmbId);
 		this.add(txtNome);
@@ -128,6 +98,22 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 		this.add(txtCittaNascita);
 		this.add(cmbSpazio);
 		this.add(cmdConferma);
+	}
+	
+	private void popolaId() {
+		
+		try {
+			Database dbElementi = new Database();
+			String query = "SELECT id FROM Personale";
+			ResultSet rs = dbElementi.eseguiQueryRitorno(query);
+			
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				cmbId.addItem(id);
+			}
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void popolaSpazi() {
@@ -143,21 +129,8 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 				cmbSpazio.addItem(Integer.toString(id) + " - " + nome);
 			}
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-
-	@Override
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -204,40 +177,4 @@ public class FormModificaPersonale extends JPanel implements ActionListener, Foc
 		
 		}
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-		switch (e.getComponent().getName()) {
-		case "cmbId":
-			cmbId.setSelectedItem(new String("")); break;
-		case "txtNome":
-			txtNome.setText(""); break;
-		case "txtCognome":
-			txtCognome.setText(""); break;
-		case "txtEmail":
-			txtEmail.setText(""); break;
-		case "txtTelefono":
-			txtTelefono.setText(""); break;
-		case "txtResidenza":
-			txtResidenza.setText(""); break;
-		case "txtMansione":
-			txtMansione.setText(""); break;
-		case "txtCittaNascita":
-			txtCittaNascita.setText(""); break;
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-
 }

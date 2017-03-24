@@ -1,79 +1,73 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class CampoCredenziale extends JPanel {
+public class CampoCredenziale extends JTextField {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField testo;
 	private String hint = "";
 	
 	public String get() {
 		
-		return testo.getText();
+		return this.getText();
 	}
 	
 	public CampoCredenziale(String x) {
 		
-		this(x, false);
-	}
-	
-	public CampoCredenziale(String x, boolean isPassword) {
-		
 		super();
 		
+		this.setPreferredSize(new Dimension(400, 40));
 		this.setLayout(new FlowLayout());
-		
-		if (isPassword)
-			testo = new JPasswordField();
-		else {
-			testo = new JTextField();
-		}
+		this.setForeground(Color.GRAY);
 		
 		this.setHint(x);
-		
-		setLunghezza(400);
-		
-		testo.addFocusListener(new FocusListener() {
+				
+		this.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				if (testo.getText().equals(hint))
-					testo.setText("");
+				if (getText().equals(hint)) {
+					setText("");
+					setForeground(Color.BLACK);
+				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent arg0) {
 
-				if (testo.getText().equals(""))
+				if (getText().equals("")) {
 					setHint(hint);
+					setForeground(Color.GRAY);
+				}
 			}
 			
 		});
-		
-		
-		this.add(testo);		
-		
+
 	}
 	
 	void setLunghezza(int x) {
 		
-		testo.setPreferredSize(new Dimension(x, 40));
+		setPreferredSize(new Dimension(x, 40));
 	}
 	
 	void setHint(String x) {
 		
-		testo.setText(x);
+		setText(x);
 		hint = x;
+	}
+	
+	String getHint() {
+		
+		return hint;
 	}
 }

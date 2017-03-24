@@ -109,7 +109,7 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		
 		try {
 			elementi = new Database();
-			String query = "SELECT * FROM " + c.getSimpleName();
+			String query = "SELECT * FROM " + c.getSimpleName() + " ORDER BY id";
 			rs = elementi.eseguiQueryRitorno(query);
 			while (rs.next()) {
 				riga = new ArrayList<String>();

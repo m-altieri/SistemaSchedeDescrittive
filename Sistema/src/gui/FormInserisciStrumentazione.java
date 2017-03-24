@@ -22,17 +22,17 @@ import database.Database;
 import entità.Personale;
 import entità.Strumentazione;
 
-public class FormInserisciStrumentazione extends JPanel implements FocusListener, MouseListener, ActionListener {
+public class FormInserisciStrumentazione extends JPanel implements ActionListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField txtNome;
-	private JTextField txtModello;
-	private JTextField txtMarca;
-	private JTextField txtTipologia;
-	private JTextField txtAnnoAcquisto;
+	private CampoCredenziale txtNome;
+	private CampoCredenziale txtModello;
+	private CampoCredenziale txtMarca;
+	private CampoCredenziale txtTipologia;
+	private CampoCredenziale txtAnnoAcquisto;
 	private JComboBox<String> cmbSpazio;
 	private JButton cmdConferma;
 	
@@ -51,23 +51,22 @@ public class FormInserisciStrumentazione extends JPanel implements FocusListener
 		this.setLayout(new GridLayout(1, 8));
 		
 		fontCampi = new Font("Arial", Font.PLAIN, 16);
-		txtNome = new JTextField();
+		txtNome = new CampoCredenziale("Nome");
 		txtNome.setPreferredSize(new Dimension(0, ALTEZZA_CAMPI)); 
 		//mettendo 0 alla lunghezza, si adatterà comunque secondo il GridLayout
 		//basta impostare l'altezza di un solo campo e tutti gli altri si allineeranno a esso automaticamente
 		txtNome.setFont(fontCampi);
-		txtModello = new JTextField();
+		txtModello = new CampoCredenziale("Modello");
 		txtModello.setFont(fontCampi);
-		txtMarca = new JTextField();
+		txtMarca = new CampoCredenziale("Marca");
 		txtMarca.setFont(fontCampi);
-		txtTipologia = new JTextField();
+		txtTipologia = new CampoCredenziale("Tipologia");
 		txtTipologia.setFont(fontCampi);
-		txtAnnoAcquisto = new JTextField();
+		txtAnnoAcquisto = new CampoCredenziale("Anno acquisto");
 		txtAnnoAcquisto.setFont(fontCampi);
 		cmbSpazio = new JComboBox<String>();
 		cmbSpazio.setEditable(true);
 		cmbSpazio.setSelectedItem(new String("Spazio occupato"));
-		cmbSpazio.addFocusListener(this);
 		cmbSpazio.setFont(fontCampi);
 		popolaSpazi();
 		
@@ -75,28 +74,7 @@ public class FormInserisciStrumentazione extends JPanel implements FocusListener
 		
 		cmdConferma.addActionListener(this);
 		cmdConferma.setActionCommand("Conferma");
-		
-		txtNome.setText("Nome");
-		txtModello.setText("Modello");
-		txtMarca.setText("Marca");
-		txtTipologia.setText("Tipologia");
-		txtAnnoAcquisto.setText("Anno acquisto");
-		txtNome.addMouseListener(this);
-		txtNome.addFocusListener(this);
-		txtModello.addMouseListener(this);
-		txtModello.addFocusListener(this);
-		txtMarca.addMouseListener(this);
-		txtMarca.addFocusListener(this);
-		txtTipologia.addMouseListener(this);
-		txtTipologia.addFocusListener(this);
-		txtAnnoAcquisto.addMouseListener(this);
-		txtAnnoAcquisto.addFocusListener(this);
-		txtNome.setName("txtNome");
-		txtModello.setName("txtModello");
-		txtMarca.setName("txtMarca");
-		txtTipologia.setName("txtTipologia");
-		txtAnnoAcquisto.setName("txtAnnoAcquisto");
-		
+
 		this.add(txtNome);
 		this.add(txtModello);
 		this.add(txtMarca);
@@ -120,7 +98,6 @@ public class FormInserisciStrumentazione extends JPanel implements FocusListener
 				cmbSpazio.addItem(Integer.toString(id) + " - " + nome);
 			}
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -159,60 +136,4 @@ public class FormInserisciStrumentazione extends JPanel implements FocusListener
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-
-		switch (arg0.getComponent().getName()) {
-		case "txtNome":
-			txtNome.setText(""); break;
-		case "txtModello":
-			txtModello.setText(""); break;
-		case "txtMarca":
-			txtMarca.setText(""); break;
-		case "txtTipologia":
-			txtTipologia.setText(""); break;
-		case "txtANnoAcquisto":
-			txtAnnoAcquisto.setText(""); break;
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-
-	@Override
-	public void focusGained(FocusEvent e) {
-
-		String nome = e.getComponent().getName();
-		
-		if (nome.equals("txtNome") && txtNome.getText().equals("Nome")) {
-			txtNome.setText("");
-		}
-		if (nome.equals("txtModello") && txtModello.getText().equals("Modello")) {
-			txtModello.setText("");
-		}
-		if (nome.equals("txtMarca") && txtMarca.getText().equals("Marca")) {
-			txtMarca.setText("");
-		}
-		if (nome.equals("txtTipologia") && txtTipologia.getText().equals("Tipologia")) {
-			txtTipologia.setText("");
-		}
-		if (nome.equals("txtAnnoAcquisto") && txtAnnoAcquisto.getText().equals("Anno acquisto")) {
-			txtAnnoAcquisto.setText("");
-		}
-		if (nome.equals("cmbSpazio") && cmbSpazio.getSelectedItem().equals("Spazio occupato")) {
-			cmbSpazio.setSelectedItem(new String(""));
-		}
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {}
 }

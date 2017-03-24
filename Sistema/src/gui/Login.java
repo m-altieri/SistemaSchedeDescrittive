@@ -1,18 +1,19 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -21,7 +22,7 @@ public class Login extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
-	private CampoCredenziale password;
+	private JPasswordField password;
 	private JButton cmdLogin;
 	private JButton cmdRegistrati;
 	private JPanel credenziali;
@@ -43,13 +44,26 @@ public class Login extends JFrame implements ActionListener {
 		this.getContentPane().setLayout(new BorderLayout());
 		
 		username = new CampoCredenziale("Username");
-		username.setLunghezza(500);
-		password = new CampoCredenziale("Password", true);
-		password.setLunghezza(500);
+		password = new JPasswordField("Password");
+		password.setPreferredSize(new Dimension(400, 40));
+		password.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				password.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				password.setText("Password");
+			}
+			
+		});
 		
 		cmdLogin = new JButton("Login");
 		cmdRegistrati = new JButton("Non hai un account? Registrati");
 		cmdLogin.setPreferredSize(new Dimension(200,50));
+		cmdLogin.setActionCommand("Login");
 		cmdRegistrati.setPreferredSize(new Dimension(300,50));
 		cmdRegistrati.setActionCommand("Registrati");
 		

@@ -135,9 +135,11 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 				finestra.remove(pmd);
 				finestra.remove(pvd);
 				finestra.remove(ped);
+				finestra.setTitle("Sistema schede descrittive - Inserimento dati");
 			} catch (Exception f) {
 				
 			}
+			pid = new PannelloInserisciDati();
 			finestra.add(pid, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}
@@ -147,9 +149,11 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 				finestra.remove(pid);
 				finestra.remove(ped);
 				finestra.remove(pvd);
+				finestra.setTitle("Sistema schede descrittive - Modifica dati");
 			} catch (Exception f) {
 				
 			}
+			pmd = new PannelloModificaDati();
 			finestra.add(pmd, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}
@@ -159,6 +163,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 				finestra.remove(pmd);
 				finestra.remove(pid);
 				finestra.remove(ped);
+				finestra.setTitle("Sistema schede descrittive - Visualizzazione dati");
 			} catch (Exception f) {
 				
 			}
@@ -177,20 +182,29 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 				finestra.remove(pid);
 				finestra.remove(pmd);
 				finestra.remove(pvd);
+				finestra.setTitle("Sistema schede descrittive - Eliminazione dati");
 			} catch (Exception f) {
 				
 			}
-//			ped = new PannelloEliminaDati();
+			ped = new PannelloEliminaDati();
 			finestra.add(ped, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}
 		
 		if (command.equals("Importa dati")) {
-			
+			try {
+				finestra.setTitle("Sistema schede descrittive - Importazione dati");
+			} catch (Exception f) {
+				
+			}
 		}
 		
 		if (command.equals("Produci schede")) {
-			
+			try {
+				finestra.setTitle("Sistema schede descrittive - Produzione schede");
+			} catch (Exception f) {
+				
+			}
 		}
 		
 		if (command.equals("Cambia codice amministratore...")) {
@@ -201,7 +215,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			
 		}
 		
-		if (command.equals("Manuale utente")) {
+		if (command.equals("Manuale utente...")) {
 			
 		}
 		

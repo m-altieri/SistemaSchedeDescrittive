@@ -18,18 +18,18 @@ import javax.swing.JTextField;
 import entità.Personale;
 import entità.Spazio;
 
-public class FormInserisciSpazio extends JPanel implements FocusListener, MouseListener, ActionListener {
+public class FormInserisciSpazio extends JPanel implements ActionListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField txtNome;
-	private JTextField txtUbicazione;
-	private JTextField txtNumeroFinestre;
-	private JTextField txtNumeroPorte;
-	private JTextField txtGrandezza;
+	private CampoCredenziale txtNome;
+	private CampoCredenziale txtUbicazione;
+	private CampoCredenziale txtNumeroFinestre;
+	private CampoCredenziale txtNumeroPorte;
+	private CampoCredenziale txtGrandezza;
 	private JButton cmdConferma;
 	
 	private Visualizzatore visualizzatore;
@@ -47,45 +47,24 @@ public class FormInserisciSpazio extends JPanel implements FocusListener, MouseL
 		this.setLayout(new GridLayout(1, 8));
 		
 		fontCampi = new Font("Arial", Font.PLAIN, 16);
-		txtNome = new JTextField();
+		txtNome = new CampoCredenziale("Nome");
 		txtNome.setPreferredSize(new Dimension(0, ALTEZZA_CAMPI)); 
 		//mettendo 0 alla lunghezza, si adatterà comunque secondo il GridLayout
 		//basta impostare l'altezza di un solo campo e tutti gli altri si allineeranno a esso automaticamente
 		txtNome.setFont(fontCampi);
-		txtUbicazione = new JTextField();
+		txtUbicazione = new CampoCredenziale("Ubicazione");
 		txtUbicazione.setFont(fontCampi);
-		txtNumeroFinestre = new JTextField();
+		txtNumeroFinestre = new CampoCredenziale("Numero finestre");
 		txtNumeroFinestre.setFont(fontCampi);
-		txtNumeroPorte = new JTextField();
+		txtNumeroPorte = new CampoCredenziale("Numero porte");
 		txtNumeroPorte.setFont(fontCampi);
-		txtGrandezza = new JTextField();
+		txtGrandezza = new CampoCredenziale("Grandezza");
 		txtGrandezza.setFont(fontCampi);
 		
 		cmdConferma = new JButton("Conferma");
 		
 		cmdConferma.addActionListener(this);
 		cmdConferma.setActionCommand("Conferma");
-		
-		txtNome.setText("Nome");
-		txtUbicazione.setText("Ubicazione");
-		txtNumeroFinestre.setText("Numero Finestre");
-		txtNumeroPorte.setText("Numero Porte");
-		txtGrandezza.setText("Grandezza");
-		txtNome.addMouseListener(this);
-		txtNome.addFocusListener(this);
-		txtUbicazione.addMouseListener(this);
-		txtUbicazione.addFocusListener(this);
-		txtNumeroFinestre.addMouseListener(this);
-		txtNumeroFinestre.addFocusListener(this);
-		txtNumeroPorte.addMouseListener(this);
-		txtNumeroPorte.addFocusListener(this);
-		txtGrandezza.addMouseListener(this);
-		txtGrandezza.addFocusListener(this);
-		txtNome.setName("txtNome");
-		txtUbicazione.setName("txtUbicazione");
-		txtNumeroFinestre.setName("txtNumeroFinestre");
-		txtNumeroPorte.setName("txtNumeroPorte");
-		txtGrandezza.setName("txtGrandezza");
 		
 		this.add(txtNome);
 		this.add(txtUbicazione);
@@ -118,58 +97,4 @@ public class FormInserisciSpazio extends JPanel implements FocusListener, MouseL
 		
 		}
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-		switch (e.getComponent().getName()) {
-		case "txtNome":
-			txtNome.setText(""); break;
-		case "txtUbicazione":
-			txtUbicazione.setText(""); break;
-		case "txtNumeroFinestre":
-			txtNumeroFinestre.setText(""); break;
-		case "txtNumeroPorte":
-			txtNumeroPorte.setText(""); break;
-		case "txtGrandezza":
-			txtGrandezza.setText(""); break;
-		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		
-		String nome = e.getComponent().getName();
-		
-		if (nome.equals("txtNome") && txtNome.getText().equals("Nome")) {
-			txtNome.setText("");
-		}
-		if (nome.equals("txtUbicazione") && txtUbicazione.getText().equals("Ubicazione")) {
-			txtUbicazione.setText("");
-		}
-		if (nome.equals("txtNumeroFinestre") && txtNumeroFinestre.getText().equals("Numero Finestre")) {
-			txtNumeroFinestre.setText("");
-		}
-		if (nome.equals("txtNumeroPorte") && txtNumeroPorte.getText().equals("Numero Porte")) {
-			txtNumeroPorte.setText("");
-		}
-		if (nome.equals("txtGrandezza") && txtGrandezza.getText().equals("Grandezza")) {
-			txtGrandezza.setText("");
-		}
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {}
 }

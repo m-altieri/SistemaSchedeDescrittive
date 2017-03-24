@@ -87,7 +87,7 @@ public class Personale extends Elemento {
 			
 			if (idSpazio != 0) {
 				queryInserimento = "SET IDENTITY_INSERT Personale ON"
-						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita) VALUES ( " + 
+						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita, spazio) VALUES ( " + 
 				id + ", " +
 				"'" + nome + "', " +
 				"'" + cognome + "', " +

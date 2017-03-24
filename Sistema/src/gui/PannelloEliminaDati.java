@@ -81,44 +81,53 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 		}
 		
 		if (e.getActionCommand().equals("cmdConferma")) {
-		
-			int risposta = JOptionPane.showConfirmDialog(this, "Sicuro?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			if (risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION) {
-				return;
-			}
 			
-			Database dbElementi = null;
-			String query = null;
-			
-			String tabella = null;
-			if (super.rdPersonale.isSelected())
-				tabella = "Personale";
-			else if (super.rdStrumentazione.isSelected())
-				tabella = "Strumentazione";
-			else
-				tabella = "Spazio";
-			
-			try {
-				dbElementi = new Database();
-				query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id.get());
-				System.out.println(query);
-				dbElementi.eseguiQuery(query);
-			} catch (Exception f) {
+			try { 
+									
+				if (id.getText().equals("") || id.getText().equals("ID")) {
+	
+					throw new InputInvalidoException(this);
+				}
 				
-			}
-			
-			try {
-				if (tabella.equals("Personale"))
-					tPersonale.caricaPannelloDati(Personale.class);
-				else if (tabella.equals("Strumentazione"))
-					tStrumentazione.caricaPannelloDati(Strumentazione.class);
+				int risposta = JOptionPane.showConfirmDialog(this, "Sicuro?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION) {
+					return;
+				}
+				
+				Database dbElementi = null;
+				String query = null;
+				
+				String tabella = null;
+				if (super.rdPersonale.isSelected())
+					tabella = "Personale";
+				else if (super.rdStrumentazione.isSelected())
+					tabella = "Strumentazione";
 				else
-					tSpazio.caricaPannelloDati(Spazio.class);
-			} catch (ClassNotFoundException | IOException e1) {
+					tabella = "Spazio";
 				
-				e1.printStackTrace();
+				try {
+					dbElementi = new Database();
+					query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id.get());
+					System.out.println(query);
+					dbElementi.eseguiQuery(query);
+				} catch (Exception f) {
+					
+				}
+				
+				try {
+					if (tabella.equals("Personale"))
+						tPersonale.caricaPannelloDati(Personale.class);
+					else if (tabella.equals("Strumentazione"))
+						tStrumentazione.caricaPannelloDati(Strumentazione.class);
+					else
+						tSpazio.caricaPannelloDati(Spazio.class);
+				} catch (ClassNotFoundException | IOException e1) {
+					
+					e1.printStackTrace();
+				}
+			} catch (InputInvalidoException f) {
+				
 			}
-			
 		}
 	}
 
