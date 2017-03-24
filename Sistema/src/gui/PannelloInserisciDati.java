@@ -16,9 +16,9 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 	private VisualizzaTabella tPersonale;
 	private VisualizzaTabella tStrumentazione;
 	private VisualizzaTabella tSpazio;
-	private FormInserisciPersonale fPersonale;
-	private FormInserisciStrumentazione fStrumentazione;
-	private FormInserisciSpazio fSpazio;
+	private FormInserisciDati fPersonale;
+	private FormInserisciDati fStrumentazione;
+	private FormInserisciDati fSpazio;
 	
 	public PannelloInserisciDati() {
 		
@@ -27,9 +27,9 @@ public class PannelloInserisciDati extends PannelloGestioneDati {
 		tPersonale = new VisualizzaTabella(Personale.class);
 		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
 		tSpazio = new VisualizzaTabella(Spazio.class);
-		fPersonale = new FormInserisciPersonale(tPersonale);
-		fStrumentazione = new FormInserisciStrumentazione(tStrumentazione);
-		fSpazio = new FormInserisciSpazio(tSpazio);
+		fPersonale = new FormInserisciDati(Personale.class, tPersonale);
+		fStrumentazione = new FormInserisciDati(Strumentazione.class, tStrumentazione);
+		fSpazio = new FormInserisciDati(Spazio.class, tSpazio);
 	}
 	
 	@Override

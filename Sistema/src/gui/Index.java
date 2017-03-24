@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import database.Database;
+import entità.Personale;
 
 public class Index {
 	

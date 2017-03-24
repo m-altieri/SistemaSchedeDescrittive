@@ -14,6 +14,6 @@ public class InputInvalidoException extends Exception {
 		
 		super();
 		
-		JOptionPane.showMessageDialog(parent, "ID non valido", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(parent, "Input non valido", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 }
