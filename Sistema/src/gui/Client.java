@@ -13,7 +13,10 @@ public class Client extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private BarraMenu menu;
 	
-	public Client(boolean admin) {
+	private String user;
+	private boolean admin;
+	
+	public Client(String user, boolean admin) {
 		
 		super();
 		
@@ -24,7 +27,18 @@ public class Client extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.getContentPane().setLayout(new BorderLayout());
 		
-		menu = new BarraMenu(this, admin);
+		this.user = user;
+		this.admin = admin;
+		
+		menu = new BarraMenu(this);
 		this.setJMenuBar(menu);
+	}
+	
+	String getUser() {
+		return user;
+	}
+	
+	boolean getAdmin() {
+		return admin;
 	}
 }

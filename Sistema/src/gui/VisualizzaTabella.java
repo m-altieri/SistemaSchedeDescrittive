@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 import database.Database;
 import entità.Elemento;
-import entità.Personale;
 
 public class VisualizzaTabella extends JPanel implements Visualizzatore {
 	/**
@@ -39,9 +38,8 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		fontDati = new Font("Arial", Font.PLAIN, 14);
 		
 		try {
-			colonne = ottieniColonne(tipo);
+			colonne = ottieniColonne();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.setLayout(new BorderLayout());
@@ -58,9 +56,8 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		}
 
 		try {
-			caricaPannelloDati(tipo);
+			caricaPannelloDati();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -68,26 +65,23 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		this.add(pannelloDati, BorderLayout.CENTER);
 	}
 	
-	private ArrayList<String> ottieniColonne(Class<? extends Elemento> c) throws SQLException {
+	private ArrayList<String> ottieniColonne() throws SQLException {
 		
 		ArrayList<String> colonne = new ArrayList<String>();
 		Database db = null;
 		try {
 			db = new Database();
 		} catch (ClassNotFoundException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		ResultSet rs = null;
 		try {
-//			db.usa(); //se lo metti dà errore "use statement is not supported to switch between databases"
-			rs = db.eseguiQueryRitorno("SELECT column_name FROM information_schema.columns WHERE table_name = '" + c.getSimpleName() + "'");
+			rs = db.eseguiQueryRitorno("SELECT column_name FROM information_schema.columns WHERE table_name = '" + tipo.getSimpleName() + "'");
 			while (rs.next()) {
 				colonne.add(rs.getString(1));
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			rs.close();
@@ -99,7 +93,7 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 	 * NON usare questo metodo in modo pubblico.
 	 * E' reso pubblico solo per consentire alla classe di essere conforme all'interfaccia Visualizzatore che implementa.
 	 */
-	public void caricaPannelloDati(Class<? extends Elemento> c) throws ClassNotFoundException, IOException {
+	public void caricaPannelloDati() throws ClassNotFoundException, IOException {
 		
 		pannelloDati.removeAll();
 		
@@ -109,7 +103,7 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		
 		try {
 			elementi = new Database();
-			String query = "SELECT * FROM " + c.getSimpleName() + " ORDER BY id";
+			String query = "SELECT * FROM " + tipo.getSimpleName() + " ORDER BY id";
 			rs = elementi.eseguiQueryRitorno(query);
 			while (rs.next()) {
 				riga = new ArrayList<String>();
@@ -126,4 +120,5 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		
 		this.paintAll(this.getGraphics());
 	}
+
 }

@@ -2,8 +2,6 @@ package entità;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import database.Database;
 
 /**
@@ -74,7 +72,6 @@ public class Personale extends Elemento {
 			
 			dbElementi.eseguiQuery(queryInserimento);
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -114,7 +111,6 @@ public class Personale extends Elemento {
 			
 			dbElementi.eseguiQuery(queryInserimento);
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	

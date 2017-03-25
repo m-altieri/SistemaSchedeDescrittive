@@ -16,6 +16,10 @@ import entità.Strumentazione;
 
 public class PannelloEliminaDati extends PannelloGestioneDati {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private VisualizzaTabella tPersonale;
 	private VisualizzaTabella tStrumentazione;
 	private VisualizzaTabella tSpazio;
@@ -116,11 +120,11 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 				
 				try {
 					if (tabella.equals("Personale"))
-						tPersonale.caricaPannelloDati(Personale.class);
+						tPersonale.caricaPannelloDati();
 					else if (tabella.equals("Strumentazione"))
-						tStrumentazione.caricaPannelloDati(Strumentazione.class);
+						tStrumentazione.caricaPannelloDati();
 					else
-						tSpazio.caricaPannelloDati(Spazio.class);
+						tSpazio.caricaPannelloDati();
 				} catch (ClassNotFoundException | IOException e1) {
 					
 					e1.printStackTrace();

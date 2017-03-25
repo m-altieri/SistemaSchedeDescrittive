@@ -56,7 +56,11 @@ public class Login extends JFrame implements ActionListener {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (password.getText().equals("Password"))
+				String pass = "";
+				for (int i = 0; i < password.getPassword().length; i++)
+					pass += password.getPassword()[i];
+				
+				if (pass.equals("Password"))
 					password.setText("");
 			}
 
@@ -129,7 +133,7 @@ public class Login extends JFrame implements ActionListener {
 				if (esiste) {
 					isAdmin = match.getBoolean(4);
 					
-					Client c = new Client(isAdmin);
+					Client c = new Client(username.get(), isAdmin);
 					c.setVisible(true);
 					this.dispose();
 				} else {

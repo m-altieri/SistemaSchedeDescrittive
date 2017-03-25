@@ -4,11 +4,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import database.Database;
 
 public class FinestraCambiaCodice extends JFrame {
 
@@ -42,7 +47,15 @@ public class FinestraCambiaCodice extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				//TODO cambia codice admin in DBUtility
+				try {
+					Database dbUtility = new Database(true);
+					String query = "INSERT INTO CodiceAdmin (codice) VALUES ('" + codice.get() + "')";
+					dbUtility.eseguiQuery(query);
+					dispose();
+					JOptionPane.showMessageDialog(null, "Nuovo codice: " + codice.get(), "Successo", JOptionPane.INFORMATION_MESSAGE);
+				} catch (ClassNotFoundException | IOException | SQLException f) {
+					f.printStackTrace();
+				}
 			}
 			
 		});

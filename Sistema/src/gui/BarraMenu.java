@@ -5,9 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -18,7 +15,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JFrame finestra;
+	private Client finestra;
 	private JMenu dati;
 	private JMenu amministrazione;
 	private JMenu aiuto;
@@ -43,7 +40,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	private PannelloEliminaDati ped;
 	private PannelloProduciSchede pps;
 	
-	public BarraMenu(JFrame finestra, boolean admin) {
+	public BarraMenu(Client finestra) {
 		
 		super();
 		
@@ -115,7 +112,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		account.add(logout);
 		account.add(diventaAmministratore);
 		
-		if (!admin)
+		if (!finestra.getAdmin())
 			amministrazione.setEnabled(false);
 		
 		this.add(dati);
@@ -131,12 +128,15 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		
 		if (command.equals("Inserisci dati")) {
 			try {
-				finestra.remove(pmd);
-				finestra.remove(pvd);
-				finestra.remove(ped);
+				if (pmd != null)
+					finestra.remove(pmd);
+				if (pvd != null)
+					finestra.remove(pvd);
+				if (ped != null)
+					finestra.remove(ped);
 				finestra.setTitle("Sistema schede descrittive - Inserimento dati");
 			} catch (Exception f) {
-				
+				f.printStackTrace();
 			}
 			pid = new PannelloInserisciDati();
 			finestra.add(pid, BorderLayout.CENTER);
@@ -145,12 +145,15 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		
 		if (command.equals("Modifica dati")) {
 			try {
-				finestra.remove(pid);
-				finestra.remove(ped);
-				finestra.remove(pvd);
+				if (pid != null)
+					finestra.remove(pid);
+				if (ped != null)
+					finestra.remove(ped);
+				if (pvd != null)
+					finestra.remove(pvd);
 				finestra.setTitle("Sistema schede descrittive - Modifica dati");
 			} catch (Exception f) {
-				
+				f.printStackTrace();
 			}
 			pmd = new PannelloModificaDati();
 			finestra.add(pmd, BorderLayout.CENTER);
@@ -159,30 +162,32 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		
 		if (command.equals("Visualizza dati")) {
 			try {
-				finestra.remove(pmd);
-				finestra.remove(pid);
-				finestra.remove(ped);
+				if (pmd != null)
+					finestra.remove(pmd);
+				if (pid != null)
+					finestra.remove(pid);
+				if (ped != null)
+					finestra.remove(ped);
 				finestra.setTitle("Sistema schede descrittive - Visualizzazione dati");
 			} catch (Exception f) {
-				
+				f.printStackTrace();
 			}
-			try {
-				pvd.aggiorna();
-			} catch (ClassNotFoundException | IOException e1) {
-				e1.printStackTrace();
-			}
+			pvd = new PannelloVisualizzaDati();
 			finestra.add(pvd, BorderLayout.CENTER);
 			finestra.paintAll(finestra.getGraphics());
 		}
 		
 		if (command.equals("Elimina dati")) {
 			try {
-				finestra.remove(pid);
-				finestra.remove(pmd);
-				finestra.remove(pvd);
+				if (pid != null)
+					finestra.remove(pid);
+				if (pmd != null)
+					finestra.remove(pmd);
+				if (pvd != null)
+					finestra.remove(pvd);
 				finestra.setTitle("Sistema schede descrittive - Eliminazione dati");
 			} catch (Exception f) {
-				
+				f.printStackTrace();
 			}
 			ped = new PannelloEliminaDati();
 			finestra.add(ped, BorderLayout.CENTER);
@@ -226,7 +231,8 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		}
 		
 		if (command.equals("Cambia password...")) {
-			
+			FinestraCambiaPassword cp = new FinestraCambiaPassword(finestra.getUser());
+			cp.setVisible(true);
 		}
 		
 		if (command.equals("Logout")) {
@@ -236,7 +242,8 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		}
 		
 		if (command.equals("Diventa amministratore...")) {
-			
+			FinestraDiventaAdmin fva = new FinestraDiventaAdmin(finestra.getUser());
+			fva.setVisible(true);
 		}
 	}
 	

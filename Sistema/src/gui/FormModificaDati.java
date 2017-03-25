@@ -82,7 +82,6 @@ public class FormModificaDati extends FormInserisciDati {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -107,8 +106,10 @@ public class FormModificaDati extends FormInserisciDati {
 				int spazio = 0;
 				if (!className.equals(Spazio.class.getSimpleName()) && !cmbSpazio.getSelectedItem().equals("")) {
 					if (!cmbSpazio.getSelectedItem().equals("Spazio occupato")) {
-						spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
-						System.out.println(spazio);
+						if (cmbSpazio.getSelectedItem().toString().contains("-"))
+							spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
+						else
+							spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString());
 					}
 				}
 								
@@ -145,7 +146,7 @@ public class FormModificaDati extends FormInserisciDati {
 				
 				
 				try {
-					visualizzatore.caricaPannelloDati((Class<? extends Elemento>) Class.forName("entità." + className));
+					visualizzatore.caricaPannelloDati();
 				} catch (ClassNotFoundException | IOException e1) {				
 					e1.printStackTrace();
 				}

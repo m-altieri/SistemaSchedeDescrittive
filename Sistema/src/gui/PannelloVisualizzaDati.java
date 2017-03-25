@@ -29,9 +29,9 @@ public class PannelloVisualizzaDati extends PannelloGestioneDati {
 	
 	public void aggiorna() throws ClassNotFoundException, IOException {
 		
-		tPersonale.caricaPannelloDati(Personale.class);
-		tStrumentazione.caricaPannelloDati(Strumentazione.class);
-		tSpazio.caricaPannelloDati(Spazio.class);
+		tPersonale.caricaPannelloDati();
+		tStrumentazione.caricaPannelloDati();
+		tSpazio.caricaPannelloDati();
 	}
 
 	@Override

@@ -156,7 +156,6 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -207,7 +206,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				}
 				
 				try {
-					visualizzatore.caricaPannelloDati((Class<? extends Elemento>) Class.forName("entità." + className));
+					visualizzatore.caricaPannelloDati();
 				} catch (ClassNotFoundException | IOException e1) {				
 					e1.printStackTrace();
 				}
