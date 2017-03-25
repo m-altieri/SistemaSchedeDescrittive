@@ -19,7 +19,7 @@ public class Connessione {
 				
 		connectionString = "";
 		connectionString += credenziali.getUrl() + ";";
-		connectionString += "database=DBElementi;";
+		connectionString += "database=" + credenziali.getDatabase() + ";";
 		connectionString += "user=" + credenziali.getNome() + ";";
 		connectionString += "password=" + credenziali.getPassword() + ";";
 		connectionString += "encrypt=true;";

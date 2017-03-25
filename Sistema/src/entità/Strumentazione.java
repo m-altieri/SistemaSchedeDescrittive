@@ -109,7 +109,7 @@ public class Strumentazione extends Elemento {
 				annoAcquisto + ", " +
 				idSpazio + ")";
 			} else {
-				queryInserimento = "INSERT INTO Personale(nome, modello, marca, tipologia, annoAcquisto) "
+				queryInserimento = "INSERT INTO Strumentazione(nome, modello, marca, tipologia, annoAcquisto) "
 						+ "VALUES ( " + 
 				"'" + nome + "', " +
 				"'" + modello + "', " +
@@ -120,9 +120,43 @@ public class Strumentazione extends Elemento {
 			
 			dbElementi.eseguiQuery(queryInserimento);
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	public void crea(int id) {
+
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			if (idSpazio != 0) {
+				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto, spazio) "
+						+ "VALUES ( " + 
+				id + ", " +
+				"'" + nome + "', " +
+				"'" + modello + "', " +
+				"'" + marca + "', " +
+				"'" + tipologia + "', " +
+				annoAcquisto + ", " +
+				idSpazio + ")";
+			} else {
+				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto) "
+						+ "VALUES ( " + 
+				id + ", " +
+				"'" + nome + "', " +
+				"'" + modello + "', " +
+				"'" + marca + "', " +
+				"'" + tipologia + "', " +
+				annoAcquisto + ")";
+			}
+			
+			queryInserimento = "SET IDENTITY_INSERT Strumentazione ON " + queryInserimento + " SET IDENTITY_INSERT Strumentazione OFF";
+			dbElementi.eseguiQuery(queryInserimento);
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			e1.printStackTrace();
+		}
+	
 	}
 	
 }

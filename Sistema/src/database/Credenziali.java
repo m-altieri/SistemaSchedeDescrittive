@@ -20,17 +20,14 @@ public class Credenziali implements Serializable {
 	private String url;
 	private String nome;
 	private String password;
-		
-	public Credenziali() {
-		
-		this("", "", "");
-	}
+	private String database;
 	
-	public Credenziali(String url, String nome, String password) {
+	public Credenziali(String url, String nome, String password, String database) {
 		
 		this.url = url;
 		this.nome = nome;
 		this.password = password;
+		this.database = database;
 	}
 	
 	public void salva(File file) throws IOException {
@@ -68,9 +65,17 @@ public class Credenziali implements Serializable {
 		this.password = password;
 	}
 	
+	public String getDatabase() {
+		return database;
+	}
+	
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+	
 	public boolean isValid() {
 		
-		return !url.equals("") && !nome.equals("") && !password.equals("");
+		return !url.equals("") && !nome.equals("") && !password.equals("") && !database.equals("");
 	}
 	
 }

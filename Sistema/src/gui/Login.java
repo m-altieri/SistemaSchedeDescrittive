@@ -7,13 +7,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+
+import database.Database;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -50,13 +56,12 @@ public class Login extends JFrame implements ActionListener {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				password.setText("");
+				if (password.getText().equals("Password"))
+					password.setText("");
 			}
 
 			@Override
-			public void focusLost(FocusEvent e) {
-				password.setText("Password");
-			}
+			public void focusLost(FocusEvent e) {}
 			
 		});
 		
@@ -109,12 +114,32 @@ public class Login extends JFrame implements ActionListener {
 		
 		if (e.getActionCommand().equals("Login")) {
 			
-			this.cmdLogin.setEnabled(false);
-			this.cmdRegistrati.setEnabled(false);
-			this.paintAll(getGraphics());
-			Client c = new Client();
-			c.setVisible(true);
-			this.dispose();
+			String pass = "";
+			for (int i = 0; i < password.getPassword().length; i++) {
+				pass += password.getPassword()[i];
+			}
+			
+			boolean isAdmin = false;
+			try {
+				Database dbUtility = new Database(true);
+				String query = "SELECT * FROM Utente WHERE nomeUtente = '" + username.get() + "' AND password = '" + pass + "'";
+				ResultSet match = dbUtility.eseguiQueryRitorno(query);
+				boolean esiste = match.next();
+				
+				if (esiste) {
+					isAdmin = match.getBoolean(4);
+					
+					Client c = new Client(isAdmin);
+					c.setVisible(true);
+					this.dispose();
+				} else {
+					JOptionPane.showMessageDialog(this, "Username o password errati", "Errore", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			} catch (SQLException | ClassNotFoundException | IOException f) {
+				f.printStackTrace();
+			}
+			
 		}
 	}
 	

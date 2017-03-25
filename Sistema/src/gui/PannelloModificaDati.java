@@ -16,9 +16,9 @@ public class PannelloModificaDati extends PannelloGestioneDati {
 	private VisualizzaTabella tPersonale;
 	private VisualizzaTabella tStrumentazione;
 	private VisualizzaTabella tSpazio;
-	private FormModificaPersonale fPersonale;
-	private FormModificaStrumentazione fStrumentazione;
-	private FormModificaSpazio fSpazio;
+	private FormModificaDati fPersonale;
+	private FormModificaDati fStrumentazione;
+	private FormModificaDati fSpazio;
 
 	public PannelloModificaDati() {
 		
@@ -27,9 +27,9 @@ public class PannelloModificaDati extends PannelloGestioneDati {
 		tPersonale = new VisualizzaTabella(Personale.class);
 		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
 		tSpazio = new VisualizzaTabella(Spazio.class);
-		fPersonale = new FormModificaPersonale(tPersonale);
-		fStrumentazione = new FormModificaStrumentazione(tStrumentazione);
-		fSpazio = new FormModificaSpazio(tSpazio);
+		fPersonale = new FormModificaDati(Personale.class, tPersonale);
+		fStrumentazione = new FormModificaDati(Strumentazione.class, tStrumentazione);
+		fSpazio = new FormModificaDati(Spazio.class, tSpazio);
 	}
 
 	@Override

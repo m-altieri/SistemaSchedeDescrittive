@@ -89,7 +89,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 					throw new InputInvalidoException(this);
 				}
 				
-				int risposta = JOptionPane.showConfirmDialog(this, "Sicuro?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				int risposta = JOptionPane.showConfirmDialog(this, "Sicuro? Eventuali dati referenziati verranno rimossi", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION) {
 					return;
 				}

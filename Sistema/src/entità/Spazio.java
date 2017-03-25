@@ -107,4 +107,28 @@ public class Spazio extends Elemento {
 		}
 	}
 	
+	public void crea(int id) {
+			
+		try {
+			Database dbElementi = new Database();
+			String queryInserimento = "";
+			
+			queryInserimento = "INSERT INTO Spazio(id, nome, ubicazione, numeroFinestre, numeroPorte, grandezza) "
+					+ "VALUES ( " + 
+			id + ", " +
+			"'" + nome + "', " +
+			"'" + ubicazione + "', " +
+			numeroFinestre + ", " +
+			numeroPorte + ", " +
+			grandezza + ")";
+					
+		queryInserimento = "SET IDENTITY_INSERT Spazio ON " + queryInserimento + " SET IDENTITY_INSERT Spazio OFF";
+		dbElementi.eseguiQuery(queryInserimento);
+		
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			e1.printStackTrace();
+		}
+	
+	}
+	
 }

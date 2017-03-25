@@ -41,8 +41,9 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 	private PannelloModificaDati pmd;
 	private PannelloVisualizzaDati pvd;
 	private PannelloEliminaDati ped;
+	private PannelloProduciSchede pps;
 	
-	public BarraMenu(JFrame finestra) {
+	public BarraMenu(JFrame finestra, boolean admin) {
 		
 		super();
 		
@@ -50,12 +51,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		
 		this.font = new Font("Arial", Font.PLAIN, 16);
 		this.setPreferredSize(new Dimension(500,50));
-		
-		this.pid = new PannelloInserisciDati();
-		this.pmd = new PannelloModificaDati();
-		this.pvd = new PannelloVisualizzaDati();
-		this.ped = new PannelloEliminaDati();
-		
+
 		this.dati = new JMenu("Dati");
 		this.amministrazione = new JMenu("Amministrazione");
 		this.aiuto = new JMenu("Aiuto");
@@ -68,7 +64,7 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		this.produciSchede = new JMenuItem("Produci schede");
 		this.cambiaCodiceAmministratore = new JMenuItem("Cambia codice amministratore...");
 		this.cambiaCredenzialiDatabase = new JMenuItem("Cambia credenziali database...");
-		this.manualeUtente = new JMenuItem("Manuale utente");
+		this.manualeUtente = new JMenuItem("Manuale utente...");
 		this.cambiaPassword = new JMenuItem("Cambia password...");
 		this.logout = new JMenuItem("Logout");
 		this.diventaAmministratore = new JMenuItem("Diventa amministratore...");
@@ -118,6 +114,9 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		account.add(cambiaPassword);
 		account.add(logout);
 		account.add(diventaAmministratore);
+		
+		if (!admin)
+			amministrazione.setEnabled(false);
 		
 		this.add(dati);
 		this.add(amministrazione);
@@ -170,7 +169,6 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 			try {
 				pvd.aggiorna();
 			} catch (ClassNotFoundException | IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			finestra.add(pvd, BorderLayout.CENTER);
@@ -201,14 +199,21 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		
 		if (command.equals("Produci schede")) {
 			try {
+				finestra.remove(pid);
+				finestra.remove(pmd);
+				finestra.remove(pvd);
 				finestra.setTitle("Sistema schede descrittive - Produzione schede");
 			} catch (Exception f) {
 				
 			}
+			pps = new PannelloProduciSchede();
+			finestra.add(pps, BorderLayout.CENTER);
+			finestra.paintAll(finestra.getGraphics());
 		}
 		
 		if (command.equals("Cambia codice amministratore...")) {
-			
+			FinestraCambiaCodice fcc = new FinestraCambiaCodice();
+			fcc.setVisible(true);
 		}
 		
 		if (command.equals("Cambia credenziali database...")) {
@@ -216,7 +221,8 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		}
 		
 		if (command.equals("Manuale utente...")) {
-			
+			ManualeUtente mu = new ManualeUtente();
+			mu.setVisible(true);
 		}
 		
 		if (command.equals("Cambia password...")) {
@@ -224,7 +230,9 @@ public class BarraMenu extends JMenuBar implements ActionListener {
 		}
 		
 		if (command.equals("Logout")) {
-			
+			finestra.dispose();
+			Login l = new Login();
+			l.setVisible(true);
 		}
 		
 		if (command.equals("Diventa amministratore...")) {

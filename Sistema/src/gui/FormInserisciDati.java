@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import database.Database;
@@ -28,30 +27,30 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 	
 	private String className;
 	
-	private ArrayList<CampoCredenziale> campi;
+	protected ArrayList<CampoCredenziale> campi;
 	
-	private CampoCredenziale txtNome;
-	private CampoCredenziale txtCognome;
-	private CampoCredenziale txtEmail;
-	private CampoCredenziale txtTelefono;
-	private CampoCredenziale txtResidenza;
-	private CampoCredenziale txtMansione;
-	private CampoCredenziale txtCittaNascita;
+	protected CampoCredenziale txtNome;
+	protected CampoCredenziale txtCognome;
+	protected CampoCredenziale txtEmail;
+	protected CampoCredenziale txtTelefono;
+	protected CampoCredenziale txtResidenza;
+	protected CampoCredenziale txtMansione;
+	protected CampoCredenziale txtCittaNascita;
 	
-	private CampoCredenziale txtModello;
-	private CampoCredenziale txtMarca;
-	private CampoCredenziale txtTipologia;
-	private CampoCredenziale txtAnnoAcquisto;
+	protected CampoCredenziale txtModello;
+	protected CampoCredenziale txtMarca;
+	protected CampoCredenziale txtTipologia;
+	protected CampoCredenziale txtAnnoAcquisto;
 	
-	private CampoCredenziale txtUbicazione;
-	private CampoCredenziale txtNumeroFinestre;
-	private CampoCredenziale txtNumeroPorte;
-	private CampoCredenziale txtGrandezza;
+	protected CampoCredenziale txtUbicazione;
+	protected CampoCredenziale txtNumeroFinestre;
+	protected CampoCredenziale txtNumeroPorte;
+	protected CampoCredenziale txtGrandezza;
 	
-	private JComboBox<String> cmbSpazio;
-	private JButton cmdConferma;
+	protected JComboBox<String> cmbSpazio;
+	protected JButton cmdConferma;
 	
-	private Visualizzatore visualizzatore;
+	protected Visualizzatore visualizzatore;
 	
 	private final int ALTEZZA_CAMPI = 40;
 	
@@ -124,9 +123,12 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 			cmbSpazio.setEditable(true);
 			cmbSpazio.setSelectedItem(new String("Spazio occupato"));
 			cmbSpazio.setFont(fontCampi);
+			cmbSpazio.addItem("");
 			
-			add(cmbSpazio);
 			popolaSpazi();
+			cmbSpazio.update(getGraphics());
+			add(cmbSpazio);
+			
 		}
 		
 		cmdConferma = new JButton("Conferma");
@@ -154,12 +156,12 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		try {
-			if (e.getActionCommand().equals("Conferma")) {
-				
+		if (e.getActionCommand().equals("Conferma")) {
+			try {
 				for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
 					CampoCredenziale campoCredenziale = (CampoCredenziale) iterator.next();
 					if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
@@ -168,7 +170,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				
 				int spazio = 0;
 				if (!className.equals(Spazio.class.getSimpleName())) {
-					if (!cmbSpazio.getSelectedItem().equals("Spazio occupato")) {
+					if (!cmbSpazio.getSelectedItem().equals("Spazio occupato") && !cmbSpazio.getSelectedItem().equals("")) {
 						spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
 						System.out.println(spazio);
 					}
@@ -209,11 +211,12 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				} catch (ClassNotFoundException | IOException e1) {				
 					e1.printStackTrace();
 				}
-			
+		
+			} catch (InputInvalidoException f) {
+				
 			}
-		} catch (InputInvalidoException f) {
-			
 		}
+		
 	}
 
 }
