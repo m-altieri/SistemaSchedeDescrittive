@@ -15,10 +15,9 @@ public class Database {
 	private Credenziali credenziali;
 	private Connessione connessione;
 	private File fileCredenziali;
-	private final String PERCORSO_CREDENZIALI_DBELEMENTI = "Credenziali_DBElementi.bin";
-	private final String PERCORSO_CREDENZIALI_DBUTILITY = "Credenziali_DBUtility.bin";
 	private String nome;
-	
+	final String PERCORSO_CREDENZIALI_DBELEMENTI = "Credenziali_DBElementi.bin";
+
 	/**
 	 * Costruttore principale della classe.
 	 * Permette di modellare il database DBElementi.
@@ -28,7 +27,7 @@ public class Database {
 	 * @throws IOException
 	 */
 	public Database() throws ClassNotFoundException, SQLException, IOException {
-		
+
 		fileCredenziali = new File(PERCORSO_CREDENZIALI_DBELEMENTI);
 		
 		credenziali = ottieniCredenziali(fileCredenziali);
@@ -47,6 +46,8 @@ public class Database {
 	 */
 	public Database(boolean isDBUtility) throws ClassNotFoundException, IOException, SQLException {
 		
+		final String PERCORSO_CREDENZIALI_DBUTILITY = "Credenziali_DBUtility.bin";
+
 		if (isDBUtility) {
 			fileCredenziali = new File(PERCORSO_CREDENZIALI_DBUTILITY);
 			nome = "DBUtility";
@@ -64,22 +65,24 @@ public class Database {
 		return nome;
 	}
 	
-	private Credenziali ottieniCredenziali(File fileCredenziali) throws IOException, ClassNotFoundException {
+	private Credenziali ottieniCredenziali(File f) throws IOException, ClassNotFoundException {
 		
 		Credenziali c = null;
-		FileInputStream fis = new FileInputStream(fileCredenziali);
+		FileInputStream fis = new FileInputStream(f);
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		
-		c = (Credenziali) ois.readObject();
-		
-		fis.close();
-		ois.close();
+		try {
+			c = (Credenziali) ois.readObject();
+		} finally {
+			fis.close();
+			ois.close();
+		}
 		return c;
 	}
 	
-	private Connessione ottieniConnessione(Credenziali credenziali) throws ClassNotFoundException, SQLException {
+	private Connessione ottieniConnessione(Credenziali c) throws ClassNotFoundException, SQLException {
 		
-		return new Connessione(credenziali);
+		return new Connessione(c);
 	}
 	
 	public Connessione getConnessione() {

@@ -11,7 +11,6 @@ public class Client extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private BarraMenu menu;
 	
 	private String user;
 	private boolean admin;
@@ -20,18 +19,18 @@ public class Client extends JFrame {
 		
 		super();
 		
-		this.setIconImage(new ImageIcon("icon.png").getImage());
-		this.setTitle("Sistema schede descrittive");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setIconImage(new ImageIcon("icon.png").getImage());
+		setTitle("Sistema schede descrittive");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.getContentPane().setLayout(new BorderLayout());
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		getContentPane().setLayout(new BorderLayout());
 		
 		this.user = user;
 		this.admin = admin;
 		
-		menu = new BarraMenu(this);
-		this.setJMenuBar(menu);
+		BarraMenu menu = new BarraMenu(this);
+		setJMenuBar(menu);
 	}
 	
 	String getUser() {

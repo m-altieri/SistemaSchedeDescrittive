@@ -15,7 +15,8 @@ public class CampoCredenziale extends JTextField {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String hint = "";
-	
+	final int ALTEZZA = 40;
+
 	public String get() {
 		
 		return this.getText();
@@ -24,14 +25,17 @@ public class CampoCredenziale extends JTextField {
 	public CampoCredenziale(String x) {
 		
 		super();
+
+		final int LARGHEZZA = 400;
 		
-		this.setPreferredSize(new Dimension(400, 40));
-		this.setLayout(new FlowLayout());
-		this.setForeground(Color.GRAY);
+		setPreferredSize(new Dimension(LARGHEZZA, ALTEZZA));
+		setLayout(new FlowLayout());
+		setForeground(Color.GRAY);
 		
-		this.setHint(x);
-				
-		this.addFocusListener(new FocusListener() {
+		setText(x);
+		hint = x;
+		
+		addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -44,7 +48,7 @@ public class CampoCredenziale extends JTextField {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 
-				if (getText().equals("")) {
+				if (getText().isEmpty()) {
 					setHint(hint);
 					setForeground(Color.GRAY);
 				}
@@ -56,7 +60,7 @@ public class CampoCredenziale extends JTextField {
 	
 	void setLunghezza(int x) {
 		
-		setPreferredSize(new Dimension(x, 40));
+		setPreferredSize(new Dimension(x, ALTEZZA));
 	}
 	
 	void setHint(String x) {

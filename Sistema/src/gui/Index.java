@@ -2,13 +2,11 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-
 import database.Credenziali;
 
 public class Index {
 	
-	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+	public static void main(String[] args) throws IOException {
 		
 		Login fl = new Login();
 		fl.setVisible(true);

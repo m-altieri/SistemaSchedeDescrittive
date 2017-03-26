@@ -31,36 +31,45 @@ public class Login extends JFrame implements ActionListener {
 	private JPasswordField password;
 	private JButton cmdLogin;
 	private JButton cmdRegistrati;
-	private JPanel credenziali;
-	private JPanel panelUsername;
-	private JPanel panelPassword;
-	private JPanel pulsanti;
 	
 	public Login() {
 		
 		super();
+
+		final int LARGHEZZA_FINESTRA = 800;
+		final int ALTEZZA_FINESTRA = 600;
+		final int POSIZIONE_FINESTRA_X = 500;
+		final int POSIZIONE_FINESTRA_Y = 200;
+		final int LARGHEZZA_CAMPO_PASSWORD = 400;
+		final int ALTEZZA_CAMPO_PASSWORD = 40;
+		final int LARGHEZZA_PULSANTE_LOGIN = 200;
+		final int ALTEZZA_PULSANTE_LOGIN = 50;
+		final int LARGHEZZA_PULSANTE_REGISTRATI = 300;
+		final int ALTEZZA_PULSANTE_REGISTRATI = 50;
 		
 		this.setResizable(false);
 		this.setIconImage(new ImageIcon("icon.png").getImage());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		this.setTitle("Login");
-		this.setSize(new Dimension(800, 600));
-		this.setLocation(500, 200);
+		this.setSize(new Dimension(LARGHEZZA_FINESTRA, ALTEZZA_FINESTRA));
+		this.setLocation(POSIZIONE_FINESTRA_X, POSIZIONE_FINESTRA_Y);
 		this.getContentPane().setLayout(new BorderLayout());
 		
 		username = new CampoCredenziale("Username");
-		password = new JPasswordField("Password");
-		password.setPreferredSize(new Dimension(400, 40));
+		
+		final String defaultPasswordText = "Password";
+		password = new JPasswordField(defaultPasswordText);
+		password.setPreferredSize(new Dimension(LARGHEZZA_CAMPO_PASSWORD, ALTEZZA_CAMPO_PASSWORD));
 		password.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
 				String pass = "";
-				for (int i = 0; i < password.getPassword().length; i++)
+				for (int i = 0; i < password.getPassword().length; i++) {
 					pass += password.getPassword()[i];
-				
-				if (pass.equals("Password"))
+				}
+				if (pass.equals(defaultPasswordText))
 					password.setText("");
 			}
 
@@ -71,22 +80,21 @@ public class Login extends JFrame implements ActionListener {
 		
 		cmdLogin = new JButton("Login");
 		cmdRegistrati = new JButton("Non hai un account? Registrati");
-		cmdLogin.setPreferredSize(new Dimension(200,50));
-		cmdLogin.setActionCommand("Login");
-		cmdRegistrati.setPreferredSize(new Dimension(300,50));
+		cmdLogin.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_LOGIN, ALTEZZA_PULSANTE_LOGIN));
+		cmdRegistrati.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_REGISTRATI, ALTEZZA_PULSANTE_REGISTRATI));
 		cmdRegistrati.setActionCommand("Registrati");
 		
 		cmdLogin.addActionListener(this);
 		cmdRegistrati.addActionListener(this);
 		
-		credenziali = new JPanel();
+		JPanel credenziali = new JPanel();
 		credenziali.setLayout(new FlowLayout());
-		pulsanti = new JPanel();
+		JPanel pulsanti = new JPanel();
 		pulsanti.setLayout(new FlowLayout());
 		
-		panelUsername = new JPanel();
+		JPanel panelUsername = new JPanel();
 		panelUsername.setLayout(new FlowLayout());
-		panelPassword = new JPanel();
+		JPanel panelPassword = new JPanel();
 		panelPassword.setLayout(new FlowLayout());
 		
 		panelUsername.add(new JLabel("Username"));
@@ -109,18 +117,22 @@ public class Login extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getActionCommand().equals("Registrati")) {
+		if (e.getActionCommand().equals(cmdRegistrati.getActionCommand())) {
 			
 			Registrazione fr = new Registrazione();
 			fr.setVisible(true);
 			this.dispose();
 		}
 		
-		if (e.getActionCommand().equals("Login")) {
+		if (e.getActionCommand().equals(cmdLogin.getActionCommand())) {
 			
+			cmdLogin.setEnabled(false);
+			cmdRegistrati.setEnabled(false);
 			String pass = "";
-			for (int i = 0; i < password.getPassword().length; i++) {
-				pass += password.getPassword()[i];
+			char[] passchar = password.getPassword();
+			
+			for (int i = 0; i < passchar.length; i++) {
+				pass += passchar;
 			}
 			
 			boolean isAdmin = false;
@@ -130,8 +142,10 @@ public class Login extends JFrame implements ActionListener {
 				ResultSet match = dbUtility.eseguiQueryRitorno(query);
 				boolean esiste = match.next();
 				
+				final int COLONNA_ADMIN = 4;
+
 				if (esiste) {
-					isAdmin = match.getBoolean(4);
+					isAdmin = match.getBoolean(COLONNA_ADMIN);
 					
 					Client c = new Client(username.get(), isAdmin);
 					c.setVisible(true);
@@ -141,7 +155,7 @@ public class Login extends JFrame implements ActionListener {
 				}
 				
 			} catch (SQLException | ClassNotFoundException | IOException f) {
-				f.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		}

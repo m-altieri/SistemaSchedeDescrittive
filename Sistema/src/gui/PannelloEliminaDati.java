@@ -112,7 +112,6 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 				try {
 					dbElementi = new Database();
 					query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id.get());
-					System.out.println(query);
 					dbElementi.eseguiQuery(query);
 				} catch (Exception f) {
 					

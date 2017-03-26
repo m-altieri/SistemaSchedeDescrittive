@@ -15,22 +15,20 @@ public abstract class PannelloGestioneDati extends JPanel implements ActionListe
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel radioButtons;
 	protected JRadioButton rdPersonale;
 	protected JRadioButton rdStrumentazione;
 	protected JRadioButton rdSpazio;
-	private ButtonGroup buttons;
-	private Font fontRadioButtons;
 
 	public PannelloGestioneDati() {
 		
 		super();
 		
 		this.setLayout(new BorderLayout());
+
+		final int GRANDEZZA_FONT_RADIOBUTTONS = 20;
+		Font fontRadioButtons = new Font("Arial", Font.PLAIN, GRANDEZZA_FONT_RADIOBUTTONS);
 		
-		this.fontRadioButtons = new Font("Arial", Font.PLAIN, 20);
-		
-		radioButtons = new JPanel();
+		JPanel radioButtons = new JPanel();
 		radioButtons.setLayout(new FlowLayout());
 		rdPersonale = new JRadioButton("Personale");
 		rdStrumentazione = new JRadioButton("Strumentazione");
@@ -38,7 +36,7 @@ public abstract class PannelloGestioneDati extends JPanel implements ActionListe
 		rdPersonale.setFont(fontRadioButtons);
 		rdStrumentazione.setFont(fontRadioButtons);
 		rdSpazio.setFont(fontRadioButtons);
-		buttons = new ButtonGroup();
+		ButtonGroup buttons = new ButtonGroup();
 		buttons.add(rdPersonale);
 		buttons.add(rdStrumentazione);
 		buttons.add(rdSpazio);

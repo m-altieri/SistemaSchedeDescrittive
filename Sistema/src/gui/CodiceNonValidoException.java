@@ -8,6 +8,11 @@ public class CodiceNonValidoException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public CodiceNonValidoException() {
+		
+		this("");
+	}
 
 	public CodiceNonValidoException(String codice) {
 		

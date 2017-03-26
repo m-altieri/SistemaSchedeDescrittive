@@ -23,28 +23,35 @@ public class FinestraDiventaAdmin extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale codice;
-	private JButton conferma;
 	private String user;
 	
 	public FinestraDiventaAdmin(String user) {
 		
 		super();
+
+		final int LARGHEZZA_FINESTRA = 600;
+		final int ALTEZZA_FINESTRA = 150;;
+		final int POSIZIONE_FINESTRA_X = 600;
+		final int POSIZIONE_FINESTRA_Y = 300;
+		final int LARGHEZZA_CAMPO_CODICE = 200;
+		final int LARGHEZZA_PULSANTE_CONFERMA = 150;
+		final int ALTEZZA_PULSANTE_CONFERMA = 40;
 		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		setTitle("Diventa admin");
 		setResizable(false);
 		this.setIconImage(new ImageIcon("icon.png").getImage());
-		setSize(600, 150);
-		setLocation(600, 300);
+		setSize(LARGHEZZA_FINESTRA, ALTEZZA_FINESTRA);
+		setLocation(POSIZIONE_FINESTRA_X, POSIZIONE_FINESTRA_Y);
 		setLayout(new FlowLayout());
 		
 		this.user = user;
 		
 		codice = new CampoCredenziale("Codice");
-		codice.setLunghezza(200);
-		conferma = new JButton("Conferma");
-		conferma.setPreferredSize(new Dimension(150, 40));
+		codice.setLunghezza(LARGHEZZA_CAMPO_CODICE);
+		JButton conferma = new JButton("Conferma");
+		conferma.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_CONFERMA, ALTEZZA_PULSANTE_CONFERMA));
 		
 		conferma.addActionListener(new ActionListener() {
 
@@ -56,10 +63,7 @@ public class FinestraDiventaAdmin extends JFrame {
 						throw new CodiceNonValidoException(codice.getText());
 					
 					String codiceAdmin = ottieniCodiceAdmin();
-					///
-					System.out.println(codiceAdmin);
-					System.out.println(codice.getText());
-					///
+
 					if (codice.getText().equals(codiceAdmin)) {
 						try {
 							Database dbUtility = new Database(true);
@@ -67,15 +71,15 @@ public class FinestraDiventaAdmin extends JFrame {
 							dbUtility.eseguiQuery(query);
 							JOptionPane.showMessageDialog(null, "Ora sei un amministratore, effettua nuovamente il login per accedere alle funzionalità avanzate", "Successo", JOptionPane.INFORMATION_MESSAGE);
 						
-						} catch (ClassNotFoundException | IOException | SQLException f) {} 
-						
-						finally {
+						} catch (ClassNotFoundException | IOException | SQLException f) {
+							JOptionPane.showMessageDialog(null, "Errore di connessione con il server", "Errore", JOptionPane.ERROR_MESSAGE);
+							} finally {
 							dispose();
 						}
 					} else {
 						throw new CodiceNonValidoException(codice.getText());
 					}
-				} catch (CodiceNonValidoException f) {}
+				} catch (CodiceNonValidoException f) {;}
 			}
 		});
 		
@@ -87,17 +91,17 @@ public class FinestraDiventaAdmin extends JFrame {
 	private String ottieniCodiceAdmin() {
 		
 		Database dbUtility;
-		String codice = "";
+		String cod = "";
 		try {
 			dbUtility = new Database(true);
 			String query = "SELECT * FROM CodiceAdmin";
 			ResultSet res = dbUtility.eseguiQueryRitorno(query);
 			res.next();
-			codice = res.getString(1);
+			cod = res.getString(1);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Impossibile ottenere il codice dal database", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		return codice;
+		return cod;
 	}
 }

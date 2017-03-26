@@ -25,35 +25,46 @@ public class FinestraCambiaPassword extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPasswordField pass;
-	private JButton conferma;
 	private String user;
 	
 	public FinestraCambiaPassword(String user) {
 		
 		super();
+
+		final int LARGHEZZA_FINESTRA = 600;
+		final int ALTEZZA_FINESTRA = 150;
+		final int POSIZIONE_FINESTRA_X = 600;
+		final int POSIZIONE_FINESTRA_Y = 300;
+		final int LARGHEZZA_CAMPO_PASS = 200;
+		final int ALTEZZA_CAMPO_PASS = 40;
+		final int LARGHEZZA_PULSANTE_CONFERMA = 150;
+		final int ALTEZZA_PULSANTE_CONFERMA = 40;
 		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		setTitle("Cambia password");
 		setResizable(false);
 		this.setIconImage(new ImageIcon("icon.png").getImage());
-		setSize(600, 150);
-		setLocation(600, 300);
+		setSize(LARGHEZZA_FINESTRA, ALTEZZA_FINESTRA);
+		setLocation(POSIZIONE_FINESTRA_X, POSIZIONE_FINESTRA_Y);
 		setLayout(new FlowLayout());
 		
 		this.user = user;
 		
-		pass = new JPasswordField("Password");
+		final String passwordText = "Password";
+		pass = new JPasswordField(passwordText);
 		pass.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
 
 				String password = "";
-				for (int i = 0; i < pass.getPassword().length; i++) {
-					password += pass.getPassword()[i];
+				char[] passchar = pass.getPassword();
+				
+				for (int i = 0; i < passchar.length; i++) {
+					password += passchar;
 				}
-				if (password.equals("Password"))
+				if (password.equals(passwordText))
 					pass.setText("");
 			}
 
@@ -61,9 +72,9 @@ public class FinestraCambiaPassword extends JFrame {
 			public void focusLost(FocusEvent e) {}
 			
 		});
-		pass.setPreferredSize(new Dimension(200, 40));
+		pass.setPreferredSize(new Dimension(LARGHEZZA_CAMPO_PASS, ALTEZZA_CAMPO_PASS));
 		
-		conferma = new JButton("Conferma");
+		JButton conferma = new JButton("Conferma");
 		conferma.addActionListener(new ActionListener() {
 
 			@Override
@@ -73,8 +84,9 @@ public class FinestraCambiaPassword extends JFrame {
 					Database dbUtility = new Database(true);
 					String password = "";
 					
-					for (int i = 0; i < pass.getPassword().length; i++)
+					for (int i = 0; i < pass.getPassword().length; i++) {
 						password += pass.getPassword()[i];
+					}
 
 					String query = "UPDATE Utente SET password = '" + password + "' WHERE nomeUtente = '" + FinestraCambiaPassword.this.user + "'";
 					dbUtility.eseguiQuery(query);
@@ -82,11 +94,11 @@ public class FinestraCambiaPassword extends JFrame {
 					dispose();
 					JOptionPane.showMessageDialog(null, "Password cambiata con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
 				} catch (ClassNotFoundException | IOException | SQLException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-		conferma.setPreferredSize(new Dimension(150, 40));
+		conferma.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_CONFERMA, ALTEZZA_PULSANTE_CONFERMA));
 		
 		add(new JLabel("Nuova password"));
 		add(pass);

@@ -35,10 +35,13 @@ public class Credenziali implements Serializable {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		
-		oos.writeObject(this);
+		try {
+			oos.writeObject(this);
+		} finally {
+			oos.close();
+			fos.close();
+		}	
 		
-		oos.close();
-		fos.close();
 	}
 
 	public String getUrl() {
@@ -75,7 +78,7 @@ public class Credenziali implements Serializable {
 	
 	public boolean isValid() {
 		
-		return !url.equals("") && !nome.equals("") && !password.equals("") && !database.equals("");
+		return !(url.isEmpty() || nome.isEmpty() || password.isEmpty() || database.isEmpty());
 	}
 	
 }
