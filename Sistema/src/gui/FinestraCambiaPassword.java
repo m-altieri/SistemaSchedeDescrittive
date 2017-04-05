@@ -18,15 +18,21 @@ import javax.swing.JPasswordField;
 
 import database.Database;
 
+/**
+ * Finestra della GUI per cambiare la password dell'account attualmente loggato.
+ */
 public class FinestraCambiaPassword extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPasswordField pass;
 	private String user;
 	
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 * Facendo clic sul pulsanti di conferma viene sovrascritto il campo password sul database, 
+	 * nella tupla corrispondente all'utente passato come parametro.
+	 * @param user L'username dell'utente attualmente loggato.
+	 */
 	public FinestraCambiaPassword(String user) {
 		
 		super();
@@ -62,7 +68,7 @@ public class FinestraCambiaPassword extends JFrame {
 				char[] passchar = pass.getPassword();
 				
 				for (int i = 0; i < passchar.length; i++) {
-					password += passchar;
+					password += passchar[i];
 				}
 				if (password.equals(passwordText))
 					pass.setText("");
@@ -88,6 +94,12 @@ public class FinestraCambiaPassword extends JFrame {
 						password += pass.getPassword()[i];
 					}
 
+					boolean inputValido = true;
+					if (password.length() < 8 || password.contains(" "))
+						inputValido = false;
+					if (!inputValido)
+						throw new InputInvalidoException(null);
+					
 					String query = "UPDATE Utente SET password = '" + password + "' WHERE nomeUtente = '" + FinestraCambiaPassword.this.user + "'";
 					dbUtility.eseguiQuery(query);
 					
@@ -95,12 +107,12 @@ public class FinestraCambiaPassword extends JFrame {
 					JOptionPane.showMessageDialog(null, "Password cambiata con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
 				} catch (ClassNotFoundException | IOException | SQLException e1) {
 					JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
-				}
+				} catch (InputInvalidoException f) {;}
 			}
 		});
 		conferma.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_CONFERMA, ALTEZZA_PULSANTE_CONFERMA));
 		
-		add(new JLabel("Nuova password"));
+		add(new JLabel("Nuova password (almeno 8 caratteri)"));
 		add(pass);
 		add(conferma);
 	}

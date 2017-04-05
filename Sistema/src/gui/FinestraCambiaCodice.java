@@ -15,14 +15,19 @@ import javax.swing.JOptionPane;
 
 import database.Database;
 
+/**
+ * Finestra della GUI per cambiare il codice amministratore.
+ */
 public class FinestraCambiaCodice extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale codice;
-	
+
+	/**
+	 * Inizializza la finestra e tutti i suoi componenti.
+	 * Inoltre implementa le azioni da eseguire al clic del pulsante: viene inviata una richiesta al server
+	 * per inserire nel database il nuovo codice e sovrascrivere quello precedente.
+	 */
 	public FinestraCambiaCodice() {
 		
 		super();
@@ -56,7 +61,7 @@ public class FinestraCambiaCodice extends JFrame {
 
 				try {
 					Database dbUtility = new Database(true);
-					String query = "INSERT INTO CodiceAdmin (codice) VALUES ('" + codice.get() + "')";
+					String query = "UPDATE CodiceAdmin SET codice = '" + codice.get() + "'";
 					dbUtility.eseguiQuery(query);
 					dispose();
 					JOptionPane.showMessageDialog(null, "Nuovo codice: " + codice.get(), "Successo", JOptionPane.INFORMATION_MESSAGE);

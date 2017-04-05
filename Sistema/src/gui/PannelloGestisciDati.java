@@ -9,17 +9,22 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-public abstract class PannelloGestioneDati extends JPanel implements ActionListener {
-	
-	/**
-	 * 
-	 */
+/**
+ * Superclasse astratta dei vari pannelli della GUI del menù Dati.
+ * Contiene le caratteristiche comuni a quelle classi, come i radio buttons per scegliere il tipo di elemento.
+ */
+public abstract class PannelloGestisciDati extends JPanel implements ActionListener {
+
 	private static final long serialVersionUID = 1L;
 	protected JRadioButton rdPersonale;
 	protected JRadioButton rdStrumentazione;
 	protected JRadioButton rdSpazio;
 
-	public PannelloGestioneDati() {
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 * Non viene definito il comportamento dei radio buttons che dovrà quindi essere definito nelle sottoclassi.
+	 */
+	protected PannelloGestisciDati() {
 		
 		super();
 		
@@ -49,8 +54,7 @@ public abstract class PannelloGestioneDati extends JPanel implements ActionListe
 		rdStrumentazione.addActionListener(this);
 		rdSpazio.addActionListener(this);
 		
-		this.add(radioButtons, BorderLayout.NORTH);
-
+		add(radioButtons, BorderLayout.NORTH);
 	}
 
 }

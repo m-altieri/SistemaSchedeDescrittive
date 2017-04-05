@@ -8,20 +8,30 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
+/**
+ * Estende la classe base del campo di testo, e la arricchisce di dettagli grafici utili al sistema, 
+ * come un hint (testo che appare inizialmente e che svanisce quando la barra acquisisce il focus), e metodi per
+ * regolare la grandezza.
+ */
 public class CampoCredenziale extends JTextField {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String hint = "";
 	final int ALTEZZA = 40;
 
+	/**
+	 * Restituisce il testo della barra.
+	 * @return Il testo della barra.
+	 */
 	public String get() {
 		
 		return this.getText();
 	}
 	
+	/**
+	 * Inizializza la barra con le dimensioni di default e imposta sia il testo che l'hint come il parametro passato.
+	 * @param x
+	 */
 	public CampoCredenziale(String x) {
 		
 		super();
@@ -58,17 +68,29 @@ public class CampoCredenziale extends JTextField {
 
 	}
 	
+	/**
+	 * Imposta la lunghezza della barra.
+	 * @param x La lunghezza da impostare.
+	 */
 	void setLunghezza(int x) {
 		
 		setPreferredSize(new Dimension(x, ALTEZZA));
 	}
 	
+	/**
+	 * Imposta l'hint della barra (il testo grigio opaco che svanisce quando la barra acquisisce il focus).
+	 * @param x L'hint da impostare.
+	 */
 	void setHint(String x) {
 		
 		setText(x);
 		hint = x;
 	}
 	
+	/**
+	 * Resituisce l'hint.
+	 * @return L'hint.
+	 */
 	String getHint() {
 		
 		return hint;

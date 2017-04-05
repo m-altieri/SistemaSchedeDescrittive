@@ -10,6 +10,7 @@ public class Scheda {
 	private static int schedeCreate;
 	private int id;
 	private Template template;
+//	private ArrayList<Elemento> elementi;
 	
 	static {
 		

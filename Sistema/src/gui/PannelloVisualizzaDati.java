@@ -8,25 +8,33 @@ import entità.Personale;
 import entità.Spazio;
 import entità.Strumentazione;
 
-public class PannelloVisualizzaDati extends PannelloGestioneDati {
+/**
+ * Finestra della GUI per visualizzare gli elementi del database.
+ */
+public class PannelloVisualizzaDati extends PannelloGestisciDati {
+
+	private static final long serialVersionUID = 1L;
+	private TabellaDati tPersonale;
+	private TabellaDati tStrumentazione;
+	private TabellaDati tSpazio;
 
 	/**
-	 * 
+	 * Crea la finestra e inizializza tutti i suoi componenti.
 	 */
-	private static final long serialVersionUID = 1L;
-	private VisualizzaTabella tPersonale;
-	private VisualizzaTabella tStrumentazione;
-	private VisualizzaTabella tSpazio;
-
 	public PannelloVisualizzaDati() {
 		
 		super();
 
-		tPersonale = new VisualizzaTabella(Personale.class);
-		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
-		tSpazio = new VisualizzaTabella(Spazio.class);
+		tPersonale = new TabellaDati(Personale.class);
+		tStrumentazione = new TabellaDati(Strumentazione.class);
+		tSpazio = new TabellaDati(Spazio.class);
 	}
 	
+	/**
+	 * Ricarica tutte le tabelle di visualizzazione degli elementi.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void aggiorna() throws ClassNotFoundException, IOException {
 		
 		tPersonale.caricaPannelloDati();
@@ -34,6 +42,10 @@ public class PannelloVisualizzaDati extends PannelloGestioneDati {
 		tSpazio.caricaPannelloDati();
 	}
 
+	/**
+	 * Ridefinisce il comportamento dei radio buttons contenuti nella superclass PannelloGestioneDati.
+	 * In base al radio button selezionato mostra la tabella corretta.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

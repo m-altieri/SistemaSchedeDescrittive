@@ -14,10 +14,11 @@ import javax.swing.JPanel;
 import database.Database;
 import entità.Elemento;
 
-public class VisualizzaTabella extends JPanel implements Visualizzatore {
-	/**
-	 * 
-	 */
+/**
+ * Costituisce la tabella contenente tutti gli elementi di un certo tipo per permettere la visualizzazione all'utente.
+ */
+public class TabellaDati extends JPanel implements Visualizzatore {
+
 	private static final long serialVersionUID = 1L;
 	private JPanel pannelloColonne;
 	private JPanel pannelloDati;
@@ -26,7 +27,11 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 	private Font fontDati;
 	private Class<? extends Elemento> tipo;
 	
-	public VisualizzaTabella(Class<? extends Elemento> tipo) {
+	/**
+	 * Crea la struttura della tabella e inserisce le colonne e i dati.
+	 * @param tipo La classe corrispondente al database da cui estrarre i dati (Personale, Strumentazione o Spazio)
+	 */
+	public TabellaDati(Class<? extends Elemento> tipo) {
 		
 		super();
 		
@@ -65,6 +70,11 @@ public class VisualizzaTabella extends JPanel implements Visualizzatore {
 		this.add(pannelloDati, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Estrae l'insieme delle colonne dal database del personale, strumentazioni, o spazi a seconda dell'oggetto su cui viene invocato.
+	 * @return Colonne del database.
+	 * @throws SQLException
+	 */
 	private ArrayList<String> ottieniColonne() throws SQLException {
 		
 		ArrayList<String> colonne = new ArrayList<String>();

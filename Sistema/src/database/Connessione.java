@@ -5,16 +5,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Modella la connessione al server o a un database.
- * Invocare getConnessione() per utilizzare la connessione.
- * @author PC
- *
+ * Permette di connettersi a un database.
+ * Per utilizzare questa classe è necessario essere in possesso delle credenziali del database.
  */
 public class Connessione {
 
 	private Connection conn;
 	private String connectionString;
 	
+	/**
+	 * Stabilisce la connessione al database.
+	 * @param credenziali Le credenziali per accedere al database.
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	public Connessione(Credenziali credenziali) throws SQLException, ClassNotFoundException {
 				
 		connectionString = "";
@@ -30,11 +34,21 @@ public class Connessione {
 		connetti();
 	}
 	
+	/**
+	 * Restituisce l'oggetto contenente la connessione stabilita.
+	 * @return L'oggetto Connection.
+	 */
 	public Connection getConnessione() {
 		
 		return conn;
 	}
 	
+	/**
+	 * Metodo privato.
+	 * Viene invocato automaticamente dal costruttore.
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	private void connetti() throws SQLException, ClassNotFoundException {
 				
 		this.conn = DriverManager.getConnection(connectionString);

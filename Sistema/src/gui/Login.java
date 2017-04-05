@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,17 +19,24 @@ import javax.swing.JPasswordField;
 
 import database.Database;
 
+/**
+ * Finestra della GUI per loggare al sistema. E' presente un pulsante per collegarsi alla finestra di registrazione.
+ * Al momento del login, il sistema memorizza l'username e la password inserite in input, e manda una richiesta al database 
+ * contenente gli utenti registrati per verificare se è presente un utente con tali dati; in caso affermativo, 
+ * viene mostrata la schermata successiva, ovvero quella principale della GUI (Client), e viene tenuta traccia 
+ * se l'utente in questione è un amministratore o meno, in caso negativo viene negato l'accesso.
+ */
 public class Login extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
 	private JPasswordField password;
 	private JButton cmdLogin;
 	private JButton cmdRegistrati;
 	
+	/**
+	 * Crea la finestra e tutti i suoi componenti e li inizializza.
+	 */
 	public Login() {
 		
 		super();
@@ -58,25 +63,8 @@ public class Login extends JFrame implements ActionListener {
 		
 		username = new CampoCredenziale("Username");
 		
-		final String defaultPasswordText = "Password";
-		password = new JPasswordField(defaultPasswordText);
+		password = new JPasswordField();
 		password.setPreferredSize(new Dimension(LARGHEZZA_CAMPO_PASSWORD, ALTEZZA_CAMPO_PASSWORD));
-		password.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				String pass = "";
-				for (int i = 0; i < password.getPassword().length; i++) {
-					pass += password.getPassword()[i];
-				}
-				if (pass.equals(defaultPasswordText))
-					password.setText("");
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
-		});
 		
 		cmdLogin = new JButton("Login");
 		cmdRegistrati = new JButton("Non hai un account? Registrati");
@@ -114,6 +102,9 @@ public class Login extends JFrame implements ActionListener {
 		
 	}
 
+	/**
+	 * Gestisce le azioni compiute al clic dei pulsanti.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -128,15 +119,18 @@ public class Login extends JFrame implements ActionListener {
 			
 			cmdLogin.setEnabled(false);
 			cmdRegistrati.setEnabled(false);
+			update(getGraphics());
+			
 			String pass = "";
 			char[] passchar = password.getPassword();
 			
 			for (int i = 0; i < passchar.length; i++) {
-				pass += passchar;
+				pass += passchar[i];
 			}
 			
 			boolean isAdmin = false;
 			try {
+				
 				Database dbUtility = new Database(true);
 				String query = "SELECT * FROM Utente WHERE nomeUtente = '" + username.get() + "' AND password = '" + pass + "'";
 				ResultSet match = dbUtility.eseguiQueryRitorno(query);
@@ -156,6 +150,10 @@ public class Login extends JFrame implements ActionListener {
 				
 			} catch (SQLException | ClassNotFoundException | IOException f) {
 				JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
+			} finally {
+				cmdLogin.setEnabled(true);
+				cmdRegistrati.setEnabled(true);
+				update(getGraphics());
 			}
 			
 		}

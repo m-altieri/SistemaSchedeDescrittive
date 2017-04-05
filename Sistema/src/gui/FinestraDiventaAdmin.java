@@ -16,15 +16,22 @@ import javax.swing.JOptionPane;
 
 import database.Database;
 
+/**
+ * Finestra della GUI per diventare admin. E' richiesto un codice segreto aziendale di 8 cifre.
+ * Essere admin garantisce l'accesso ad ulteriori funzioni.
+ */
 public class FinestraDiventaAdmin extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale codice;
 	private String user;
 	
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 * Cliccando sul pulsante di conferma viene estratto dal database il codice admin attuale, e viene 
+	 * confrontato con quello passato tramite il campo di testo.
+	 * @param user L'username dell'utente attualmente loggato.
+	 */
 	public FinestraDiventaAdmin(String user) {
 		
 		super();

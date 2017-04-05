@@ -1,0 +1,36 @@
+SistemaSchedeDescrittive
+Versione 1.0
+
+Il sistema ha il ruolo di gestire in tutti i suoi aspetti la produzione delle schede descrittive che l'azienda deve inviare per legge all'istituzione di riferimento che le richiede, tramite una serie di servizi che partono dal poter acquisire e memorizzare dati, relazioni, dipendenze e altre informazioni sul personale, sulle strumentazioni e sugli spazi produttivi e i locali in cui si svolge l'attività di impresa. Nel fare ciò sono messe a disposizione altri servizi per l'acquisizione automatica dei dati e diverse funzioni per il controllo sui dati inseriti e su eventuali inconsistenze sviluppatesi in archivio. Inoltre il sistema mette a disposizione funzioni per visualizzare i dati inseriti e modificarli,  per confrontare dati presenti in archivio con i dati di una scheda prodotta, per inserire e modificare il template della scheda descrittiva e scegliere quali informazioni selezionare durante la produzione della scheda e inserire/modificare il testo statico, in accordo alle leggi vigenti, e  per poter produrre un certo numero di schede, con delle determinate informazioni, automaticamente. Salvo aggiunta di ulteriori servizi.
+Consultare la documentazione per ulteriori dettagli.
+
+Come usare il sistema:
+Il sistema è rivolto ai dipendenti di un'azienda. Per poterlo utilizzare è necessario registrarsi. Per farlo, avviare il programma e cliccare su "Non hai un account? Registrati", nella schermata successiva ci si può registrare inserendo username, password, ed eventualmente il codice segreto di 8 cifre. Il sistema prevede due tipi diversi di utenti: gli utenti standard e gli amministratori. Gli utenti standard hanno accesso a meno funzioni rispetto agli amministratori.
+Per registrarsi come amministratore, bisogna inserire il codice segreto aziendale di 8 cifre al momento della registrazione, o in alternativa andare sul menù Aiuto e successivamente cliccare su "Diventa un amministratore...". Gli amministratori possono cambiare il codice segreto.
+Una volta che ci si è registrati al sistema, tornare sulla schermata di login, inserire le proprie credenziali e fare clic su "Login".
+Dopo il caricamento ci si trova sulla schermata principale del sistema, da cui è possibile accedere a tutte le funzioni.
+La finestra principale è formata dalla barra dei menù e dal pannello principale. Inizialmente il pannello principale è vuoto, ma selezionando un'opzione dalla barra dei menù, apparirà la schermata relativa nel pannello principale.
+La barra è formata da 4 menù: Dati, Amministrazione, Aiuto e Account. Il menù Amministrazione è disabilitato per gli utenti standard.
+Il menù Dati contiene le funzioni "Inserisci dati", "Modifica dati", "Elimina dati", e "Visualizza dati". Cliccando su uno di essi è possibile consultare la relativa interfaccia utente nel pannello principale. 
+Supponiamo si voglia inserire un nuovo spazio produttivo nel sistema. Basta andare su Dati, poi su Inserisci dati, e dal pannello che appare cliccare sul pulsantino "Spazio". A questo punto apparirà una tabella contenente tutti gli spazi inseriti finora (inizialmente sarà vuota), e in basso una serie di campi di testo in cui possiamo inserire le informazioni circa il nuovo spazio da aggiungere. Inseriamo le informazioni e clicchiamo su Conferma. Si noti che nella tabella apparirà il nuovo spazio appena creato. 
+Ogni elemento ha un suo ID unico, che lo identifica nel server. Notare come non sia possibile assegnare manualmente un certo ID a un elemento.
+Possiamo associare una strumentazione a uno spazio per indicare che è situata lì, semplicemente aggiungendo l'ID dello spazio nel campo "spazio" della strumentazione in questione. Quindi, clicchiamo ora sul pulsantino "Strumentazioni". Ci apparirà questa volta la tabella con tutte le strumentazioni create finora (ancora una volta vuota). Inseriamo le informazioni della nuova strumentazione e questa volta notiamo che c'è un nuovo menù a tendina. Da lì possiamo selezionare l'ID dello spazio appena creato, quindi clicchiamo su Conferma. Adesso si può notare che nella tabella è stata aggiunta la nuova strumentazione, con il relativo ID dello spazio precedentemente creato.
+Andando su Dati e poi su Modifica dati, possiamo modificare gli elementi già presenti in archivio, selezionando dal menù a tendina l'ID dell'elemento da modificare.
+Da Elimina dati, sarà necessario inserire l'ID dell'elemento da eliminare (apparirà una finestrella di conferma per evitare eliminazioni accidentali).
+Il pannello Visualizza dati fornisce un rapido riassunto degli elementi creati finora.
+Il menù Amministrazione contiene le funzioni "Produci schede" e "Cambia codice amministratore...". La seconda l'abbiamo già vista precedentemente.
+"Produci schede" è in un certo senso la funzione più importante del sistema, perchè realizza il suo scopo finale. Da questo pannello possiamo impostare il testo statico e tutti gli elementi da visualizzare con i relativi attributi.
+Dal menù Aiuto è possibile consultare questo manuale cliccando su "Manuale utente...".
+Nel menù Account sono presenti le funzioni "Cambia password...", "Logout" e "Diventa amministratore...".
+Logout ci porta semplicemente alla schermata iniziale in cui bisogna effettuare il login; Cambia password... serve per modificare la password dell'account dal quale si è correntemente loggati. Diventa amministratore... permette di inserire il codice segreto a 8 cifre per acquisire la possibile di consultare la scheda di amministrazione.
+
+Progetto sviluppato seguendo un processo a cascata.
+Tutta la documentazione è fornita e aggiornata al momento del rilascio.
+Piattaforma per repository e gestione delle versioni per la documentazione: Redmine (http://st7a64.di.uniba.it/)
+Versioning della documentazione basato su Tortoise SVN.
+Processo di sviluppo del codice disponibile su Github (https://github.com/m-altieri/SistemaSchedeDescrittive)
+
+ITPS 2017
+Gruppo Overflow
+Esame di Analisi e Progettazione di Sistemi Software
+Prof. Giuseppe Visaggio

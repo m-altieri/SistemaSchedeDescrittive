@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,11 +18,14 @@ import javax.swing.JPasswordField;
 
 import database.Database;
 
+/**
+ * Finestra della GUI per registrarsi al sistema.
+ * E' possibile inserire un codice facoltativo di 8 cifre aziendale, che permette di registrarsi in qualità di amministratori.
+ * Gli amministratori hanno delle funzionalità avanzate a disposizione.
+ * Al momento della registrazione il sistema controlla se sul server è già presente un utente con lo stesso nome e in tal caso nega la registrazione.
+ */
 public class Registrazione extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
 	private JPasswordField password;
@@ -37,6 +38,9 @@ public class Registrazione extends JFrame implements ActionListener {
 	private JPanel panelPassword;
 	private JPanel panelAdmin;
 	
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 */
 	public Registrazione() {
 		
 		super();
@@ -52,25 +56,9 @@ public class Registrazione extends JFrame implements ActionListener {
 		
 		username = new CampoCredenziale("Username");
 		username.setLunghezza(500);
-		password = new JPasswordField("Password");
+		password = new JPasswordField();
 		password.setPreferredSize(new Dimension(500, 40));
-		password.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent e) {
-
-				String pass = "";
-				for (int i = 0; i < password.getPassword().length; i++) {
-					pass += password.getPassword()[i];
-				}
-				if (pass.equals("Password"))
-					password.setText("");
-			}
-
-			@Override
-			public void focusLost(FocusEvent arg0) {}
-			
-		});
+		
 		codiceAmministratore = new CampoCredenziale("Codice amministratore");
 		codiceAmministratore.setHint("Lascia vuoto se non vuoi registrarti come amministratore.");
 		codiceAmministratore.setLunghezza(500);
@@ -98,7 +86,7 @@ public class Registrazione extends JFrame implements ActionListener {
 		
 		panelUsername.add(new JLabel("Username"));
 		panelUsername.add(username);
-		panelPassword.add(new JLabel("Password"));
+		panelPassword.add(new JLabel("Password (almeno 8 caratteri)"));
 		panelPassword.add(password);
 		panelAdmin.add(new JLabel("Codice admin"));
 		panelAdmin.add(codiceAmministratore);
@@ -115,6 +103,9 @@ public class Registrazione extends JFrame implements ActionListener {
 		this.add(pulsanti, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Gestisce le azioni eseguite al clic dei pulsanti.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -133,6 +124,23 @@ public class Registrazione extends JFrame implements ActionListener {
 			}
 			
 			try {
+				// controllo sintattico su username e password
+				boolean inputValido = true;
+				if (username.get().isEmpty() || username.get().equals(username.getHint()) || username.get().contains(" "))
+					inputValido = false;
+				if (pass.length() < 8 || pass.contains(" "))
+					inputValido = false;
+				if (!inputValido)
+					throw new InputInvalidoException(null);
+				
+				// controllo sintattico sul codice admin
+				if (!codiceAmministratore.get().equals(codiceAmministratore.getHint())) {
+					inputValido = true;
+					if (codiceAmministratore.get().length() != 8)
+						inputValido = false;
+					if (!inputValido)
+						throw new InputInvalidoException(null);
+				}
 				
 				if (alreadyExists(nome, pass))
 					throw new UtenteGiàEsistenteException(nome);
@@ -168,12 +176,20 @@ public class Registrazione extends JFrame implements ActionListener {
 					f.printStackTrace();
 				}
 				
-			} catch (UtenteGiàEsistenteException | ClassNotFoundException | IOException | SQLException g) {
-				
-			}
+			} catch (UtenteGiàEsistenteException | ClassNotFoundException | IOException | SQLException | InputInvalidoException g) {;}
 		}
 	}
 	
+	/**
+	 * Metodo privato.
+	 * Controlla sul server se un certo utente esiste già.
+	 * @param user L'username dell'utente da controllare.
+	 * @param pass La password dell'utente da controllare.
+	 * @return true se l'utente in input esiste già, false altrimenti.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	private boolean alreadyExists(String user, String pass) throws ClassNotFoundException, IOException, SQLException {
 
 		Database dbUtility = new Database(true);
@@ -183,6 +199,12 @@ public class Registrazione extends JFrame implements ActionListener {
 		return match.next();
 	}
 	
+	/**
+	 * Metodo privato.
+	 * Controlla se il codice admin passato in input è il codice esatto, nonché quello presente sul server.
+	 * @param codice Il codice inserito in input.
+	 * @return true se il codice è quello corretto, false altrimenti.
+	 */
 	private boolean isCodeValid(String codice) {
 		
 		String cod = "";

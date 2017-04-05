@@ -7,31 +7,38 @@ import entità.Personale;
 import entità.Spazio;
 import entità.Strumentazione;
 
-public class PannelloModificaDati extends PannelloGestioneDati {
+/**
+ * Finestra della GUI per modificare elementi già presenti nel database.
+ */
+public class PannelloModificaDati extends PannelloGestisciDati {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private VisualizzaTabella tPersonale;
-	private VisualizzaTabella tStrumentazione;
-	private VisualizzaTabella tSpazio;
+	private TabellaDati tPersonale;
+	private TabellaDati tStrumentazione;
+	private TabellaDati tSpazio;
 	private FormModificaDati fPersonale;
 	private FormModificaDati fStrumentazione;
 	private FormModificaDati fSpazio;
 
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 */
 	public PannelloModificaDati() {
 		
 		super();
 		
-		tPersonale = new VisualizzaTabella(Personale.class);
-		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
-		tSpazio = new VisualizzaTabella(Spazio.class);
+		tPersonale = new TabellaDati(Personale.class);
+		tStrumentazione = new TabellaDati(Strumentazione.class);
+		tSpazio = new TabellaDati(Spazio.class);
 		fPersonale = new FormModificaDati(Personale.class, tPersonale);
 		fStrumentazione = new FormModificaDati(Strumentazione.class, tStrumentazione);
 		fSpazio = new FormModificaDati(Spazio.class, tSpazio);
 	}
 
+	/**
+	 * Ridefinisce il comportamento dei radio buttons contenuti nella superclass PannelloGestioneDati.
+	 * In base al radio button selezionato mostra la tabella e la form corretta.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

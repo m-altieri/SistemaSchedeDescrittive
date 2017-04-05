@@ -21,6 +21,10 @@ import entità.Personale;
 import entità.Spazio;
 import entità.Strumentazione;
 
+/**
+ * Form utilizzata insieme al pannello di inserimento.
+ * Serve ad acquisire in input le informazioni dell'elemento da inserire e a inserirlo.
+ */
 public class FormInserisciDati extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -56,6 +60,12 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 	
 	private Font fontCampi;
 	
+	/**
+	 * Crea e inizializza la form. Può assumere 3 diverse forme a seconda del tipo che viene passato come parametro 
+	 * nel costruttore.
+	 * @param c La classe sottoclasse di Elemento di cui si vuole aggiungere un oggetto.
+	 * @param visualizzatore La tabella da associare e in cui visualizzare i nuovi dati inseriti.
+	 */
 	public FormInserisciDati(Class<? extends Elemento> c, Visualizzatore visualizzatore) {
 		
 		super();
@@ -123,7 +133,6 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 			cmbSpazio.setEditable(true);
 			cmbSpazio.setSelectedItem(new String("Spazio occupato"));
 			cmbSpazio.setFont(fontCampi);
-			cmbSpazio.addItem("");
 			
 			popolaSpazi();
 			cmbSpazio.update(getGraphics());
@@ -138,6 +147,9 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		add(cmdConferma);
 	}
 	
+	/**
+	 * Popola la combobox contenente gli ID degli spazi già creati, nel caso di inserimento di Personale o Strumentazione.
+	 */
 	private void popolaSpazi() {
 		
 		try {
@@ -156,11 +168,17 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		
 	}
 
+	/**
+	 * Esegue tutte le operazioni di basso livello per inserire nel database il nuovo elemento.
+	 * Inoltre aggiorna la tabella per mostrare il nuovo elemento creato.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getActionCommand().equals("Conferma")) {
 			try {
+				
+				// controllo sintattico sull'input
 				for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
 					CampoCredenziale campoCredenziale = (CampoCredenziale) iterator.next();
 					if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
@@ -176,6 +194,22 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				}
 								
 				if (className.equals(Personale.class.getSimpleName())) {
+					
+					// controllo semantico sull'input
+					boolean inputValido = true;
+					
+					if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+						inputValido = false;
+					if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+						inputValido = false;
+					if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
+						inputValido = false;
+					if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
+						inputValido = false;
+					
+					if (!inputValido)
+						throw new InputInvalidoException(null);
+					
 					Personale p = new Personale();
 					p.setNome(txtNome.get()); 
 					p.setCognome(txtCognome.get());
@@ -186,7 +220,18 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 					p.setCittaNascita(txtCittaNascita.get());
 					p.setSpazio(spazio);
 					p.crea();
+					
 				} else if (className.equals(Strumentazione.class.getSimpleName())) {
+					
+					// controllo semantico sull'input
+					boolean inputValido = true;
+					
+					if (!txtAnnoAcquisto.get().matches("\\d{4}"))
+						inputValido = true;
+					
+					if (!inputValido)
+						throw new InputInvalidoException(null);
+					
 					Strumentazione s = new Strumentazione();
 					s.setNome(txtNome.getText());
 					s.setModello(txtModello.getText());
@@ -195,25 +240,36 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 					s.setAnnoAcquisto(Integer.parseInt(txtAnnoAcquisto.getText()));
 					s.setSpazio(spazio);
 					s.crea();
+					
 				} else {
+					
+					// controllo semantico dell'input
+					boolean inputValido = true;
+					
+					if (!txtNumeroFinestre.get().matches("\\d+"))
+						inputValido = false;
+					if (!txtNumeroPorte.get().matches("\\d+"))
+						inputValido = false;
+					if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
+						inputValido = false;
+					
+					if (!inputValido)
+						throw new InputInvalidoException(null);
+					
 					Spazio s = new Spazio();
 					s.setNome(txtNome.getText());
 					s.setUbicazione(txtUbicazione.getText());
 					s.setNumeroFinestre(Integer.parseInt(txtNumeroFinestre.getText()));
 					s.setNumeroPorte(Integer.parseInt(txtNumeroPorte.getText()));
-					s.setGrandezza(Integer.parseInt(txtGrandezza.getText()));
+					s.setGrandezza(Float.parseFloat(txtGrandezza.getText()));
 					s.crea();
 				}
 				
 				try {
 					visualizzatore.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {				
-					e1.printStackTrace();
-				}
+				} catch (ClassNotFoundException | IOException e1) {;}
 		
-			} catch (InputInvalidoException f) {
-				
-			}
+			} catch (InputInvalidoException f) {;}
 		}
 		
 	}

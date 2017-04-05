@@ -10,6 +10,9 @@ import java.io.ObjectInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Classe usata per gestire i database ed eseguire le query.
+ */
 public class Database {
 
 	private Credenziali credenziali;
@@ -60,11 +63,22 @@ public class Database {
 		connessione = ottieniConnessione(credenziali);
 	}
 	
+	/**
+	 * Metodo get del nome.
+	 * @return Il nome.
+	 */
 	public String getNome() {
 		
 		return nome;
 	}
 	
+	/**
+	 * Estrai l'oggetto credenziali corrispondente al file binario passato come parametro.
+	 * @param f Il file da cui estrarre le credenziali.
+	 * @return L'oggetto Credenziali.
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private Credenziali ottieniCredenziali(File f) throws IOException, ClassNotFoundException {
 		
 		Credenziali c = null;
@@ -80,21 +94,41 @@ public class Database {
 		return c;
 	}
 	
+	/**
+	 * Si connette al database corrispondente a questo oggetto, utilizzando per accedere le credenziali passate come parametro.
+	 * @param c Le credenziali per accedere.
+	 * @return L'oggetto Connessione, nel caso di buon fine dell'operazione.
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	private Connessione ottieniConnessione(Credenziali c) throws ClassNotFoundException, SQLException {
 		
 		return new Connessione(c);
 	}
 	
+	/**
+	 * Metodo get dell'oggetto connessione.
+	 * @return L'oggetto Connessione.
+	 */
 	public Connessione getConnessione() {
 		
 		return connessione;
 	}
 	
+	/**
+	 * Metodo get dell'oggetto credenziali.
+	 * @return L'oggetto Credenziali.
+	 */
 	public Credenziali getCredenziali() {
 		
 		return credenziali;
 	}
 	
+	/**
+	 * Esegue la query volta ad avvisare il server che si intende utilizzare il seguente database.
+	 * Non è obbligatoria se si utilizza un database MS-SQL.
+	 * @throws SQLException
+	 */
 	public void usa() throws SQLException {
 		
 		java.sql.Statement stmt = connessione.getConnessione().createStatement();
@@ -102,6 +136,13 @@ public class Database {
 		stmt.close();
 	}
 	
+	/**
+	 * Esegue la query, passata in input come parametro, su questo database.
+	 * Utilizzare questo metodo solo per query che non producono un output (come inserimento, eliminazione, ecc).
+	 * Per poter invocare questo metodo, questo oggetto deve già avere una connessione stabilita.
+	 * @param q La query da eseguire.
+	 * @throws SQLException
+	 */
 	public void eseguiQuery(String q) throws SQLException {
 		
 		java.sql.Statement stmt = connessione.getConnessione().createStatement();
@@ -109,6 +150,14 @@ public class Database {
 		stmt.close();
 	}
 	
+	/**
+	 * Esegue la query, passata in input come parametro, su questo database.
+	 * Utilizzare questo metodo per query che producono un output (come la selezione).
+	 * Per poter invocare questo metodo, questo oggetto deve già avere una connessione stabilita.
+	 * @param q La query da eseguire
+	 * @return
+	 * @throws SQLException
+	 */
 	public ResultSet eseguiQueryRitorno(String q) throws SQLException {
 		
 		java.sql.Statement stmt = connessione.getConnessione().createStatement();

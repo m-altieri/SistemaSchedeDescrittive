@@ -7,31 +7,38 @@ import entità.Personale;
 import entità.Spazio;
 import entità.Strumentazione;
 
-public class PannelloInserisciDati extends PannelloGestioneDati {
+/**
+ * Finestra della GUI per inserire nuovi elementi nel database.
+ */
+public class PannelloInserisciDati extends PannelloGestisciDati {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private VisualizzaTabella tPersonale;
-	private VisualizzaTabella tStrumentazione;
-	private VisualizzaTabella tSpazio;
+	private TabellaDati tPersonale;
+	private TabellaDati tStrumentazione;
+	private TabellaDati tSpazio;
 	private FormInserisciDati fPersonale;
 	private FormInserisciDati fStrumentazione;
 	private FormInserisciDati fSpazio;
 	
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 */
 	public PannelloInserisciDati() {
 		
 		super();
 		
-		tPersonale = new VisualizzaTabella(Personale.class);
-		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
-		tSpazio = new VisualizzaTabella(Spazio.class);
+		tPersonale = new TabellaDati(Personale.class);
+		tStrumentazione = new TabellaDati(Strumentazione.class);
+		tSpazio = new TabellaDati(Spazio.class);
 		fPersonale = new FormInserisciDati(Personale.class, tPersonale);
 		fStrumentazione = new FormInserisciDati(Strumentazione.class, tStrumentazione);
 		fSpazio = new FormInserisciDati(Spazio.class, tSpazio);
 	}
 	
+	/**
+	 * Ridefinisce il comportamento dei radio buttons contenuti nella superclass PannelloGestioneDati.
+	 * In base al radio button selezionato mostra la tabella e la form corretta.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

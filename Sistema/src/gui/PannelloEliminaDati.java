@@ -14,26 +14,29 @@ import entità.Personale;
 import entità.Spazio;
 import entità.Strumentazione;
 
-public class PannelloEliminaDati extends PannelloGestioneDati {
+/**
+ * Finestra della GUI per eliminare elementi dal database.
+ */
+public class PannelloEliminaDati extends PannelloGestisciDati {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private VisualizzaTabella tPersonale;
-	private VisualizzaTabella tStrumentazione;
-	private VisualizzaTabella tSpazio;
+	private TabellaDati tPersonale;
+	private TabellaDati tStrumentazione;
+	private TabellaDati tSpazio;
 	private JPanel form;
 	private CampoCredenziale id;
 	private JButton cmdConferma;
 	
+	/**
+	 * Crea la finestra e inizializza tutti i suoi componenti.
+	 */
 	public PannelloEliminaDati() {
 		
 		super();
 		
-		tPersonale = new VisualizzaTabella(Personale.class);
-		tStrumentazione = new VisualizzaTabella(Strumentazione.class);
-		tSpazio = new VisualizzaTabella(Spazio.class);
+		tPersonale = new TabellaDati(Personale.class);
+		tStrumentazione = new TabellaDati(Strumentazione.class);
+		tSpazio = new TabellaDati(Spazio.class);
 		
 		form = new JPanel();
 		id = new CampoCredenziale("ID");
@@ -46,7 +49,10 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 		
 		this.add(form, BorderLayout.SOUTH);
 	}
-	
+	/**
+	 * Ridefinisce il comportamento dei radio buttons contenuti nella superclass PannelloGestioneDati.
+	 * In base al radio button selezionato mostra la tabella corretta.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -57,7 +63,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 			this.remove(tSpazio);
 			this.remove(tPersonale);
 			
-			tPersonale = new VisualizzaTabella(Personale.class);
+			tPersonale = new TabellaDati(Personale.class);
 			this.add(tPersonale, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
@@ -68,7 +74,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 			this.remove(tSpazio);
 			this.remove(tStrumentazione);
 			
-			tStrumentazione = new VisualizzaTabella(Strumentazione.class);
+			tStrumentazione = new TabellaDati(Strumentazione.class);
 			this.add(tStrumentazione, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
@@ -79,7 +85,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 			this.remove(tStrumentazione);
 			this.remove(tSpazio);
 
-			tSpazio = new VisualizzaTabella(Spazio.class);
+			tSpazio = new TabellaDati(Spazio.class);
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.paintAll(this.getGraphics());
 		}
@@ -113,9 +119,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 					dbElementi = new Database();
 					query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id.get());
 					dbElementi.eseguiQuery(query);
-				} catch (Exception f) {
-					
-				}
+				} catch (Exception f) {;}
 				
 				try {
 					if (tabella.equals("Personale"))
@@ -128,9 +132,7 @@ public class PannelloEliminaDati extends PannelloGestioneDati {
 					
 					e1.printStackTrace();
 				}
-			} catch (InputInvalidoException f) {
-				
-			}
+			} catch (InputInvalidoException f) {;}
 		}
 	}
 
