@@ -18,7 +18,7 @@ public class Spazio extends Elemento {
 	private String ubicazione;
 	private int numeroFinestre;
 	private int numeroPorte;
-	private float grandezza;
+	private double grandezza;
 	
 	/**
 	 * Inizializza lo spazio con tutti i campi vuoti.
@@ -131,11 +131,11 @@ public class Spazio extends Elemento {
 
 	/**
 	 * Metodo set della grandezza.
-	 * @param grandezza La grandezza da settare.
+	 * @param d La grandezza da settare.
 	 */
-	public void setGrandezza(float grandezza) {
+	public void setGrandezza(double d) {
 		
-		this.grandezza = grandezza;
+		this.grandezza = d;
 	}
 
 	/**

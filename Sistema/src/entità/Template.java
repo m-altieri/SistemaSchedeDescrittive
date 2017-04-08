@@ -6,13 +6,11 @@ import java.util.HashMap;
  * Layout della scheda descrittiva.
  * Contiene il testo statico (cioè il testo fisso a prescindere dagli elementi contenuti),
  * e un'indicazione di quali informazioni visualizzare, ovvero quali attributi di ogni entità.
- * @author PC
- *
  */
 public class Template {
 
 	private String testoStatico;
-	private HashMap<String, Boolean> infoDaVisualizzare;
+	private HashMap<String, Boolean> attributi;
 	
 	public Template() {
 		
@@ -24,10 +22,10 @@ public class Template {
 		this(testoStatico, new HashMap<String, Boolean>());
 	}
 	
-	public Template(String testoStatico, HashMap<String, Boolean> infoDaVisualizzare) {
+	public Template(String testoStatico, HashMap<String, Boolean> attributi) {
 		
-		setTestoStatico(testoStatico);
-		setInfoDaVisualizzare(infoDaVisualizzare);
+		this.testoStatico = testoStatico;
+		this.attributi = attributi;
 	}
 
 	public String getTestoStatico() {
@@ -40,14 +38,14 @@ public class Template {
 		this.testoStatico = testoStatico;
 	}
 
-	public HashMap<String, Boolean> getInfoDaVisualizzare() {
+	public HashMap<String, Boolean> getAttributi() {
 		
-		return infoDaVisualizzare;
+		return attributi;
 	}
 
-	public void setInfoDaVisualizzare(HashMap<String, Boolean> infoDaVisualizzare) {
+	public void setAttributi(HashMap<String, Boolean> attributi) {
 		
-		this.infoDaVisualizzare = infoDaVisualizzare;
+		this.attributi = attributi;
 	}
 	
 }

@@ -261,13 +261,13 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 					s.setUbicazione(txtUbicazione.getText());
 					s.setNumeroFinestre(Integer.parseInt(txtNumeroFinestre.getText()));
 					s.setNumeroPorte(Integer.parseInt(txtNumeroPorte.getText()));
-					s.setGrandezza(Float.parseFloat(txtGrandezza.getText()));
+					s.setGrandezza(Double.parseDouble(txtGrandezza.getText()));
 					s.crea();
 				}
 				
 				try {
 					visualizzatore.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {;}
+				} catch (ClassNotFoundException | IOException e1) {e1.printStackTrace();}
 		
 			} catch (InputInvalidoException f) {;}
 		}

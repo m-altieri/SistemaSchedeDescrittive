@@ -1,7 +1,10 @@
 package gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import database.Credenziali;
 
 /**
@@ -34,6 +37,8 @@ public class Index {
 		final String NOME_DBUTILITY = "DBUtility";
 		final String FILE_CREDENZIALI_DBELEMENTI = "Credenziali_DBElementi.bin";
 		final String FILE_CREDENZIALI_DBUTILITY = "Credenziali_DBUtility.bin";
+		final String FILE_TESTO_STATICO = "TestoStatico.txt";
+		final String PATH_SCHEDE = "schede";
 		
 		Credenziali elementi = new Credenziali(URL_SERVER, USER, PASS, NOME_DBELEMENTI);
 		try {
@@ -52,5 +57,23 @@ public class Index {
 			e.printStackTrace();
 		}
 	
+		// Crea directory schede
+		{
+			File f = new File(PATH_SCHEDE);
+			if (!f.exists())
+				f.mkdir();
+		}
+		
+		// Crea file testo statico
+		{
+			File f = new File(FILE_TESTO_STATICO);
+			PrintWriter pw = null;
+			if (!f.isFile()) {
+				try {
+					pw = new PrintWriter(f);
+					pw.close();
+				} catch (FileNotFoundException e) {;}
+			}
+		}
 	}
 }

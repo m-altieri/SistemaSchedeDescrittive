@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +28,7 @@ import database.Database;
  * viene mostrata la schermata successiva, ovvero quella principale della GUI (Client), e viene tenuta traccia 
  * se l'utente in questione è un amministratore o meno, in caso negativo viene negato l'accesso.
  */
-public class Login extends JFrame implements ActionListener {
+public class Login extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
@@ -65,6 +67,9 @@ public class Login extends JFrame implements ActionListener {
 		
 		password = new JPasswordField();
 		password.setPreferredSize(new Dimension(LARGHEZZA_CAMPO_PASSWORD, ALTEZZA_CAMPO_PASSWORD));
+		
+		username.addKeyListener(this);
+		password.addKeyListener(this);
 		
 		cmdLogin = new JButton("Login");
 		cmdRegistrati = new JButton("Non hai un account? Registrati");
@@ -158,6 +163,18 @@ public class Login extends JFrame implements ActionListener {
 			
 		}
 	}
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+		if (e.getKeyCode() == KeyEvent.VK_ENTER)
+			cmdLogin.doClick();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 	
 }
