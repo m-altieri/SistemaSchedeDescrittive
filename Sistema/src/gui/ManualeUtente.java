@@ -62,7 +62,7 @@ public class ManualeUtente extends JFrame {
 		
 		Scanner s = null;
 		try {
-			s = new Scanner(new File("README.txt"));
+			s = new Scanner(new File("files/ManualeUtente.txt"));
 			
 			while (s.hasNextLine()) {
 				text.setText(text.getText() + s.nextLine() + "\n");

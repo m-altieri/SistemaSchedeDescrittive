@@ -125,7 +125,7 @@ public class FormModificaDati extends FormInserisciDati {
 					db.eseguiQuery(queryElimina);
 					
 				} catch (ClassNotFoundException | SQLException | IOException e2) {
-
+					e2.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
 				}
 				

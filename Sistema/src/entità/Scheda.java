@@ -117,12 +117,24 @@ public class Scheda {
 			try {
 				
 				pw = new PrintWriter(f);
+				// stampa cose iniziali
+				pw.println("Scheda descrittiva " + tipo.getSimpleName());
+				pw.println("Titolo: " + titolo);
 				pw.println(template.getTestoStatico());
 				
 				// in attr ho esattamente gli attributi da visualizzare
 				ArrayList<String> attr = new ArrayList<String>();
 				attr.addAll(template.getAttributi().keySet());
 				
+				// stampa colonne
+				{
+					for (int i = 0; i < attr.size(); i++) {
+						pw.print(attr.get(i) + "\t");
+					}
+					pw.println();
+				}
+				
+				// stampa elementi
 				Database elementi;
 				String query = "SELECT ";
 				for (int i = 0; i < attr.size(); i++) {
@@ -148,7 +160,7 @@ public class Scheda {
 						for (int i = 1; i < attr.size() + 1; i++) {
 							pw.print(rs.getString(i));
 							if (attr.size() + 1 - i > 1)
-								pw.print(" ");
+								pw.print("\t");
 						}
 						pw.println();
 					}

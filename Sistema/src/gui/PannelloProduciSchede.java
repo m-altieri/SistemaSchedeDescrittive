@@ -198,7 +198,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 						attributi.add(new JCheckBox("Telefono"));
 						attributi.add(new JCheckBox("Residenza"));
 						attributi.add(new JCheckBox("Mansione"));
-						attributi.add(new JCheckBox("Città di nascita"));
+						attributi.add(new JCheckBox("CittaNascita"));
 						break;
 					case "Strumentazione":
 						attributi.add(new JCheckBox("Nome"));
@@ -214,6 +214,9 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 						attributi.add(new JCheckBox("Numero porte"));
 						attributi.add(new JCheckBox("Grandezza"));
 						break;
+					case "Utilizzo strum.":
+						attributi.add(new JCheckBox("IdPersonale"));
+						attributi.add(new JCheckBox("IdStrumentazione"));
 					default:
 						try {
 							throw new InputInvalidoException(null);
@@ -381,6 +384,6 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		if (source.isSelected())
 			info.put(source.getText(), true);
 		else
-			info.put(source.getText(), false);
+			info.remove(source.getText());
 	}
 }
