@@ -13,10 +13,9 @@ import javax.swing.JMenuItem;
  * Barra dei menù presente nella finestra principale della GUI.
  * Permette di selezionare le funzioni del sistema.
  */
+@SuppressWarnings("serial")
 public class BarraMenu extends JMenuBar {
 
-	private static final long serialVersionUID = 1L;
-	
 	private PannelloInserisciDati pid;
 	private PannelloModificaDati pmd;
 	private PannelloVisualizzaDati pvd;
@@ -250,8 +249,9 @@ public class BarraMenu extends JMenuBar {
 		account.add(logout);
 		account.add(diventaAmministratore);
 		
-		if (!finestra.getAdmin())
+		if (!finestra.getAdmin()) {
 			amministrazione.setEnabled(false);
+		}
 		
 		add(dati);
 		add(amministrazione);

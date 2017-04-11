@@ -1,0 +1,10 @@
+Scheda descrittiva Personale
+Titolo: 111
+strumentazione
+perdonale
+
+Nome                                    Cognome                                 Email                                   Telefono                                Residenza                               Mansione                                CittaNascita                            
+emanuele                                ste                                     bababa@hotmail.it                       3334334334                              bari                                    operiaio                                bariu                                   
+Emanuele                                Stea                                    emanuele.stea@outlook,.it               333444555                               Bari                                    operiao                                 bari                                    
+Emanuele                                Stea                                    emanuele.stea@outlook,.it               222444555                               Bari                                    operiao                                 bari                                    
+Emanuele                                Stea                                    emanuele.stea@outlook,.it               222444555                               Napoli                                  operiao                                 bari                                    

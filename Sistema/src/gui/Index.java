@@ -40,28 +40,30 @@ public class Index {
 		final String FILE_TESTO_STATICO = "TestoStatico.txt";
 		final String PATH_SCHEDE = "schede";
 		
-		Credenziali elementi = new Credenziali(URL_SERVER, USER, PASS, NOME_DBELEMENTI);
-		try {
+		// Salva credenziali DBElementi
+		{
+			Credenziali elementi = new Credenziali(URL_SERVER, USER, PASS, NOME_DBELEMENTI);
 			File f = new File(FILE_CREDENZIALI_DBELEMENTI);
-			if (!f.isFile())
+			if (!f.isFile()) {
 				elementi.salva(new File("Credenziali_DBElementi.bin"));
-		} catch (IOException e) {
-			e.printStackTrace();
+			}
 		}
-		Credenziali utility = new Credenziali(URL_SERVER, USER, PASS, NOME_DBUTILITY);
-		try {
+		
+		// Salva credenziali DBUtility
+		{
+			Credenziali utility = new Credenziali(URL_SERVER, USER, PASS, NOME_DBUTILITY);
 			File f = new File(FILE_CREDENZIALI_DBUTILITY);
-			if (!f.isFile())
+			if (!f.isFile()) {
 				utility.salva(new File("Credenziali_DBUtility.bin"));
-		} catch (IOException e) {
-			e.printStackTrace();
+			}
 		}
 	
 		// Crea directory schede
 		{
 			File f = new File(PATH_SCHEDE);
-			if (!f.exists())
+			if (!f.exists()) {
 				f.mkdir();
+			}
 		}
 		
 		// Crea file testo statico
@@ -71,8 +73,13 @@ public class Index {
 			if (!f.isFile()) {
 				try {
 					pw = new PrintWriter(f);
-					pw.close();
-				} catch (FileNotFoundException e) {;}
+				} catch (FileNotFoundException e) {
+					;
+				} finally {
+					if (pw != null) {
+						pw.close();
+					}
+				}
 			}
 		}
 	}

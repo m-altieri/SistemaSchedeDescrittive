@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import database.Database;
 import entità.Elemento;
 import entità.Personale;
-import entità.Spazio;
 import entità.Strumentazione;
 
 /**
@@ -64,7 +63,7 @@ public class FormModificaDati extends FormInserisciDati {
 						}
 						if (cmbSpazio != null && rs.getString(campi.size() + 2) != null) {
 							cmbSpazio.setSelectedItem(rs.getString(campi.size() + 2));
-						} else
+						} else if (cmbSpazio != null)
 							cmbSpazio.setSelectedItem(new String(""));
 					} catch (SQLException | ClassNotFoundException | IOException f) {
 						f.printStackTrace();
@@ -104,123 +103,157 @@ public class FormModificaDati extends FormInserisciDati {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getActionCommand().equals("Conferma")) {
 			
 			try {
-				
 				// Controllo sui dati inseriti
-				for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
-					CampoCredenziale campoCredenziale = (CampoCredenziale) iterator.next();
-					if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
-						throw new InputInvalidoException(null);
-				}
-				
-				Database db = null;
-				String queryElimina = null;
-				try {
+				controlloSintatticoInput();
 					
-					db = new Database();
-					queryElimina = "DELETE FROM " + className + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-					db.eseguiQuery(queryElimina);
-					
-				} catch (ClassNotFoundException | SQLException | IOException e2) {
-					e2.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione", "Errore", JOptionPane.ERROR_MESSAGE);
-				}
-				
-			} catch (Exception f) {;}
 			
-			int spazio = 0;
-			if (!(className.equals(Spazio.class.getSimpleName()) || cmbSpazio.getSelectedItem().toString().isEmpty() || cmbSpazio.getSelectedItem().toString().equals("Spazio occupato"))) {
+				// Estrazione id spazio
+				int idSpazio = 0;
+				if (cmbSpazio != null) {
+					String spazio = cmbSpazio.getSelectedItem().toString();
 				
-				if (cmbSpazio.getSelectedItem().toString().contains("-"))
-					spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
-				else
-					spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString());
-			}
-			
-			try {
-				
-				if (className.equals(Personale.class.getSimpleName())) {
-					
-					// controllo semantico sull'input
-					boolean inputValido = true;
-					
-					if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-						inputValido = false;
-					if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-						inputValido = false;
-					if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
-						inputValido = false;
-					if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
-						inputValido = false;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Personale p = new Personale();
-					p.setNome(txtNome.get()); 
-					p.setCognome(txtCognome.get());
-					p.setEmail(txtEmail.get());
-					p.setTelefono(txtTelefono.get());
-					p.setResidenza(txtResidenza.get());
-					p.setMansione(txtMansione.get());
-					p.setCittaNascita(txtCittaNascita.get());
-					p.setSpazio(spazio);
-					p.crea(Integer.parseInt(cmbId.getSelectedItem().toString()));
-					
-				} else if (className.equals(Strumentazione.class.getSimpleName())) {
-					
-					// controllo semantico sull'input
-					boolean inputValido = true;
-					
-					if (!txtAnnoAcquisto.get().matches("\\d{4}"))
-						inputValido = true;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Strumentazione s = new Strumentazione();
-					s.setNome(txtNome.getText());
-					s.setModello(txtModello.getText());
-					s.setMarca(txtMarca.getText());
-					s.setTipologia(txtTipologia.getText());
-					s.setAnnoAcquisto(Integer.parseInt(txtAnnoAcquisto.getText()));
-					s.setSpazio(spazio);
-					s.crea(Integer.parseInt(cmbId.getSelectedItem().toString()));
-					
-				} else {
-					
-					// controllo semantico dell'input
-					boolean inputValido = true;
-					
-					if (!txtNumeroFinestre.get().matches("\\d+"))
-						inputValido = false;
-					if (!txtNumeroPorte.get().matches("\\d+"))
-						inputValido = false;
-					if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
-						inputValido = false;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Spazio s = new Spazio();
-					s.setNome(txtNome.getText());
-					s.setUbicazione(txtUbicazione.getText());
-					s.setNumeroFinestre(Integer.parseInt(txtNumeroFinestre.getText()));
-					s.setNumeroPorte(Integer.parseInt(txtNumeroPorte.getText()));
-					s.setGrandezza(Integer.parseInt(txtGrandezza.getText()));
-					s.crea(Integer.parseInt(cmbId.getSelectedItem().toString()));
+					if (spazio.contains("-"))
+						idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
+					else if (!spazio.isEmpty())
+						idSpazio = Integer.parseInt(spazio);
 				}
 				
 				try {
-					visualizzatore.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {;}
-			}
+					
+					if (className.equals(Personale.class.getSimpleName())) {
+						
+						// controllo semantico sull'input
+						boolean inputValido = true;
+						
+						if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+							inputValido = false;
+						if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+							inputValido = false;
+						if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
+							inputValido = false;
+						if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
+							inputValido = false;
+						if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+							inputValido = false;
+						if (!inputValido)
+							throw new InputInvalidoException(null);
+						
+						Database db = null;
+						String queryModifica = null;
+						try {
+							
+							db = new Database();
+							
+							if (idSpazio != 0)
+								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
+									"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
+									txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
+									"', spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							else
+								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
+								"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
+								txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
+								"' WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							db.eseguiQuery(queryModifica);
+							
+						} catch (ClassNotFoundException | SQLException | IOException e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Errore durante la modifica del personale", "Errore", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					} else if (className.equals(Strumentazione.class.getSimpleName())) {
+						
+						// controllo semantico sull'input
+						boolean inputValido = true;
+						
+						if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+							inputValido = false;
+						
+						if (!inputValido)
+							throw new InputInvalidoException(null);
+						
+						Database db = null;
+						String queryModifica = null;
+						try {
+							
+							db = new Database();
+							
+							if (idSpazio != 0)
+								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
+									"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
+									txtAnnoAcquisto.get() + ", spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							else
+								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
+										"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
+										txtAnnoAcquisto.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							db.eseguiQuery(queryModifica);
+							
+						} catch (ClassNotFoundException | SQLException | IOException e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Errore durante la modifica della strumentazione", "Errore", JOptionPane.ERROR_MESSAGE);
+						}
+										
+					} else {
+						
+						// controllo semantico dell'input
+						boolean inputValido = true;
+						
+						if (!txtNumeroFinestre.get().matches("\\d+"))
+							inputValido = false;
+						if (!txtNumeroPorte.get().matches("\\d+"))
+							inputValido = false;
+						if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
+							inputValido = false;
+						
+						if (!inputValido)
+							throw new InputInvalidoException(null);
+						
+						Database db = null;
+						String queryModifica = null;
+						try {
+							
+							db = new Database();
+							queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', ubicazione = '" + txtUbicazione.get() +
+									"', numeroFinestre = " + txtNumeroFinestre.get() + ", numeroPorte = " + txtNumeroPorte.get() + 
+									", grandezza = " + txtGrandezza.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							db.eseguiQuery(queryModifica);
+							
+						} catch (ClassNotFoundException | SQLException | IOException e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Errore durante la modifica dello spazio", "Errore", JOptionPane.ERROR_MESSAGE);
+						}
+						
+					}
+					
+					try {
+						visualizzatore.caricaPannelloDati();
+					} catch (ClassNotFoundException | IOException e1) {;}
+				}
+				
+				catch (InputInvalidoException f) {;}
 			
-			catch (InputInvalidoException f) {;}
+			} catch (InputInvalidoException f) {;}
+			
+	}
+
+	/**
+	 * Controlla che l'input inserito sia sintatticamente corretto, ovvero che non abbia spazi
+	 * lasciati vuoti.
+	 * @throws InputInvalidoException
+	 */
+	private void controlloSintatticoInput() throws InputInvalidoException {
+
+		boolean inputErrato = false;
+		
+		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
+			CampoCredenziale campoCredenziale = iterator.next();
+			inputErrato |= campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint());
 		}
+		
+		if (inputErrato)
+			throw new InputInvalidoException(null);
 	}
 		
 }

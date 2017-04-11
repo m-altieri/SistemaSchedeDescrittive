@@ -1,0 +1,5 @@
+Scheda descrittiva Spazio
+Titolo: scheda003
+strumentazione
+perdonale
+Nome                                    Ubicazione                              NumeroFinestre                          NumeroPorte                             

@@ -13,9 +13,9 @@ import javax.swing.JTextField;
  * come un hint (testo che appare inizialmente e che svanisce quando la barra acquisisce il focus), e metodi per
  * regolare la grandezza.
  */
+@SuppressWarnings("serial")
 public class CampoCredenziale extends JTextField {
 
-	private static final long serialVersionUID = 1L;
 	private String hint = "";
 	final int ALTEZZA = 40;
 
@@ -26,6 +26,11 @@ public class CampoCredenziale extends JTextField {
 	public String get() {
 		
 		return this.getText();
+	}
+	
+	private void initText(String x) {
+		
+		setText(x);
 	}
 	
 	/**
@@ -42,15 +47,15 @@ public class CampoCredenziale extends JTextField {
 		setLayout(new FlowLayout());
 		setForeground(Color.GRAY);
 		
-		setText(x);
-		hint = x;
+		initText(x);
+		hint = x; 
 		
 		addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				if (getText().equals(hint)) {
-					setText("");
+					initText("");
 					setForeground(Color.BLACK);
 				}
 			}
@@ -59,7 +64,7 @@ public class CampoCredenziale extends JTextField {
 			public void focusLost(FocusEvent arg0) {
 
 				if (getText().isEmpty()) {
-					setHint(hint);
+					initText(hint);
 					setForeground(Color.GRAY);
 				}
 			}

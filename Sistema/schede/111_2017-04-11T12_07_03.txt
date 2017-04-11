@@ -1,0 +1,6 @@
+Scheda descrittiva Utilizzo strum.
+Titolo: 111
+strumentazione
+perdonale
+
+IdPersonale                             IdStrumentazione                        

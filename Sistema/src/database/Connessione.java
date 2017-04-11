@@ -21,11 +21,13 @@ public class Connessione {
 	 */
 	public Connessione(Credenziali credenziali) throws SQLException, ClassNotFoundException {
 				
+		final String puntoEVirgola = ";";
+		
 		connectionString = "";
-		connectionString += credenziali.getUrl() + ";";
-		connectionString += "database=" + credenziali.getDatabase() + ";";
-		connectionString += "user=" + credenziali.getNome() + ";";
-		connectionString += "password=" + credenziali.getPassword() + ";";
+		connectionString += credenziali.getUrl() + puntoEVirgola;
+		connectionString += "database=" + credenziali.getDatabase() + puntoEVirgola;
+		connectionString += "user=" + credenziali.getNome() + puntoEVirgola;
+		connectionString += "password=" + credenziali.getPassword() + puntoEVirgola;
 		connectionString += "encrypt=true;";
 		connectionString += "trustServerCertificate=false;";
 		connectionString += "hostNameInCertificate=*.database.windows.net;";

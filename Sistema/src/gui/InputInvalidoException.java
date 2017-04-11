@@ -8,9 +8,8 @@ import javax.swing.JOptionPane;
  * modifica di uno esistente non sono validi.
  * Viene manifestata all'utente come una finestrella di errore.
  */
+@SuppressWarnings("serial")
 public class InputInvalidoException extends Exception {
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Lancia l'eccezione.

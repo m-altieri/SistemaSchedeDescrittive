@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -9,10 +10,9 @@ import javax.swing.JFrame;
  * Finestra della GUI principale, da cui si può accedere a tutte le funzioni del sistema.
  * E' leggermente diversa in base se l'utente è un amministratore o meno.
  */
+@SuppressWarnings("serial")
 public class Client extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	
 	private String user;
 	private boolean admin;
 	
@@ -29,7 +29,7 @@ public class Client extends JFrame {
 		setTitle("Sistema schede descrittive");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		getContentPane().setLayout(new BorderLayout());
 		
 		this.user = user;

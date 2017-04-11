@@ -22,6 +22,9 @@ Il pannello Gestisci relazioni ci permette di associare dipendenti e strumentazi
 Il menù Amministrazione contiene le funzioni "Produci schede" e "Cambia codice amministratore...". La seconda l'abbiamo già vista precedentemente.
 "Produci schede" è in un certo senso la funzione più importante del sistema, perchè realizza il suo scopo finale. Da questo pannello possiamo impostare il testo statico e tutti gli elementi da visualizzare con i relativi attributi.
 La scheda viene prodotta come file di testo e viene creata nella cartella schede della directory principale del sistema.
+Per visualizzare in una scheda solo le informazioni che rispettano certi vincoli, cliccare su Aggiungi vincolo, e dalla nuova finestra che si viene a creare scegliere la colonna, il tipo di vincolo e il valore da rispettare.
+Nel caso di stringhe fare attenzione ad inserire il valore desiderato tra apici (es: 'valore'), mentre nel caso di numeri senza apici (es. 42).
+L'operatore "Simile" permette di selezionare solo gli elementi con la colonna desiderata simile a un valore dato in input. E' possibile usare i caratteri jolly % e _ per indicare rispettivamente un qualsiasi numero di caratteri e un solo carattere.
 Dal menù Aiuto è possibile consultare questo manuale cliccando su "Manuale utente...".
 Nel menù Account sono presenti le funzioni "Cambia password...", "Logout" e "Diventa amministratore...".
 Logout ci porta semplicemente alla schermata iniziale in cui bisogna effettuare il login; Cambia password... serve per modificare la password dell'account dal quale si è correntemente loggati. Diventa amministratore... permette di inserire il codice segreto a 8 cifre per acquisire la possibile di consultare la scheda di amministrazione.

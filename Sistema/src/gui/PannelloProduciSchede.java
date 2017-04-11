@@ -13,14 +13,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -29,8 +28,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 
-import entità.Elemento;
 import entità.Scheda;
 import entità.Template;
 
@@ -42,7 +42,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JTextArea txtTestoStatico;
 	private ArrayList<JCheckBox> attributi;
-	private HashMap<String, Boolean> info;
+	private LinkedHashMap<String, Boolean> info;
 	private JTextField txtNome;
 	private JComboBox<String> cmbTipo;
 	private JList<String> lstVincoli;
@@ -57,7 +57,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 		panel.setPreferredSize(new Dimension(0, 400));
 		Font font = new Font("Arial", Font.PLAIN, 18);
-		info = new HashMap<String, Boolean>();
+		info = new LinkedHashMap<String, Boolean>();
 		
 		JPanel north = new JPanel(new FlowLayout());
 		north.setPreferredSize(new Dimension(0, 300));
@@ -82,7 +82,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		cmbTipo.addItem(new String("Personale"));
 		cmbTipo.addItem(new String("Strumentazione"));
 		cmbTipo.addItem(new String("Spazio"));
-		cmbTipo.addItem(new String("Utilizzo strum."));
+		cmbTipo.addItem(new String("Utilizzo"));
 		cmbTipo.setEditable(true);
 		cmbTipo.setSelectedItem(new String(""));
 		pannelloTipo.add(cmbTipo);
@@ -139,7 +139,6 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		cmdProduci.setPreferredSize(new Dimension(500, 80));
 		cmdProduci.addActionListener(new ActionListener() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -154,13 +153,11 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 				Template t = new Template();
 				t.setTestoStatico(txtTestoStatico.getText());
 				t.setAttributi(info);
-				Scheda s = null;
-				try {
-					s = new Scheda((Class<? extends Elemento>) (Class.forName("entità." + cmbTipo.getSelectedItem())), t, txtNome.getText());
-				} catch (ClassNotFoundException e1) {;}
+				Scheda s = new Scheda(cmbTipo.getSelectedItem().toString(), t, txtNome.getText());
 				
 				for (int i = 0; i < listModel.size(); i++) {
 					String vincolo = listModel.getElementAt(i);
+					vincolo = vincolo.replace("Simile", "LIKE");
 					s.aggiungiVincolo(vincolo);
 				}
 				
@@ -189,6 +186,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 					}
 					attributi.clear();
 					info.clear();
+					listModel.clear();
 					
 					switch (tipo) {
 					case "Personale":
@@ -205,18 +203,19 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 						attributi.add(new JCheckBox("Modello"));
 						attributi.add(new JCheckBox("Marca"));
 						attributi.add(new JCheckBox("Tipologia"));
-						attributi.add(new JCheckBox("Anno di acquisto"));
+						attributi.add(new JCheckBox("AnnoAcquisto"));
 						break;
 					case "Spazio":
 						attributi.add(new JCheckBox("Nome"));
 						attributi.add(new JCheckBox("Ubicazione"));
-						attributi.add(new JCheckBox("Numero finestre"));
-						attributi.add(new JCheckBox("Numero porte"));
+						attributi.add(new JCheckBox("NumeroFinestre"));
+						attributi.add(new JCheckBox("NumeroPorte"));
 						attributi.add(new JCheckBox("Grandezza"));
 						break;
-					case "Utilizzo strum.":
+					case "Utilizzo":
 						attributi.add(new JCheckBox("IdPersonale"));
 						attributi.add(new JCheckBox("IdStrumentazione"));
+						break;
 					default:
 						try {
 							throw new InputInvalidoException(null);
@@ -246,16 +245,17 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 				JFrame d = new JFrame();
 				d.setLocation(1000, 500);
 				d.setLayout(new BorderLayout());
-				d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				d.setTitle("Cambia testo statico");
 				
 				JTextArea txtTestoStatico = new JTextArea();
 				txtTestoStatico.setLineWrap(true);
 				txtTestoStatico.setWrapStyleWord(true);
 				txtTestoStatico.setFont(font);
+				txtTestoStatico.setText(PannelloProduciSchede.this.txtTestoStatico.getText());
 				
 				JScrollPane scroll = new JScrollPane(txtTestoStatico);
-				scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+				scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 				scroll.setPreferredSize(new Dimension(500, 200));
 				d.add(scroll, BorderLayout.CENTER);
 				
@@ -295,7 +295,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 
 				JFrame f = new JFrame();
 				f.setLocationRelativeTo(null);
-				f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				f.setTitle("Aggiungi vincolo");
 				f.setSize(new Dimension(800, 300));
 				f.setLayout(new BorderLayout());
@@ -319,8 +319,8 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 				cmbOperatore.addItem("!=");
 				cmbOperatore.addItem("Simile");
 				JTextArea legenda = new JTextArea("Se il valore da inserire è una stringa, scriverlo tra apici ('). \nSe si usa l'operatore \"Simile\", si può usare il simbolo % per rappresentare "
-						+ "un qualsiasi insieme di caratteri e il simbolo ? per rappresentare un singolo catattere. "
-						+ "Es: i nomi che iniziano con la lettera R: Nome Simile R%");
+						+ "un qualsiasi insieme di caratteri e il simbolo _ per rappresentare un singolo catattere. "
+						+ "Es: i nomi che iniziano con la lettera R: Nome Simile 'R%'");
 				legenda.setPreferredSize(new Dimension(f.getWidth() - 50, f.getHeight()));
 				legenda.setLineWrap(true);
 				legenda.setFont(font);
@@ -379,7 +379,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		
 		JCheckBox source = (JCheckBox) (e.getSource());
 		if (source.isSelected())
 			info.put(source.getText(), true);

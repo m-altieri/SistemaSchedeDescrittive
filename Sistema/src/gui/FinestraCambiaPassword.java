@@ -68,10 +68,11 @@ public class FinestraCambiaPassword extends JFrame {
 				char[] passchar = pass.getPassword();
 				
 				for (int i = 0; i < passchar.length; i++) {
-					password += passchar[i];
+					password = password.concat(String.valueOf(passchar[i]));
 				}
-				if (password.equals(passwordText))
+				if (password.equals(passwordText)) {
 					pass.setText("");
+				}
 			}
 
 			@Override
@@ -90,15 +91,18 @@ public class FinestraCambiaPassword extends JFrame {
 					Database dbUtility = new Database(true);
 					String password = "";
 					
-					for (int i = 0; i < pass.getPassword().length; i++) {
-						password += pass.getPassword()[i];
+					char[] charPassword = pass.getPassword();
+					for (int i = 0; i < charPassword.length; i++) {
+						password = password.concat(String.valueOf(pass.getPassword()[i]));
 					}
 
 					boolean inputValido = true;
-					if (password.length() < 8 || password.contains(" "))
+					if (password.length() < 8 || password.contains(" ")) {
 						inputValido = false;
-					if (!inputValido)
+					}
+					if (!inputValido) {
 						throw new InputInvalidoException(null);
+					}
 					
 					String query = "UPDATE Utente SET password = '" + password + "' WHERE nomeUtente = '" + FinestraCambiaPassword.this.user + "'";
 					dbUtility.eseguiQuery(query);

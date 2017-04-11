@@ -17,12 +17,10 @@ import database.Database;
  * Questa classe NON si occupa dell'inserimento, modifica, o eliminazione delle relazioni ma solo della loro visualizzazione.
  * @see FormGestisciRelazioni
  */
+@SuppressWarnings("serial")
 public class TabellaRelazioni extends JPanel implements Visualizzatore {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel pannelloColonne;
 	private JPanel pannelloDati;
-	private Font fontColonne;
 	private Font fontDati;
 	
 	public TabellaRelazioni() {
@@ -31,13 +29,19 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 		
 		setLayout(new BorderLayout());
 		
-		pannelloColonne = new JPanel();
+		JPanel pannelloColonne = new JPanel();
 		pannelloDati = new JPanel();
-		fontColonne = new Font("Arial", Font.BOLD, 20);
-		fontDati = new Font("Arial", Font.PLAIN, 14);
+		final int sizeFontColonne = 20;
+		Font fontColonne = new Font("Arial", Font.BOLD, sizeFontColonne);
+		final int sizeFontDati = 14;
+		fontDati = new Font("Arial", Font.PLAIN, sizeFontDati);
 		
-		pannelloColonne.setLayout(new GridLayout(1, 2));
-		pannelloDati.setLayout(new GridLayout(0, 2));
+		final int righeAttributi = 1;
+		final int colonneAttributi = 2;
+		pannelloColonne.setLayout(new GridLayout(righeAttributi, colonneAttributi));
+		final int righeDati = 0; // 0 perchè in GridLayout 0 significa quante ne sono necessarie
+		final int colonneDati = 2;
+		pannelloDati.setLayout(new GridLayout(righeDati, colonneDati));
 		
 		JLabel p = new JLabel("PERSONALE");
 		p.setFont(fontColonne);
@@ -46,14 +50,17 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 		s.setFont(fontColonne);
 		pannelloColonne.add(s);
 		
-		try {
-			caricaPannelloDati();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
+		caricamentoDati();
 		
 		this.add(pannelloColonne, BorderLayout.NORTH);
 		this.add(pannelloDati, BorderLayout.CENTER);
+	}
+	
+	private void caricamentoDati() {
+		
+		try {
+			caricaPannelloDati();
+		} catch (ClassNotFoundException | IOException e) {;}
 	}
 	
 	@Override
@@ -63,6 +70,8 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 		
 		Database elementi = null;
 		ResultSet rs = null;
+		ResultSet nomePers = null;
+		ResultSet nomeStru = null;
 		
 		try {
 			elementi = new Database();
@@ -70,17 +79,23 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 			rs = elementi.eseguiQueryRitorno(query);
 			
 			while (rs.next()) {
-				String idPers = rs.getString(1);
-				String idStru = rs.getString(2);
+				final int colonnaIdPers = 1;
+				final int colonnaIdStru = 2;
+				String idPers = rs.getString(colonnaIdPers);
+				String idStru = rs.getString(colonnaIdStru);
 				
 				String queryOttieniNomePers = "SELECT Nome, Cognome FROM Personale WHERE id = " + idPers;
 				String queryOttieniNomeStru = "SELECT Nome FROM Strumentazione WHERE id = " + idStru;
-				ResultSet nomePers = elementi.eseguiQueryRitorno(queryOttieniNomePers);
+				
+				final int colonnaNomePers = 1;
+				final int colonnaCognomePers = 2;
+				final int colonnaNomeStru = 1;
+				nomePers = elementi.eseguiQueryRitorno(queryOttieniNomePers);
 				nomePers.next();
-				idPers += " - " + nomePers.getString(1) + " " + nomePers.getString(2);
-				ResultSet nomeStru = elementi.eseguiQueryRitorno(queryOttieniNomeStru);
+				idPers = idPers.concat(" - " + nomePers.getString(colonnaNomePers) + " " + nomePers.getString(colonnaCognomePers));
+				nomeStru = elementi.eseguiQueryRitorno(queryOttieniNomeStru);
 				nomeStru.next();
-				idStru += " - " + nomeStru.getString(1);
+				idStru = idStru.concat(" - " + nomeStru.getString(colonnaNomeStru));
 				
 				JLabel lblPers = new JLabel(idPers);
 				JLabel lblStru = new JLabel(idStru);
@@ -90,7 +105,23 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 				pannelloDati.add(lblStru);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {;}
+			}
+			if (nomePers != null) {
+				try {
+					nomePers.close();
+				} catch (SQLException e) {;}
+			}
+			if (nomeStru != null) {
+				try {
+					nomeStru.close();
+				} catch (SQLException e) {;}
+			}
 		}
 		
 		this.paintAll(this.getGraphics());

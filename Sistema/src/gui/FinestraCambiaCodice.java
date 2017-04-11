@@ -18,9 +18,9 @@ import database.Database;
 /**
  * Finestra della GUI per cambiare il codice amministratore.
  */
+@SuppressWarnings("serial")
 public class FinestraCambiaCodice extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	private CampoCredenziale codice;
 
 	/**
@@ -58,15 +58,21 @@ public class FinestraCambiaCodice extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				try {
-					Database dbUtility = new Database(true);
-					String query = "UPDATE CodiceAdmin SET codice = '" + codice.get() + "'";
-					dbUtility.eseguiQuery(query);
-					dispose();
-					JOptionPane.showMessageDialog(null, "Nuovo codice: " + codice.get(), "Successo", JOptionPane.INFORMATION_MESSAGE);
-				} catch (ClassNotFoundException | IOException | SQLException f) {
-					JOptionPane.showMessageDialog(null, "Errore di collegamento con il server", "Errore", JOptionPane.ERROR_MESSAGE);
+	
+				if (codice.get().length() < 8) {
+					try {
+						throw new InputInvalidoException(null);
+					} catch (InputInvalidoException f) {;}
+				} else {
+					try {
+						Database dbUtility = new Database(true);
+						String query = "UPDATE CodiceAdmin SET codice = '" + codice.get() + "'";
+						dbUtility.eseguiQuery(query);
+						dispose();
+						JOptionPane.showMessageDialog(null, "Nuovo codice: " + codice.get(), "Successo", JOptionPane.INFORMATION_MESSAGE);
+					} catch (ClassNotFoundException | IOException | SQLException f) {
+						JOptionPane.showMessageDialog(null, "Errore di collegamento con il server", "Errore", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 			

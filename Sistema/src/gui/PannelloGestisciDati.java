@@ -13,9 +13,9 @@ import javax.swing.JRadioButton;
  * Superclasse astratta dei vari pannelli della GUI del menù Dati.
  * Contiene le caratteristiche comuni a quelle classi, come i radio buttons per scegliere il tipo di elemento.
  */
+@SuppressWarnings("serial")
 public abstract class PannelloGestisciDati extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	protected JRadioButton rdPersonale;
 	protected JRadioButton rdStrumentazione;
 	protected JRadioButton rdSpazio;

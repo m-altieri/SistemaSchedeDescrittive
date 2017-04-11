@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class PannelloGestisciRelazioni extends JPanel {
-
-	private static final long serialVersionUID = 1L;
-	private TabellaRelazioni tRel;
-	private FormGestisciRelazioni fRel;
 	
 	public PannelloGestisciRelazioni() {
 		
@@ -16,8 +13,8 @@ public class PannelloGestisciRelazioni extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
-		tRel = new TabellaRelazioni();
-		fRel = new FormGestisciRelazioni(tRel);
+		TabellaRelazioni tRel = new TabellaRelazioni();
+		FormGestisciRelazioni fRel = new FormGestisciRelazioni(tRel);
 		
 		add(tRel, BorderLayout.CENTER);
 		add(fRel, BorderLayout.SOUTH);

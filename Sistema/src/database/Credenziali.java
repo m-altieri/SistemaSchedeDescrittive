@@ -12,9 +12,6 @@ import java.io.Serializable;
  */
 public class Credenziali implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String url;
 	private String nome;
@@ -41,18 +38,29 @@ public class Credenziali implements Serializable {
 	 * @param file Il file su cui salvare le credenziali.
 	 * @throws IOException
 	 */
-	public void salva(File file) throws IOException {
+	public void salva(File file) {
 		
-		FileOutputStream fos = new FileOutputStream(file);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
 		
 		try {
+			fos = new FileOutputStream(file);
+			oos = new ObjectOutputStream(fos);
 			oos.writeObject(this);
+		} catch (IOException e) {
+			;
 		} finally {
-			oos.close();
-			fos.close();
-		}	
-		
+			if (oos != null) {
+				try {
+					oos.close();
+				} catch (IOException f) {;}
+			}
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException g) {;}
+			}
+		}
 	}
 
 	/**

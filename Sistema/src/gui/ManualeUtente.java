@@ -18,10 +18,9 @@ import javax.swing.JTextArea;
  * Finestra della GUI che mostra il manuale utente.
  * Contiene sia informazioni generali sul sistema, sia una guida su come utilizzarlo e altri dettagli sul progetto.
  */
+@SuppressWarnings("serial")
 public class ManualeUtente extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	
 	/**
 	 * Crea la finestra e inizializza tutti i suoi componenti.
 	 */
@@ -34,7 +33,7 @@ public class ManualeUtente extends JFrame {
 		final int POSIZIONE_FINESTRA_X = 500;
 		final int POSIZIONE_FINESTRA_Y = 100;
 		final int LARGHEZZA_PANNELLO = 500;
-		final int ALTEZZA_PANNELLO = 2600;
+		final int ALTEZZA_PANNELLO = 3000;
 		final int LARGHEZZA_SCROLLFRAME = 500;
 		final int ALTEZZA_SCROLLFRAME = 800;
 
@@ -54,18 +53,24 @@ public class ManualeUtente extends JFrame {
 		add(scrollFrame);
 		
 		JTextArea text = new JTextArea();
-		text.setBackground(new Color(238, 238, 238));
+		final int sfondoRedRGB = 238;
+		final int sfondoGreenRGB = 238;
+		final int sfondoBlueRGB = 238;
+		text.setBackground(new Color(sfondoRedRGB, sfondoGreenRGB, sfondoBlueRGB));
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
-		text.setFont(new Font("Arial", Font.PLAIN, 18));
+		
+		final int sizeTesto = 18;
+		text.setFont(new Font("Arial", Font.PLAIN, sizeTesto));
 		text.setSize(new Dimension(LARGHEZZA_SCROLLFRAME, ALTEZZA_SCROLLFRAME));
 		
 		Scanner s = null;
 		try {
-			s = new Scanner(new File("files/ManualeUtente.txt"));
+			s = new Scanner(new File("files" + File.separator + "ManualeUtente.txt"));
 			
 			while (s.hasNextLine()) {
-				text.setText(text.getText() + s.nextLine() + "\n");
+				String riga = s.nextLine();
+				text.setText(text.getText() + riga + System.lineSeparator());
 			}
 			
 		} catch (FileNotFoundException e) {

@@ -37,7 +37,7 @@ public class FinestraDiventaAdmin extends JFrame {
 		super();
 
 		final int LARGHEZZA_FINESTRA = 600;
-		final int ALTEZZA_FINESTRA = 150;;
+		final int ALTEZZA_FINESTRA = 150;
 		final int POSIZIONE_FINESTRA_X = 600;
 		final int POSIZIONE_FINESTRA_Y = 300;
 		final int LARGHEZZA_CAMPO_CODICE = 200;
@@ -66,8 +66,9 @@ public class FinestraDiventaAdmin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					if (codice.getText().length() != 8)
+					if (codice.getText().length() != 8) {
 						throw new CodiceNonValidoException(codice.getText());
+					}
 					
 					String codiceAdmin = ottieniCodiceAdmin();
 
@@ -97,16 +98,23 @@ public class FinestraDiventaAdmin extends JFrame {
 	
 	private String ottieniCodiceAdmin() {
 		
-		Database dbUtility;
+		Database dbUtility = null;
 		String cod = "";
+		ResultSet res = null;
 		try {
 			dbUtility = new Database(true);
 			String query = "SELECT * FROM CodiceAdmin";
-			ResultSet res = dbUtility.eseguiQueryRitorno(query);
+			res = dbUtility.eseguiQueryRitorno(query);
 			res.next();
 			cod = res.getString(1);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			JOptionPane.showMessageDialog(null, "Impossibile ottenere il codice dal database", "Errore", JOptionPane.ERROR_MESSAGE);
+		} finally {
+			if (res != null) {
+				try {
+					res.close();
+				} catch (SQLException e) {;}
+			}
 		}
 		
 		return cod;

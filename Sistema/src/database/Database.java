@@ -82,15 +82,29 @@ public class Database {
 	private Credenziali ottieniCredenziali(File f) throws IOException, ClassNotFoundException {
 		
 		Credenziali c = null;
-		FileInputStream fis = new FileInputStream(f);
-		ObjectInputStream ois = new ObjectInputStream(fis);
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
 		
 		try {
-			c = (Credenziali) ois.readObject();
+			fis = new FileInputStream(f);
+			ois = new ObjectInputStream(fis);
+			
+			Object o = ois.readObject();
+			if (o instanceof Credenziali) {
+				c = (Credenziali) o;
+			}
+			
+		} catch (IOException e) {
+			;
 		} finally {
-			fis.close();
-			ois.close();
+			if (fis != null) {
+				fis.close();
+			}
+			if (ois != null) {
+				ois.close();
+			}
 		}
+
 		return c;
 	}
 	

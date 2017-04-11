@@ -23,7 +23,7 @@ public class Scheda {
 	private int id;
 	private Template template;
 	private ArrayList<Elemento> elementi;
-	private Class<? extends Elemento> tipo;
+	private String tipo;
 	private ArrayList<String> vincoli;
 	
 	static {
@@ -31,7 +31,7 @@ public class Scheda {
 		schedeCreate = 0;
 	}
 	
-	public Scheda(Class<? extends Elemento> c, Template t, String s) {
+	public Scheda(String c, Template t, String s) {
 		
 		schedeCreate++;
 		id = schedeCreate;
@@ -97,7 +97,7 @@ public class Scheda {
 		return titolo;
 	}
 	
-	public Class<? extends Elemento> getTipo() {
+	public String getTipo() {
 		
 		return tipo;
 	}
@@ -118,7 +118,7 @@ public class Scheda {
 				
 				pw = new PrintWriter(f);
 				// stampa cose iniziali
-				pw.println("Scheda descrittiva " + tipo.getSimpleName());
+				pw.println("Scheda descrittiva " + tipo);
 				pw.println("Titolo: " + titolo);
 				pw.println(template.getTestoStatico());
 				
@@ -129,7 +129,7 @@ public class Scheda {
 				// stampa colonne
 				{
 					for (int i = 0; i < attr.size(); i++) {
-						pw.print(attr.get(i) + "\t");
+						pw.printf("%-40s", attr.get(i));
 					}
 					pw.println();
 				}
@@ -142,7 +142,7 @@ public class Scheda {
 					if (attr.size() - i > 1)
 						query += ", ";
 				}
-				query += " FROM " + tipo.getSimpleName();
+				query += " FROM " + tipo;
 				
 				if (!vincoli.isEmpty()) {
 					query += " WHERE ";
@@ -158,9 +158,7 @@ public class Scheda {
 					ResultSet rs = elementi.eseguiQueryRitorno(query);
 					while (rs.next()) {
 						for (int i = 1; i < attr.size() + 1; i++) {
-							pw.print(rs.getString(i));
-							if (attr.size() + 1 - i > 1)
-								pw.print("\t");
+							pw.printf("%-40s", rs.getString(i));
 						}
 						pw.println();
 					}

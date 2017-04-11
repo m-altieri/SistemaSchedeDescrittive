@@ -28,9 +28,9 @@ import database.Database;
  * viene mostrata la schermata successiva, ovvero quella principale della GUI (Client), e viene tenuta traccia 
  * se l'utente in questione è un amministratore o meno, in caso negativo viene negato l'accesso.
  */
+@SuppressWarnings("serial")
 public class Login extends JFrame implements ActionListener, KeyListener {
 
-	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
 	private JPasswordField password;
 	private JButton cmdLogin;
@@ -130,15 +130,16 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 			char[] passchar = password.getPassword();
 			
 			for (int i = 0; i < passchar.length; i++) {
-				pass += passchar[i];
+				pass = pass.concat(String.valueOf(passchar[i]));
 			}
 			
 			boolean isAdmin = false;
+			ResultSet match = null;
 			try {
 				
 				Database dbUtility = new Database(true);
 				String query = "SELECT * FROM Utente WHERE nomeUtente = '" + username.get() + "' AND password = '" + pass + "'";
-				ResultSet match = dbUtility.eseguiQueryRitorno(query);
+				match = dbUtility.eseguiQueryRitorno(query);
 				boolean esiste = match.next();
 				
 				final int COLONNA_ADMIN = 4;
@@ -155,10 +156,15 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 				
 			} catch (SQLException | ClassNotFoundException | IOException f) {
 				JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
-			} finally {
 				cmdLogin.setEnabled(true);
 				cmdRegistrati.setEnabled(true);
 				update(getGraphics());
+			} finally {
+				if (match != null) {
+					try {
+						match.close();
+					} catch (SQLException e1) {;}
+				}
 			}
 			
 		}
@@ -167,8 +173,9 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		if (e.getKeyCode() == KeyEvent.VK_ENTER)
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			cmdLogin.doClick();
+		}
 	}
 
 	@Override

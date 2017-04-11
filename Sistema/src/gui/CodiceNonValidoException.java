@@ -5,9 +5,8 @@ import javax.swing.JOptionPane;
 /**
  * Eccezione lanciata quando il codice admin inserito non è esatto.
  */
+@SuppressWarnings("serial")
 public class CodiceNonValidoException extends Exception {
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Lancia l'eccezione senza specificare il codice inserito.

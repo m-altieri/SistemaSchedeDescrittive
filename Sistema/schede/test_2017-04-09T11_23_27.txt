@@ -1,8 +1,0 @@
-Scheda descrittiva Personale
-Titolo: test
-testo statico
-
-Nome	
-fsuhis
-Marco
-mario

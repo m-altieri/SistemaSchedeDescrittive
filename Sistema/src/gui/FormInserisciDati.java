@@ -123,7 +123,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		}
 		
 		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
-			CampoCredenziale campoCredenziale = (CampoCredenziale) iterator.next();
+			CampoCredenziale campoCredenziale = iterator.next();
 			campoCredenziale.setFont(fontCampi);
 			add(campoCredenziale);
 		}
@@ -180,7 +180,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				
 				// controllo sintattico sull'input
 				for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
-					CampoCredenziale campoCredenziale = (CampoCredenziale) iterator.next();
+					CampoCredenziale campoCredenziale = iterator.next();
 					if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
 						throw new InputInvalidoException(null);
 				}
@@ -226,8 +226,8 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 					// controllo semantico sull'input
 					boolean inputValido = true;
 					
-					if (!txtAnnoAcquisto.get().matches("\\d{4}"))
-						inputValido = true;
+					if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+						inputValido = false;
 					
 					if (!inputValido)
 						throw new InputInvalidoException(null);

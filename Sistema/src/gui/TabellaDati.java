@@ -103,6 +103,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 	 * NON usare questo metodo in modo pubblico.
 	 * E' reso pubblico solo per consentire alla classe di essere conforme all'interfaccia Visualizzatore che implementa.
 	 */
+	@Override
 	public void caricaPannelloDati() throws ClassNotFoundException, IOException {
 		
 		pannelloDati.removeAll();

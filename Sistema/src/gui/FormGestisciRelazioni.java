@@ -14,23 +14,24 @@ import javax.swing.JPanel;
 
 import database.Database;
 
+@SuppressWarnings("serial")
 public class FormGestisciRelazioni extends JPanel {
 	
-	private static final long serialVersionUID = 1L;
 	private CampoCredenziale idPersonale;
 	private CampoCredenziale idStrumentazione;
-	private JButton cmdAggiungi;
-	private JButton cmdElimina;
-	private Font fontCampi;
 	private final int ALTEZZA_CAMPI = 40;
 
 	public FormGestisciRelazioni(Visualizzatore v) {
 		
 		super();
 		
-		setLayout(new GridLayout(1, 3));
+		final String regexQualsiasiNumero = "\\d+";
+		final int righeRadioButtons = 1;
+		final int tipiElementi = 3;
+		setLayout(new GridLayout(righeRadioButtons, tipiElementi));
 		
-		fontCampi = new Font("Arial", Font.PLAIN, 16);
+		final int sizeFontCampi = 16;
+		Font fontCampi = new Font("Arial", Font.PLAIN, sizeFontCampi);
 
 		idPersonale = new CampoCredenziale("ID Personale");
 		idPersonale.setPreferredSize(new Dimension(0, ALTEZZA_CAMPI));
@@ -39,7 +40,7 @@ public class FormGestisciRelazioni extends JPanel {
 		idPersonale.setFont(fontCampi);
 		idStrumentazione.setFont(fontCampi);
 		
-		cmdAggiungi = new JButton("Aggiungi");
+		JButton cmdAggiungi = new JButton("Aggiungi");
 		cmdAggiungi.addActionListener(new ActionListener() {
 
 			@Override
@@ -54,27 +55,27 @@ public class FormGestisciRelazioni extends JPanel {
 				String idStrumentazione = FormGestisciRelazioni.this.idStrumentazione.get();
 				
 				boolean inputValido = true;
-				inputValido &= idPersonale.matches("\\d+");
-				inputValido &= idStrumentazione.matches("\\d+");
+				inputValido &= idPersonale.matches(regexQualsiasiNumero);
+				inputValido &= idStrumentazione.matches(regexQualsiasiNumero);
 				if (inputValido) {
 					try {
 						Database dbElementi = new Database();
 						String queryInserisci = "INSERT INTO Utilizzo (idPersonale, idStrumentazione) VALUES (" + idPersonale + ", " + idStrumentazione + ")";
 						dbElementi.eseguiQuery(queryInserisci);
 					} catch (ClassNotFoundException | SQLException | IOException e1) {
-						e1.printStackTrace();
+						try {
+							throw new InputInvalidoException(null);
+						} catch (InputInvalidoException e2) {;}
 					}
 				}
 				
 				try {
 					v.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {
-					e1.printStackTrace();
-				}
+				} catch (ClassNotFoundException | IOException e1) {;}
 			}
 		});
 		
-		cmdElimina = new JButton("Elimina");
+		JButton cmdElimina = new JButton("Elimina");
 		cmdElimina.addActionListener(new ActionListener() {
 
 			@Override
@@ -84,23 +85,19 @@ public class FormGestisciRelazioni extends JPanel {
 				String idStrumentazione = FormGestisciRelazioni.this.idStrumentazione.get();
 				
 				boolean inputValido = true;
-				inputValido &= idPersonale.matches("\\d+");
-				inputValido &= idStrumentazione.matches("\\d+");
+				inputValido &= idPersonale.matches(regexQualsiasiNumero);
+				inputValido &= idStrumentazione.matches(regexQualsiasiNumero);
 				if (inputValido) {
 					try {
 						Database dbElementi = new Database();
 						String queryElimina = "DELETE FROM Utilizzo WHERE idPersonale = " + idPersonale + " AND idStrumentazione = " + idStrumentazione;
 						dbElementi.eseguiQuery(queryElimina);
-					} catch (ClassNotFoundException | SQLException | IOException e1) {
-						e1.printStackTrace();
-					}
+					} catch (ClassNotFoundException | SQLException | IOException e1) {;}
 				}
 				
 				try {
 					v.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {
-					e1.printStackTrace();
-				}
+				} catch (ClassNotFoundException | IOException e1) {;}
 			}
 			
 		});

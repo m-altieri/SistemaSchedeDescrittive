@@ -1,6 +1,6 @@
 package entità;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Layout della scheda descrittiva.
@@ -10,19 +10,19 @@ import java.util.HashMap;
 public class Template {
 
 	private String testoStatico;
-	private HashMap<String, Boolean> attributi;
+	private LinkedHashMap<String, Boolean> attributi;
 	
 	public Template() {
 		
-		this("", new HashMap<String, Boolean>());
+		this("", new LinkedHashMap<String, Boolean>());
 	}
 	
 	public Template(String testoStatico) {
 		
-		this(testoStatico, new HashMap<String, Boolean>());
+		this(testoStatico, new LinkedHashMap<String, Boolean>());
 	}
 	
-	public Template(String testoStatico, HashMap<String, Boolean> attributi) {
+	public Template(String testoStatico, LinkedHashMap<String, Boolean> attributi) {
 		
 		this.testoStatico = testoStatico;
 		this.attributi = attributi;
@@ -38,12 +38,12 @@ public class Template {
 		this.testoStatico = testoStatico;
 	}
 
-	public HashMap<String, Boolean> getAttributi() {
+	public LinkedHashMap<String, Boolean> getAttributi() {
 		
 		return attributi;
 	}
 
-	public void setAttributi(HashMap<String, Boolean> attributi) {
+	public void setAttributi(LinkedHashMap<String, Boolean> attributi) {
 		
 		this.attributi = attributi;
 	}
