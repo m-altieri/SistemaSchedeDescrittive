@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -42,7 +43,25 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 		id = new CampoCredenziale("ID");
 		cmdConferma = new JButton("Elimina");
 		cmdConferma.setActionCommand("Conferma");
-		cmdConferma.addActionListener(this);
+		cmdConferma.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					if (id.getText().equals("") || id.getText().equals("ID")) {
+						throw new InputInvalidoException(null);
+					}
+					
+					int risposta = JOptionPane.showConfirmDialog(null, "Sicuro? Eventuali dati referenziati verranno rimossi", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (!(risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION)) {
+						eliminaElemento(id.getText());
+					}
+					
+				} catch (/*InputInvalidoException*/ Exception e1) {e1.printStackTrace();}
+			}
+			
+		});
 		form.setLayout(new FlowLayout());
 		form.add(id);
 		form.add(cmdConferma);
@@ -71,17 +90,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 			tSpazio = new TabellaDati(Spazio.class);
 			add(tSpazio, BorderLayout.CENTER);
 			break;
-		case "Conferma":
-			if (id.getText().equals("") || id.getText().equals("ID")) {
-				try {
-					throw new InputInvalidoException(this);
-				} catch (InputInvalidoException e1) {;}
-			}
-			
-			int risposta = JOptionPane.showConfirmDialog(this, "Sicuro? Eventuali dati referenziati verranno rimossi", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			if (!(risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION)) {
-				eliminaElemento(id.getText());
-			}
+		default:
 			break;
 		}
 		
@@ -112,7 +121,9 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 			dbElementi = new Database();
 			query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id);
 			dbElementi.eseguiQuery(query);
-		} catch (Exception f) {;}
+		} catch (Exception f) {
+			JOptionPane.showMessageDialog(null, "Elemento presente in una relazione", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
 		
 		try {
 			if (tabella.equals("Personale"))
@@ -121,10 +132,9 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 				tStrumentazione.caricaPannelloDati();
 			else
 				tSpazio.caricaPannelloDati();
-		} catch (ClassNotFoundException | IOException e1) {
-			
-			e1.printStackTrace();
-		}
+		} catch (ClassNotFoundException | IOException e) {}
+		
+		this.paintAll(getGraphics());
 	}
 
 }

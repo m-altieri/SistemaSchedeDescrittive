@@ -142,7 +142,7 @@ public class Registrazione extends JFrame implements ActionListener {
 						throw new InputInvalidoException(null);
 				}
 				
-				if (alreadyExists(nome, pass))
+				if (alreadyExists(nome))
 					throw new UtenteGi‡EsistenteException(nome);
 				
 				String codice = codiceAmministratore.get();
@@ -190,13 +190,14 @@ public class Registrazione extends JFrame implements ActionListener {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	private boolean alreadyExists(String user, String pass) throws ClassNotFoundException, IOException, SQLException {
+	private boolean alreadyExists(String user) throws ClassNotFoundException, IOException, SQLException {
 
 		Database dbUtility = new Database(true);
-		String queryEsiste = "SELECT * FROM Utente WHERE nomeUtente = '" + username.get() + "' AND password = '" + pass + "'";
+		String queryEsiste = "SELECT NomeUtente FROM Utente WHERE nomeUtente = '" + username.get() + "'";
 		ResultSet match = dbUtility.eseguiQueryRitorno(queryEsiste);
 		
-		return match.next();
+		match.next();
+		return match.getString(1).equals(user);
 	}
 	
 	/**

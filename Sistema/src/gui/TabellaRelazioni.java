@@ -132,12 +132,13 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 	 */
 	private void chiudiResultSets(ResultSet... resultSets) {
 		
-		for (ResultSet rs : resultSets) {
-			if (rs != null) {
-				try {
+		try {
+			for (ResultSet rs : resultSets) {
+				if (rs != null) {
 					rs.close();
-				} catch (SQLException e) {;}
+				}
 			}
-		}
+		} catch (SQLException e) {;}
+
 	}
 }

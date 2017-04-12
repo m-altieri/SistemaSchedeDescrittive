@@ -81,9 +81,8 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		Database db = null;
 		try {
 			db = new Database();
-		} catch (ClassNotFoundException | IOException e1) {
-			e1.printStackTrace();
-		}
+		} catch (ClassNotFoundException | IOException e) {;}
+		
 		ResultSet rs = null;
 		try {
 			rs = db.eseguiQueryRitorno("SELECT column_name FROM information_schema.columns WHERE table_name = '" + tipo.getSimpleName() + "'");
