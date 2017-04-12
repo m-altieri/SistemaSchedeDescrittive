@@ -41,7 +41,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 		form = new JPanel();
 		id = new CampoCredenziale("ID");
 		cmdConferma = new JButton("Elimina");
-		cmdConferma.setActionCommand("cmdConferma");
+		cmdConferma.setActionCommand("Conferma");
 		cmdConferma.addActionListener(this);
 		form.setLayout(new FlowLayout());
 		form.add(id);
@@ -56,83 +56,74 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		rimuoviPannelli();
 
-		if (e.getActionCommand().equals("Personale")) {
-			
-			this.remove(tStrumentazione);
-			this.remove(tSpazio);
-			this.remove(tPersonale);
-			
+		switch (e.getActionCommand()) {
+		case "Personale":
 			tPersonale = new TabellaDati(Personale.class);
-			this.add(tPersonale, BorderLayout.CENTER);
-			this.paintAll(this.getGraphics());
-		}
-		
-		if (e.getActionCommand().equals("Strumentazione")) {
-			
-			this.remove(tPersonale);
-			this.remove(tSpazio);
-			this.remove(tStrumentazione);
-			
+			add(tPersonale, BorderLayout.CENTER);
+			break;
+		case "Strumentazione":
 			tStrumentazione = new TabellaDati(Strumentazione.class);
-			this.add(tStrumentazione, BorderLayout.CENTER);
-			this.paintAll(this.getGraphics());
-		}
-		
-		if (e.getActionCommand().equals("Spazio")) {
-			
-			this.remove(tPersonale);
-			this.remove(tStrumentazione);
-			this.remove(tSpazio);
-
+			add(tStrumentazione, BorderLayout.CENTER);
+			break;
+		case "Spazio":
 			tSpazio = new TabellaDati(Spazio.class);
-			this.add(tSpazio, BorderLayout.CENTER);
-			this.paintAll(this.getGraphics());
+			add(tSpazio, BorderLayout.CENTER);
+			break;
+		case "Conferma":
+			if (id.getText().equals("") || id.getText().equals("ID")) {
+				try {
+					throw new InputInvalidoException(this);
+				} catch (InputInvalidoException e1) {;}
+			}
+			
+			int risposta = JOptionPane.showConfirmDialog(this, "Sicuro? Eventuali dati referenziati verranno rimossi", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (!(risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION)) {
+				eliminaElemento(id.getText());
+			}
+			break;
 		}
 		
-		if (e.getActionCommand().equals("cmdConferma")) {
-			
-			try { 
-									
-				if (id.getText().equals("") || id.getText().equals("ID")) {
+		this.paintAll(this.getGraphics());
+	}
 	
-					throw new InputInvalidoException(this);
-				}
-				
-				int risposta = JOptionPane.showConfirmDialog(this, "Sicuro? Eventuali dati referenziati verranno rimossi", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (risposta == JOptionPane.CLOSED_OPTION || risposta == JOptionPane.NO_OPTION) {
-					return;
-				}
-				
-				Database dbElementi = null;
-				String query = null;
-				
-				String tabella = null;
-				if (super.rdPersonale.isSelected())
-					tabella = "Personale";
-				else if (super.rdStrumentazione.isSelected())
-					tabella = "Strumentazione";
-				else
-					tabella = "Spazio";
-				
-				try {
-					dbElementi = new Database();
-					query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id.get());
-					dbElementi.eseguiQuery(query);
-				} catch (Exception f) {;}
-				
-				try {
-					if (tabella.equals("Personale"))
-						tPersonale.caricaPannelloDati();
-					else if (tabella.equals("Strumentazione"))
-						tStrumentazione.caricaPannelloDati();
-					else
-						tSpazio.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {
-					
-					e1.printStackTrace();
-				}
-			} catch (InputInvalidoException f) {;}
+	private void rimuoviPannelli() {
+		
+		remove(tPersonale);
+		remove(tStrumentazione);
+		remove(tSpazio);
+	}
+	
+	private void eliminaElemento(String id) {
+
+		Database dbElementi = null;
+		String query = null;
+		
+		String tabella = null;
+		if (super.rdPersonale.isSelected())
+			tabella = "Personale";
+		else if (super.rdStrumentazione.isSelected())
+			tabella = "Strumentazione";
+		else
+			tabella = "Spazio";
+		
+		try {
+			dbElementi = new Database();
+			query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id);
+			dbElementi.eseguiQuery(query);
+		} catch (Exception f) {;}
+		
+		try {
+			if (tabella.equals("Personale"))
+				tPersonale.caricaPannelloDati();
+			else if (tabella.equals("Strumentazione"))
+				tStrumentazione.caricaPannelloDati();
+			else
+				tSpazio.caricaPannelloDati();
+		} catch (ClassNotFoundException | IOException e1) {
+			
+			e1.printStackTrace();
 		}
 	}
 

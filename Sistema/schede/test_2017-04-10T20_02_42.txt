@@ -1,4 +1,0 @@
-Scheda descrittiva Personale
-Titolo: test
-
-Nome                                    Cognome                                 

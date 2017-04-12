@@ -68,9 +68,15 @@ public class ManualeUtente extends JFrame {
 		try {
 			s = new Scanner(new File("files" + File.separator + "ManualeUtente.txt"));
 			
-			while (s.hasNextLine()) {
+			boolean continua = s.hasNextLine();
+			while (continua) {
 				String riga = s.nextLine();
-				text.setText(text.getText() + riga + System.lineSeparator());
+				final String newLine = "\n";
+				text.setText(text.getText() + riga + newLine);
+				
+				if (!s.hasNextLine()) {
+					continua = false;
+				}
 			}
 			
 		} catch (FileNotFoundException e) {

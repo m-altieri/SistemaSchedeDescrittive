@@ -1,2 +1,1 @@
-strumentazione
-perdonale
+Testo statico di default.

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -138,8 +139,11 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 			try {
 				
 				Database dbUtility = new Database(true);
-				String query = "SELECT * FROM Utente WHERE nomeUtente = '" + username.get() + "' AND password = '" + pass + "'";
-				match = dbUtility.eseguiQueryRitorno(query);
+				String query = "SELECT * FROM Utente WHERE nomeUtente = ? AND password = ?";
+				PreparedStatement ps = dbUtility.preparaQuery(query);
+				ps.setString(1, username.get());
+				ps.setString(2, pass);
+				match = dbUtility.eseguiQueryPreparataRitorno(ps);
 				boolean esiste = match.next();
 				
 				final int COLONNA_ADMIN = 4;
@@ -156,15 +160,15 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 				
 			} catch (SQLException | ClassNotFoundException | IOException f) {
 				JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
-				cmdLogin.setEnabled(true);
-				cmdRegistrati.setEnabled(true);
-				update(getGraphics());
 			} finally {
 				if (match != null) {
 					try {
 						match.close();
 					} catch (SQLException e1) {;}
 				}
+				cmdLogin.setEnabled(true);
+				cmdRegistrati.setEnabled(true);
+				update(getGraphics());
 			}
 			
 		}

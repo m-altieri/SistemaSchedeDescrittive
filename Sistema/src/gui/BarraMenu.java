@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -14,7 +15,7 @@ import javax.swing.JMenuItem;
  * Permette di selezionare le funzioni del sistema.
  */
 @SuppressWarnings("serial")
-public class BarraMenu extends JMenuBar {
+public class BarraMenu extends JMenuBar implements ActionListener {
 
 	private PannelloInserisciDati pid;
 	private PannelloModificaDati pmd;
@@ -22,6 +23,8 @@ public class BarraMenu extends JMenuBar {
 	private PannelloEliminaDati ped;
 	private PannelloGestisciRelazioni pgr;
 	private PannelloProduciSchede pps;
+	
+	private Client finestra;
 	
 	/**
 	 * Crea la barra e tutti i suoi item.
@@ -38,6 +41,7 @@ public class BarraMenu extends JMenuBar {
 		final int LARGHEZZA = 500;
 		final int ALTEZZA = 50;
 		
+		this.finestra = finestra;
 		Font fontMenu = new Font("Arial", Font.PLAIN, GRANDEZZA_FONT);
 		setPreferredSize(new Dimension(LARGHEZZA, ALTEZZA));
 		
@@ -80,108 +84,26 @@ public class BarraMenu extends JMenuBar {
 		logout.setFont(fontMenu);
 		diventaAmministratore.setFont(fontMenu);
 		
-		modifica.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				finestra.remove(pid);
-				finestra.remove(ped);
-				finestra.remove(pvd);
-				finestra.remove(pgr);
-				finestra.remove(pps);
-				finestra.setTitle("Sistema schede descrittive - Modifica dati");
-				pmd = new PannelloModificaDati();
-				finestra.add(pmd, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
-		elimina.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				finestra.remove(pmd);
-				finestra.remove(pvd);
-				finestra.remove(pid);
-				finestra.remove(pgr);
-				finestra.remove(pps);
-				finestra.setTitle("Sistema schede descrittive - Eliminazione dati");
-				ped = new PannelloEliminaDati();
-				finestra.add(ped, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
-		inserisci.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				finestra.remove(pmd);
-				finestra.remove(pvd);
-				finestra.remove(ped);
-				finestra.remove(pgr);
-				finestra.remove(pps);
-				finestra.setTitle("Sistema schede descrittive - Inserimento dati");
-				pid = new PannelloInserisciDati();
-				finestra.add(pid, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
-		visualizza.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				finestra.remove(pmd);
-				finestra.remove(pid);
-				finestra.remove(ped);
-				finestra.remove(pgr);
-				finestra.remove(pps);
-				finestra.setTitle("Sistema schede descrittive - Visualizzazione dati");
-				pvd = new PannelloVisualizzaDati();
-				finestra.add(pvd, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
-		relazioni.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				finestra.remove(pid);
-				finestra.remove(pmd);
-				finestra.remove(ped);
-				finestra.remove(pvd);
-				finestra.remove(pps);
-				finestra.setTitle("Sistema schede descrittive - Gestione relazioni");
-				pgr = new PannelloGestisciRelazioni();
-				finestra.add(pgr, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
-		produciSchede.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				finestra.remove(pid);
-				finestra.remove(pmd);
-				finestra.remove(pvd);
-				finestra.remove(pgr);
-				finestra.remove(ped);
-				finestra.setTitle("Sistema schede descrittive - Produzione schede");
-				pps = new PannelloProduciSchede();
-				finestra.add(pps, BorderLayout.CENTER);
-				finestra.paintAll(finestra.getGraphics());
-			}
-			
-		});
+		inserisci.setActionCommand("Inserimento dati");
+		inserisci.addActionListener(this);
+		modifica.setActionCommand("Modifica dati");
+		modifica.addActionListener(this);
+		elimina.setActionCommand("Eliminazione dati");
+		elimina.addActionListener(this);
+		visualizza.setActionCommand("Visualizzazione dati");
+		visualizza.addActionListener(this);
+		relazioni.setActionCommand("Gestione relazioni");
+		relazioni.addActionListener(this);
+		produciSchede.setActionCommand("Produzione schede");
+		produciSchede.addActionListener(this);
+		
+		modifica.addActionListener(this);
+		elimina.addActionListener(this);
+		inserisci.addActionListener(this);
+		visualizza.addActionListener(this);
+		relazioni.addActionListener(this);
+		produciSchede.addActionListener(this);
+		
 		cambiaCodiceAmministratore.addActionListener(new ActionListener() {
 
 			@Override
@@ -257,6 +179,62 @@ public class BarraMenu extends JMenuBar {
 		add(amministrazione);
 		add(aiuto);
 		add(account);
+	}
+	
+	/**
+	 * Rimuove il pannello attualmente impostato sul Client, qualunque esso sia.
+	 */
+	private void rimuoviPannelli() {
+		
+		finestra.remove(pid);
+		finestra.remove(pmd);
+		finestra.remove(ped);
+		finestra.remove(pvd);
+		finestra.remove(pgr);
+		finestra.remove(pps);
+	}
+
+	/**
+	 * Questo metodo è dedicato ai pulsanti inserisci, modifica, elimina, visualizza, gestisci relazioni, e produci schede.
+	 * Per le altre funzioni l'action listener è all'interno del costruttore.
+	 * @param e
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		rimuoviPannelli();
+		finestra.setTitle("Sistema Schede Descrittive - " + e.getActionCommand());
+		
+		switch (e.getActionCommand()) {
+		case "Inserimento dati":
+			pid = new PannelloInserisciDati();
+			finestra.add(pid, BorderLayout.CENTER);
+			break;
+		case "Modifica dati":
+			pmd = new PannelloModificaDati();
+			finestra.add(pmd, BorderLayout.CENTER);
+			break;
+		case "Eliminazione dati":
+			ped = new PannelloEliminaDati();
+			finestra.add(ped, BorderLayout.CENTER);
+			break;
+		case "Visualizzazione dati":
+			pvd = new PannelloVisualizzaDati();
+			finestra.add(pvd, BorderLayout.CENTER);
+			break;
+		case "Gestione relazioni":
+			pgr = new PannelloGestisciRelazioni();
+			finestra.add(pgr, BorderLayout.CENTER);
+			break;
+		case "Produzione schede":
+			pps = new PannelloProduciSchede();
+			finestra.add(pps, BorderLayout.CENTER);
+			break;
+		default:
+			break;
+		}
+		
+		finestra.paintAll(finestra.getGraphics());
 	}
 
 }

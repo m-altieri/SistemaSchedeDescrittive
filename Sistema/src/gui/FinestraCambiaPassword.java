@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -21,7 +22,7 @@ import database.Database;
 /**
  * Finestra della GUI per cambiare la password dell'account attualmente loggato.
  */
-public class FinestraCambiaPassword extends JFrame {
+public class FinestraCambiaPassword extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPasswordField pass;
@@ -82,42 +83,49 @@ public class FinestraCambiaPassword extends JFrame {
 		pass.setPreferredSize(new Dimension(LARGHEZZA_CAMPO_PASS, ALTEZZA_CAMPO_PASS));
 		
 		JButton conferma = new JButton("Conferma");
-		conferma.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					Database dbUtility = new Database(true);
-					String password = "";
-					
-					char[] charPassword = pass.getPassword();
-					for (int i = 0; i < charPassword.length; i++) {
-						password = password.concat(String.valueOf(pass.getPassword()[i]));
-					}
-
-					boolean inputValido = true;
-					if (password.length() < 8 || password.contains(" ")) {
-						inputValido = false;
-					}
-					if (!inputValido) {
-						throw new InputInvalidoException(null);
-					}
-					
-					String query = "UPDATE Utente SET password = '" + password + "' WHERE nomeUtente = '" + FinestraCambiaPassword.this.user + "'";
-					dbUtility.eseguiQuery(query);
-					
-					dispose();
-					JOptionPane.showMessageDialog(null, "Password cambiata con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
-				} catch (ClassNotFoundException | IOException | SQLException e1) {
-					JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
-				} catch (InputInvalidoException f) {;}
-			}
-		});
+		conferma.addActionListener(this);
 		conferma.setPreferredSize(new Dimension(LARGHEZZA_PULSANTE_CONFERMA, ALTEZZA_PULSANTE_CONFERMA));
 		
 		add(new JLabel("Nuova password (almeno 8 caratteri)"));
 		add(pass);
 		add(conferma);
+	}
+
+	/**
+	 * Metodo eseguito al clic sul pulsante di conferma.
+	 * Esegue le operazioni di basso livello necessarie a cambiare la password.
+	 * In particolare invia al database una query di update e mostra delle finestre in caso di errore.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		try {
+			Database dbUtility = new Database(true);
+			String password = "";
+			
+			char[] charPassword = pass.getPassword();
+			for (int i = 0; i < charPassword.length; i++) {
+				password = password.concat(String.valueOf(pass.getPassword()[i]));
+			}
+
+			boolean inputValido = true;
+			if (password.length() < 8 || password.contains(" ")) {
+				inputValido = false;
+			}
+			if (!inputValido) {
+				throw new InputInvalidoException(null);
+			}
+			
+			String query = "UPDATE Utente SET password = ? WHERE nomeUtente = ?";
+			PreparedStatement ps = dbUtility.preparaQuery(query);
+			ps.setString(1, password);
+			ps.setString(2, FinestraCambiaPassword.this.user);
+			dbUtility.eseguiQueryPreparata(ps);
+			
+			dispose();
+			JOptionPane.showMessageDialog(null, "Password cambiata con successo", "Successo", JOptionPane.INFORMATION_MESSAGE);
+		} catch (ClassNotFoundException | IOException | SQLException e1) {
+			JOptionPane.showMessageDialog(null, "Errore di connessione al server", "Errore", JOptionPane.ERROR_MESSAGE);
+		} catch (InputInvalidoException f) {;}
 	}
 }

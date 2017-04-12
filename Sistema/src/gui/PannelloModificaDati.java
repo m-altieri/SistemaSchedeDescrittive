@@ -13,6 +13,7 @@ import entità.Strumentazione;
 public class PannelloModificaDati extends PannelloGestisciDati {
 
 	private static final long serialVersionUID = 1L;
+
 	private TabellaDati tPersonale;
 	private TabellaDati tStrumentazione;
 	private TabellaDati tSpazio;
@@ -42,42 +43,33 @@ public class PannelloModificaDati extends PannelloGestisciDati {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getActionCommand().equals("Personale")) {
-			
-			this.remove(tStrumentazione);
-			this.remove(tSpazio);
-			this.remove(fStrumentazione);
-			this.remove(fSpazio);
-			
+		rimuoviPannelli();
+		
+		switch (e.getActionCommand()) {
+		case "Personale":
 			this.add(tPersonale, BorderLayout.CENTER);
 			this.add(fPersonale, BorderLayout.SOUTH);
-			this.paintAll(this.getGraphics());
-		}
-		
-		if (e.getActionCommand().equals("Strumentazione")) {
-			
-			this.remove(tPersonale);
-			this.remove(tSpazio);
-			this.remove(fPersonale);
-			this.remove(fSpazio);
-			
+			break;
+		case "Strumentazione":
 			this.add(tStrumentazione, BorderLayout.CENTER);
 			this.add(fStrumentazione, BorderLayout.SOUTH);
-			this.paintAll(this.getGraphics());
-		}
-		
-		if (e.getActionCommand().equals("Spazio")) {
-			
-			this.remove(tPersonale);
-			this.remove(tStrumentazione);
-			this.remove(fPersonale);
-			this.remove(fStrumentazione);
-			
+			break;
+		case "Spazio":
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.add(fSpazio, BorderLayout.SOUTH);
-			this.paintAll(this.getGraphics());
+			break;
 		}
 		
+		this.paintAll(this.getGraphics());
+	}
+	
+	private void rimuoviPannelli() {
 		
+		remove(tPersonale);
+		remove(fPersonale);
+		remove(tStrumentazione);
+		remove(fStrumentazione);
+		remove(tSpazio);
+		remove(fSpazio);
 	}
 }

@@ -59,7 +59,7 @@ public class FinestraCambiaCodice extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 	
-				if (codice.get().length() < 8) {
+				if (codice.get().length() != 8) {
 					try {
 						throw new InputInvalidoException(null);
 					} catch (InputInvalidoException f) {;}

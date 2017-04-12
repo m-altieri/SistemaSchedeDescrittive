@@ -26,7 +26,7 @@ public class Client extends JFrame {
 		super();
 		
 		setIconImage(new ImageIcon("icon.png").getImage());
-		setTitle("Sistema schede descrittive");
+		setTitle("Sistema Schede Descrittive");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		setExtendedState(Frame.MAXIMIZED_BOTH);

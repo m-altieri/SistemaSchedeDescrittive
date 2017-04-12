@@ -7,6 +7,7 @@ import java.io.FileInputStream;
  */
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,11 +32,7 @@ public class Database {
 	 */
 	public Database() throws ClassNotFoundException, SQLException, IOException {
 
-		fileCredenziali = new File(PERCORSO_CREDENZIALI_DBELEMENTI);
-		
-		credenziali = ottieniCredenziali(fileCredenziali);
-		connessione = ottieniConnessione(credenziali);
-		nome = "DBElementi";
+		this(false);
 	}
 	
 	/**
@@ -139,18 +136,6 @@ public class Database {
 	}
 	
 	/**
-	 * Esegue la query volta ad avvisare il server che si intende utilizzare il seguente database.
-	 * Non è obbligatoria se si utilizza un database MS-SQL.
-	 * @throws SQLException
-	 */
-	public void usa() throws SQLException {
-		
-		java.sql.Statement stmt = connessione.getConnessione().createStatement();
-		stmt.execute("USE " + this.credenziali.getNome());
-		stmt.close();
-	}
-	
-	/**
 	 * Esegue la query, passata in input come parametro, su questo database.
 	 * Utilizzare questo metodo solo per query che non producono un output (come inserimento, eliminazione, ecc).
 	 * Per poter invocare questo metodo, questo oggetto deve già avere una connessione stabilita.
@@ -175,6 +160,46 @@ public class Database {
 	public ResultSet eseguiQueryRitorno(String q) throws SQLException {
 		
 		java.sql.Statement stmt = connessione.getConnessione().createStatement();
-		return stmt.executeQuery(q);
+		ResultSet rs = stmt.executeQuery(q);
+		return rs;
 	}
+
+	/**
+	 * Restituisce un oggetto PreparedStatement inizializzato con la query passata come argomento.
+	 * La query da passare può contenere i placemarker '?' per le query dinamiche.
+	 * @param q La query da preparare, può contenere i placemarker '?'.
+	 * @return Oggetto PreparedStatement.
+	 * @throws SQLException
+	 */
+	public PreparedStatement preparaQuery(String q) throws SQLException {
+		
+		java.sql.PreparedStatement pstmt = connessione.getConnessione().prepareStatement(q);
+		return pstmt;
+	}
+	
+	/**
+	 * Esegue la query preparata nel caso di query che NON prevedono un result set di ritorno.
+	 * Prima di eseguire questo metodo sostituire gli eventuali placemarker '?' con i corretti valori, utilizzando
+	 * i metodi di PreparedStatement.
+	 * @param ps La query preparata.
+	 * @throws SQLException
+	 */
+	public void eseguiQueryPreparata(PreparedStatement ps) throws SQLException {
+		
+		ps.execute();
+	}
+	
+	/**
+	 * Esegue la query preparata nel caso di query che PREVEDONO un result set di ritorno.
+	 * Prima di eseguire questo metodo sostituire gli eventuali placemarker '?' con i corretti valori, utilizzando
+	 * i metodi di PreparedStatement
+	 * @param ps La query preparata.
+	 * @return L'oggetto ResultSet contenente il result set di ritorno.
+	 * @throws SQLException
+	 */
+	public ResultSet eseguiQueryPreparataRitorno(PreparedStatement ps) throws SQLException {
+		
+		return ps.executeQuery();
+	}
+	
 }

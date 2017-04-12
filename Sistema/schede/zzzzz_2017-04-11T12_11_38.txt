@@ -1,8 +1,0 @@
-Scheda descrittiva Utilizzo
-Titolo: zzzzz
-strumentazione
-perdonale
-
-IdPersonale                             IdStrumentazione                        
-11                                      12                                      
-11                                      10                                      

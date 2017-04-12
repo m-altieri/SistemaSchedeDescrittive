@@ -1,7 +1,0 @@
-Scheda descrittiva Spazio
-Titolo: scheda005
-strumentazione
-perdonale
-
-Ubicazione                              NumeroPorte                             Grandezza                               
-primopiano                              10                                      1200.45                                 

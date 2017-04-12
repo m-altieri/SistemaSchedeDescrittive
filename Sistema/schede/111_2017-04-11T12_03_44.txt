@@ -1,7 +1,0 @@
-Scheda descrittiva Personale
-Titolo: 111
-strumentazione
-perdonale
-
-Nome                                    Cognome                                 Email                                   Telefono                                Residenza                               Mansione                                CittaNascita                            
-emanuele                                ste                                     bababa@hotmail.it                       3334334334                              bari                                    operiaio                                bariu                                   

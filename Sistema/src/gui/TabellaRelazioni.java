@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -63,6 +64,11 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 		} catch (ClassNotFoundException | IOException e) {;}
 	}
 	
+	/**
+	 * Carica il pannello con tutte le relazioni tra gli elementi di Personale e Strumentazioni.
+	 * Per ogni elementi viene caricato l'id, inoltre per il personale viene caricato anche il nome e il cognome, e 
+	 * per le strumentazioni solo il nome.
+	 */
 	@Override
 	public void caricaPannelloDati() throws ClassNotFoundException, IOException {
 
@@ -84,16 +90,21 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 				String idPers = rs.getString(colonnaIdPers);
 				String idStru = rs.getString(colonnaIdStru);
 				
-				String queryOttieniNomePers = "SELECT Nome, Cognome FROM Personale WHERE id = " + idPers;
-				String queryOttieniNomeStru = "SELECT Nome FROM Strumentazione WHERE id = " + idStru;
+				String queryOttieniNomePers = "SELECT Nome, Cognome FROM Personale WHERE id = ?";
+				PreparedStatement psPers = elementi.preparaQuery(queryOttieniNomePers);
+				psPers.setString(1, idPers);
+				
+				String queryOttieniNomeStru = "SELECT Nome FROM Strumentazione WHERE id = ?";
+				PreparedStatement psStru = elementi.preparaQuery(queryOttieniNomeStru);
+				psStru.setString(1, idStru);
 				
 				final int colonnaNomePers = 1;
 				final int colonnaCognomePers = 2;
 				final int colonnaNomeStru = 1;
-				nomePers = elementi.eseguiQueryRitorno(queryOttieniNomePers);
+				nomePers = elementi.eseguiQueryPreparataRitorno(psPers);
 				nomePers.next();
 				idPers = idPers.concat(" - " + nomePers.getString(colonnaNomePers) + " " + nomePers.getString(colonnaCognomePers));
-				nomeStru = elementi.eseguiQueryRitorno(queryOttieniNomeStru);
+				nomeStru = elementi.eseguiQueryPreparataRitorno(psStru);
 				nomeStru.next();
 				idStru = idStru.concat(" - " + nomeStru.getString(colonnaNomeStru));
 				
@@ -107,23 +118,26 @@ public class TabellaRelazioni extends JPanel implements Visualizzatore {
 		} catch (SQLException e) {
 			;
 		} finally {
+			chiudiResultSets(rs, nomePers, nomeStru);
+		}
+		
+		this.paintAll(this.getGraphics());
+	}
+	
+	/**
+	 * Metodo di servizio strettamente collegato a caricaPannelloDati().
+	 * Chiude le risorse ResultSet passate come argomento.
+	 * @param resultSets
+	 * @see public void caricaPannelloDati() throws ClassNotFoundException, IOException
+	 */
+	private void chiudiResultSets(ResultSet... resultSets) {
+		
+		for (ResultSet rs : resultSets) {
 			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {;}
 			}
-			if (nomePers != null) {
-				try {
-					nomePers.close();
-				} catch (SQLException e) {;}
-			}
-			if (nomeStru != null) {
-				try {
-					nomeStru.close();
-				} catch (SQLException e) {;}
-			}
 		}
-		
-		this.paintAll(this.getGraphics());
 	}
 }
