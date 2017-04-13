@@ -6,8 +6,6 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
@@ -116,10 +114,9 @@ public class FormModificaDati extends FormInserisciDati {
 				
 		} catch (InputInvalidoException f) {;}		
 	}
-
-	private void modificaElemento() {
+	
+	private int estraiSpazio() {
 		
-		// Estrazione id spazio
 		int idSpazio = 0;
 		if (cmbSpazio != null) {
 			String spazio = cmbSpazio.getSelectedItem().toString();
@@ -129,6 +126,12 @@ public class FormModificaDati extends FormInserisciDati {
 			else if (!spazio.isEmpty())
 				idSpazio = Integer.parseInt(spazio);
 		}
+		return idSpazio;
+	}
+
+	private void modificaElemento() {
+		
+		int idSpazio = estraiSpazio();
 		
 		Database db = null;
 		String queryModifica = null;
@@ -148,7 +151,7 @@ public class FormModificaDati extends FormInserisciDati {
 						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
 						"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
 						txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
-						"' WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+						"', spazio = null WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
 								
 			} else if (className.equals(Strumentazione.class.getSimpleName())) {
 
@@ -159,7 +162,7 @@ public class FormModificaDati extends FormInserisciDati {
 					else
 						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
 								"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
-								txtAnnoAcquisto.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+								txtAnnoAcquisto.get() + ", spazio = null WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
 							
 			} else {
 		
@@ -175,47 +178,4 @@ public class FormModificaDati extends FormInserisciDati {
 		}
 	}
 
-	/**
-	 * Controlla che l'input inserito sia sintatticamente corretto, ovvero che non abbia spazi
-	 * lasciati vuoti.
-	 * @throws InputInvalidoException
-	 */
-	private boolean controllaInput() {
-
-		boolean isValid = true;
-		
-		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
-			CampoCredenziale campoCredenziale = iterator.next();
-			if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
-				isValid = false;
-		}
-		
-		if (className.equals(Personale.class.getSimpleName())) {
-						
-			if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-				isValid = false;
-			if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-				isValid = false;
-			if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
-				isValid = false;
-			if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
-				isValid = false;
-			
-		} else if (className.equals(Strumentazione.class.getSimpleName())) {
-						
-			if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
-				isValid = false;
-							
-		} else {
-						
-			if (!txtNumeroFinestre.get().matches("\\d+"))
-				isValid = false;
-			if (!txtNumeroPorte.get().matches("\\d+"))
-				isValid = false;
-			if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
-				isValid = false;
-		}
-		
-		return isValid;
-	}
 }

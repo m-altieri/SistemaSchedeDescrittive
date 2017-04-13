@@ -188,15 +188,24 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		} catch (InputInvalidoException f) {;}
 		
 	}
+	
+	private int estraiSpazio() {
+		
+		int idSpazio = 0;
+		if (cmbSpazio != null) {
+			String spazio = cmbSpazio.getSelectedItem().toString();
+		
+			if (spazio.contains("-"))
+				idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
+			else if (!spazio.isEmpty())
+				idSpazio = Integer.parseInt(spazio);
+		}
+		return idSpazio;
+	}
 
 	private void inserisciElemento() {
 
-		int spazio = 0;
-		if (!className.equals(Spazio.class.getSimpleName())) {
-			if (!cmbSpazio.getSelectedItem().equals("Spazio occupato") && !cmbSpazio.getSelectedItem().equals("")) {
-				spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
-			}
-		}
+		int spazio = estraiSpazio();
 		
 		if (className.equals(Personale.class.getSimpleName())) {
 			Personale p = new Personale();
@@ -231,48 +240,63 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		}
 	}
 
-	private boolean controllaInput() {
-		
+	protected boolean controllaInput() {
+
 		boolean isValid = true;
 		
-		// controllo sintattico sull'input
 		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
 			CampoCredenziale campoCredenziale = iterator.next();
 			if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
 				isValid = false;
 		}
-						
+		
 		if (className.equals(Personale.class.getSimpleName())) {
-			
-			// controllo semantico sull'input
-			
-			if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-				isValid = false;
-			if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-				isValid = false;
-			if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
-				isValid = false;
-			if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
-				isValid = false;
-			
+			isValid = isValid && controllaPersonale();
 		} else if (className.equals(Strumentazione.class.getSimpleName())) {
-			
-			// controllo semantico sull'input
-			
-			if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
-				isValid = false;
-			
-		} else {
-			
-			// controllo semantico dell'input
-			
-			if (!txtNumeroFinestre.get().matches("\\d+"))
-				isValid = false;
-			if (!txtNumeroPorte.get().matches("\\d+"))
-				isValid = false;
-			if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
-				isValid = false;
+			isValid = isValid && controllaStrumentazione();			
+		} else {				
+			isValid = isValid && controllaSpazio();
 		}
+		
+		return isValid;
+	}
+	
+	private boolean controllaPersonale() {
+		
+		boolean isValid = true;
+		
+		if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+			isValid = false;
+		if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+			isValid = false;
+		if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
+			isValid = false;
+		if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
+			isValid = false;
+		
+		return isValid;
+	}
+	
+	private boolean controllaStrumentazione() {
+		
+		boolean isValid = true;
+		
+		if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+			isValid = false;
+	
+		return isValid;
+	}
+	
+	private boolean controllaSpazio() {
+		
+		boolean isValid = true;
+		
+		if (!txtNumeroFinestre.get().matches("\\d+"))
+			isValid = false;
+		if (!txtNumeroPorte.get().matches("\\d+"))
+			isValid = false;
+		if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
+			isValid = false;
 		
 		return isValid;
 	}
