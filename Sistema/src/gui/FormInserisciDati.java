@@ -197,7 +197,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		
 			if (spazio.contains("-"))
 				idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
-			else if (!spazio.isEmpty())
+			else if (!spazio.isEmpty() && !spazio.equals("Spazio occupato"))
 				idSpazio = Integer.parseInt(spazio);
 		}
 		return idSpazio;

@@ -122,7 +122,7 @@ public class FormModificaDati extends FormInserisciDati {
 		
 			if (spazio.contains("-"))
 				idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
-			else if (!spazio.isEmpty())
+			else if (!spazio.isEmpty() && !spazio.equals("Spazio occupato"))
 				idSpazio = Integer.parseInt(spazio);
 		}
 		return idSpazio;
