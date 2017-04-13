@@ -143,7 +143,7 @@ public class Registrazione extends JFrame implements ActionListener {
 				}
 				
 				if (alreadyExists(nome))
-					throw new UtenteGi‡EsistenteException(nome);
+					throw new UtenteGiaEsistenteException(nome);
 				
 				String codice = codiceAmministratore.get();
 				boolean codiceValido = isCodeValid(codice);
@@ -176,7 +176,7 @@ public class Registrazione extends JFrame implements ActionListener {
 					f.printStackTrace();
 				}
 				
-			} catch (UtenteGi‡EsistenteException | ClassNotFoundException | IOException | SQLException | InputInvalidoException g) {;}
+			} catch (UtenteGiaEsistenteException | ClassNotFoundException | IOException | SQLException | InputInvalidoException g) {;}
 		}
 	}
 	

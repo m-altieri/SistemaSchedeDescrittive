@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 /**
  * Eccezione lanciata nel caso in cui si tenti di registrati un utente con lo stesso username di un altro gi‡ esistente.
  */
-public class UtenteGi‡EsistenteException extends Exception {
+public class UtenteGiaEsistenteException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,8 +13,8 @@ public class UtenteGi‡EsistenteException extends Exception {
 	 * Crea l'eccezione.
 	 * @param nome Username inserito.
 	 */
-	public UtenteGi‡EsistenteException(String nome) {
+	public UtenteGiaEsistenteException(String nome) {
 		
-		JOptionPane.showMessageDialog(null, "L'utente " + nome + " esiste gi‡", "Errore", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "L'utente " + nome + " esiste gia'", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 }

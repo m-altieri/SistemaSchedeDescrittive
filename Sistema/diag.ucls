@@ -280,8 +280,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="gui.UtenteGiàEsistenteException" project="SistemaSchedeDescrittive" 
-    file="/SistemaSchedeDescrittive/src/gui/UtenteGiàEsistenteException.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="32" language="java" name="gui.UtenteGiaEsistenteException" project="SistemaSchedeDescrittive" 
+    file="/SistemaSchedeDescrittive/src/gui/UtenteGiaEsistenteException.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="116" width="281" x="2263" y="1105"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
