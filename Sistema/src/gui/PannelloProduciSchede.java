@@ -148,7 +148,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PannelloProduciSchede.this.produciScheda();	
+				produciScheda();	
 			}
 		});
 		
@@ -167,8 +167,8 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 					@SuppressWarnings("unchecked")
 					String tipo = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
 					
-					PannelloProduciSchede.this.azzeraAttributi();
-					PannelloProduciSchede.this.popolaAttributi(tipo);
+					azzeraAttributi();
+					popolaAttributi(tipo);
 					
 					for (JCheckBox c : attributi) {
 						c.setFont(font);
