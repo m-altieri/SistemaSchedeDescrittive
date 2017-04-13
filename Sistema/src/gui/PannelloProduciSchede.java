@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
@@ -38,11 +39,11 @@ import entita.Template;
  * Pannello della GUI per la produzione delle schede. E' possibile dare a una scheda un nome, un tipo,
  * un testo statico e una serie di attributi da visualizzare e di vincoli su di essi.
  */
+@SuppressWarnings("serial")
 public class PannelloProduciSchede extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	private JTextArea txtTestoStatico;
-	private ArrayList<JCheckBox> attributi;
+	private List<JCheckBox> attributi;
 	private LinkedHashMap<String, Boolean> info;
 	private JTextField txtNome;
 	private JComboBox<String> cmbTipo;

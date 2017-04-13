@@ -24,9 +24,9 @@ import database.Database;
  * Gli amministratori hanno delle funzionalità avanzate a disposizione.
  * Al momento della registrazione il sistema controlla se sul server è già presente un utente con lo stesso nome e in tal caso nega la registrazione.
  */
+@SuppressWarnings("serial")
 public class Registrazione extends JFrame implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 	private CampoCredenziale username;
 	private JPasswordField password;
 	private CampoCredenziale codiceAmministratore;

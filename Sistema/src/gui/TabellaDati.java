@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,12 +18,12 @@ import entita.Elemento;
 /**
  * Costituisce la tabella contenente tutti gli elementi di un certo tipo per permettere la visualizzazione all'utente.
  */
+@SuppressWarnings("serial")
 public class TabellaDati extends JPanel implements Visualizzatore {
 
-	private static final long serialVersionUID = 1L;
 	private JPanel pannelloColonne;
 	private JPanel pannelloDati;
-	private ArrayList<String> colonne;
+	private List<String> colonne;
 	private Font fontColonne;
 	private Font fontDati;
 	private Class<? extends Elemento> tipo;
@@ -69,13 +70,13 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 	
 	private ArrayList<String> ottieniColonnePrivato() {
 		
-		ArrayList<String> colonne = null;
+		List<String> colonne = null;
 		
 		try {
 			colonne = ottieniColonne();
 		} catch (SQLException e) {;}
 		
-		return colonne;
+		return (ArrayList<String>) colonne;
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 	 */
 	private ArrayList<String> ottieniColonne() throws SQLException {
 		
-		ArrayList<String> colonne = new ArrayList<String>();
+		List<String> colonne = new ArrayList<String>();
 		Database db = null;
 		try {
 			db = new Database();
@@ -103,7 +104,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		} finally {
 			rs.close();
 		}
-		return colonne;
+		return (ArrayList<String>) colonne;
 	}
 	
 	/**
@@ -115,7 +116,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		
 		pannelloDati.removeAll();
 		
-		ArrayList<String> riga = null;
+		List<String> riga = null;
 		Database elementi = null;
 		ResultSet rs = null;
 		

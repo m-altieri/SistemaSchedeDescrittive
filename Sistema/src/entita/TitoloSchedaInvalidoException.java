@@ -8,9 +8,8 @@ import javax.swing.JOptionPane;
  * leggermente diverso a seconda della data e dell'ora; tuttavia se nonostante ciò i nomi sono ancora uguali,
  * questa eccezione verrà sollevata.
  */
+@SuppressWarnings("serial")
 public class TitoloSchedaInvalidoException extends Exception {
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Lancia l'eccezione. Viene mostrata una finestra di dialogo.

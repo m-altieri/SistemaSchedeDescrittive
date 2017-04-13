@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,13 +26,12 @@ import entita.Strumentazione;
  * Form utilizzata insieme al pannello di inserimento.
  * Serve ad acquisire in input le informazioni dell'elemento da inserire e a inserirlo.
  */
+@SuppressWarnings("serial")
 public class FormInserisciDati extends JPanel implements ActionListener {
-
-	private static final long serialVersionUID = 1L;
 	
 	private String className;
 	
-	protected ArrayList<CampoCredenziale> campi;
+	protected List<CampoCredenziale> campi;
 	
 	protected CampoCredenziale txtNome;
 	protected CampoCredenziale txtCognome;
@@ -239,9 +239,9 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 			s.crea();
 		}
 	}
-
-	protected boolean controllaInput() {
-
+	
+	private boolean controllaSintassi() {
+		
 		boolean isValid = true;
 		
 		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
@@ -249,6 +249,15 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 			if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
 				isValid = false;
 		}
+			
+		return isValid;
+	}
+
+	protected boolean controllaInput() {
+
+		boolean isValid = true;
+		
+		isValid = isValid && controllaSintassi();
 		
 		if (className.equals(Personale.class.getSimpleName())) {
 			isValid = isValid && controllaPersonale();

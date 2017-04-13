@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import database.Database;
 
@@ -22,9 +23,9 @@ public class Scheda {
 	private String titolo;
 	private int id;
 	private Template template;
-	private ArrayList<Elemento> elementi;
+	private List<Elemento> elementi;
 	private String tipo;
-	private ArrayList<String> vincoli;
+	private List<String> vincoli;
 	
 	static {
 		
@@ -122,7 +123,7 @@ public class Scheda {
 			pw.println(template.getTestoStatico());
 			
 			// in attr ho esattamente gli attributi da visualizzare
-			ArrayList<String> attr = new ArrayList<String>();
+			List<String> attr = new ArrayList<String>();
 			attr.addAll(template.getAttributi().keySet());
 			
 			// stampa colonne
@@ -134,7 +135,7 @@ public class Scheda {
 	
 			
 			// stampa elementi
-			String queryElementi = ottieniQueryElementi(attr, vincoli);
+			String queryElementi = ottieniQueryElementi((ArrayList<String>) attr, (ArrayList<String>) vincoli);
 			try {
 				Database elementi = new Database();
 				ResultSet rs = elementi.eseguiQueryRitorno(queryElementi);

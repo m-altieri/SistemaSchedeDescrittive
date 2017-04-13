@@ -11,9 +11,9 @@ import entita.Strumentazione;
 /**
  * Finestra della GUI per visualizzare gli elementi del database.
  */
+@SuppressWarnings("serial")
 public class PannelloVisualizzaDati extends PannelloGestisciDati {
 
-	private static final long serialVersionUID = 1L;
 	private TabellaDati tPersonale;
 	private TabellaDati tStrumentazione;
 	private TabellaDati tSpazio;

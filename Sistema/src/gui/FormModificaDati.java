@@ -21,9 +21,8 @@ import entita.Strumentazione;
  * Serve per modificare elementi già presenti nel database.
  * Da usare insieme al pannello di modifica.
  */
+@SuppressWarnings("serial")
 public class FormModificaDati extends FormInserisciDati {
-
-	private static final long serialVersionUID = 1L;
 	
 	private JComboBox<Integer> cmbId;
 	private String className;

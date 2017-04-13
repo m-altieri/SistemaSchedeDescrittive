@@ -10,9 +10,9 @@ import entita.Strumentazione;
 /**
  * Finestra della GUI per inserire nuovi elementi nel database.
  */
+@SuppressWarnings("serial")
 public class PannelloInserisciDati extends PannelloGestisciDati {
 
-	private static final long serialVersionUID = 1L;
 	private TabellaDati tPersonale;
 	private TabellaDati tStrumentazione;
 	private TabellaDati tSpazio;

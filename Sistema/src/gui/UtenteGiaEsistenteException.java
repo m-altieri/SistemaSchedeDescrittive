@@ -5,9 +5,8 @@ import javax.swing.JOptionPane;
 /**
  * Eccezione lanciata nel caso in cui si tenti di registrati un utente con lo stesso username di un altro già esistente.
  */
+@SuppressWarnings("serial")
 public class UtenteGiaEsistenteException extends Exception {
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Crea l'eccezione.

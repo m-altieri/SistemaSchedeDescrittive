@@ -18,9 +18,9 @@ import entita.Strumentazione;
 /**
  * Finestra della GUI per eliminare elementi dal database.
  */
+@SuppressWarnings("serial")
 public class PannelloEliminaDati extends PannelloGestisciDati {
 
-	private static final long serialVersionUID = 1L;
 	private TabellaDati tPersonale;
 	private TabellaDati tStrumentazione;
 	private TabellaDati tSpazio;
