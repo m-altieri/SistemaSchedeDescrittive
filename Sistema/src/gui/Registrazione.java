@@ -130,12 +130,13 @@ public class Registrazione extends JFrame implements ActionListener {
 				if (!inputValido)
 					throw new InputInvalidoException(null);
 				
-				if (alreadyExists(nome))
+				if (alreadyExists(nome)) {
 					throw new UtenteGiaEsistenteException(nome);
-				
+				}
+
 				String codice = codiceAmministratore.get();
 				boolean codiceValido = isCodeValid(codice);
-
+				
 				Database dbUtility = new Database(true);
 				String query = "";
 				
@@ -151,7 +152,7 @@ public class Registrazione extends JFrame implements ActionListener {
 					"'" + nome + "', " +
 					"'" + pass + "')";
 				}
-				
+
 				dbUtility.eseguiQuery(query);
 			
 				Login l = new Login();
@@ -166,15 +167,13 @@ public class Registrazione extends JFrame implements ActionListener {
 		
 		boolean isValid = true;
 		
-		if (username.get().isEmpty() || username.get().equals(username.getHint()) || username.get().contains(" "))
+		if (user.isEmpty() || user.equals(username.getHint()) || user.contains(" "))
 			isValid = false;
 		if (pass.length() < 8 || pass.contains(" "))
-			isValid = false;		
-		if (codiceAmministratore.get().equals(codiceAmministratore.getHint()))
+			isValid = false;	
+		if (!codiceAmministratore.get().equals(codiceAmministratore.getHint()) && codiceAmministratore.get().length() != 8)
 			isValid = false;
-		if (codiceAmministratore.get().length() != 8)
-			isValid = false;
-
+		
 		return isValid;
 	}
 
@@ -191,11 +190,11 @@ public class Registrazione extends JFrame implements ActionListener {
 	private boolean alreadyExists(String user) throws ClassNotFoundException, IOException, SQLException {
 
 		Database dbUtility = new Database(true);
-		String queryEsiste = "SELECT NomeUtente FROM Utente WHERE nomeUtente = '" + username.get() + "'";
+		String queryEsiste = "SELECT NomeUtente FROM Utente WHERE nomeUtente = '" + user + "'";
 		ResultSet match = dbUtility.eseguiQueryRitorno(queryEsiste);
-		
-		match.next();
-		return match.getString(1).equals(user);
+		boolean esiste = match.next();
+
+		return esiste;
 	}
 	
 	/**

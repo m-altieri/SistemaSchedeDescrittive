@@ -10,9 +10,9 @@ import java.io.Serializable;
  * Modella le credenziali utilizzate per connettersi ai database.
  * Ogni oggetto credenziale è costituito da un url, un nome, una password e il database a cui si intende accedere. 
  */
-@SuppressWarnings("serial")
 public class Credenziali implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String url;
 	private String nome;
 	private String password;

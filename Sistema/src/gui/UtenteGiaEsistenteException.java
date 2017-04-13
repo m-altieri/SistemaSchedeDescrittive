@@ -13,7 +13,7 @@ public class UtenteGiaEsistenteException extends Exception {
 	 * @param nome Username inserito.
 	 */
 	public UtenteGiaEsistenteException(String nome) {
-		
+
 		JOptionPane.showMessageDialog(null, "L'utente " + nome + " esiste gia'", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 }
