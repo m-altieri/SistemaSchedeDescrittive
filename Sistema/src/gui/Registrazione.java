@@ -126,59 +126,58 @@ public class Registrazione extends JFrame implements ActionListener {
 			
 			try {
 				// controllo sintattico su username e password
-				boolean inputValido = true;
-				if (username.get().isEmpty() || username.get().equals(username.getHint()) || username.get().contains(" "))
-					inputValido = false;
-				if (pass.length() < 8 || pass.contains(" "))
-					inputValido = false;
+				boolean inputValido = controllaInput(nome, pass);
 				if (!inputValido)
 					throw new InputInvalidoException(null);
-				
-				// controllo sintattico sul codice admin
-				if (!codiceAmministratore.get().equals(codiceAmministratore.getHint())) {
-					inputValido = true;
-					if (codiceAmministratore.get().length() != 8)
-						inputValido = false;
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-				}
 				
 				if (alreadyExists(nome))
 					throw new UtenteGiaEsistenteException(nome);
 				
 				String codice = codiceAmministratore.get();
 				boolean codiceValido = isCodeValid(codice);
+
+				Database dbUtility = new Database(true);
+				String query = "";
 				
-				try {
-					
-					Database dbUtility = new Database(true);
-					String query = "";
-					
-					if (codiceValido) {
-						query = "INSERT INTO Utente(nomeUtente, password, amministratore) "
+				if (codiceValido) {
+					query = "INSERT INTO Utente(nomeUtente, password, amministratore) "
+						+ "VALUES ( " + 
+				"'" + nome + "', " +
+				"'" + pass + "', " +
+				"1)";
+				} else {
+					query = "INSERT INTO Utente(nomeUtente, password) "
 							+ "VALUES ( " + 
 					"'" + nome + "', " +
-					"'" + pass + "', " +
-					"1)";
-					} else {
-						query = "INSERT INTO Utente(nomeUtente, password) "
-								+ "VALUES ( " + 
-						"'" + nome + "', " +
-						"'" + pass + "')";
-					}
-					
-					dbUtility.eseguiQuery(query);
+					"'" + pass + "')";
+				}
 				
-					Login l = new Login();
-					l.setVisible(true);
-					dispose();
-					
-				} catch (SQLException | ClassNotFoundException | IOException f) {;}
-				
-			} catch (UtenteGiaEsistenteException | ClassNotFoundException | IOException | SQLException | InputInvalidoException g) {;}
+				dbUtility.eseguiQuery(query);
+			
+				Login l = new Login();
+				l.setVisible(true);
+				dispose();
+
+			} catch (Exception g) {;}
 		}
 	}
 	
+	private boolean controllaInput(String user, String pass) {
+		
+		boolean isValid = true;
+		
+		if (username.get().isEmpty() || username.get().equals(username.getHint()) || username.get().contains(" "))
+			isValid = false;
+		if (pass.length() < 8 || pass.contains(" "))
+			isValid = false;		
+		if (codiceAmministratore.get().equals(codiceAmministratore.getHint()))
+			isValid = false;
+		if (codiceAmministratore.get().length() != 8)
+			isValid = false;
+
+		return isValid;
+	}
+
 	/**
 	 * Metodo privato.
 	 * Controlla sul server se un certo utente esiste già.

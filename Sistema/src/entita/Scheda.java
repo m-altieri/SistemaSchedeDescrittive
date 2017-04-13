@@ -134,28 +134,10 @@ public class Scheda {
 	
 			
 			// stampa elementi
-			Database elementi;
-			String query = "SELECT ";
-			for (int i = 0; i < attrSize; i++) {
-				query = query + attr.get(i);
-				if (attr.size() - i > 1)
-					query = query + ", ";
-			}
-			query += " FROM " + tipo;
-			
-			if (!vincoli.isEmpty()) {
-				query += " WHERE ";
-				int nVincoli = vincoli.size();
-				for (int i = 0; i < nVincoli; i++) {
-					query = query + vincoli.get(i);
-					if (vincoli.size() - i > 1)
-						query = query + " AND ";
-				}
-			}
-			
+			String queryElementi = ottieniQueryElementi(attr, vincoli);
 			try {
-				elementi = new Database();
-				ResultSet rs = elementi.eseguiQueryRitorno(query);
+				Database elementi = new Database();
+				ResultSet rs = elementi.eseguiQueryRitorno(queryElementi);
 				while (rs.next()) {
 					for (int i = 1; i < attrSize + 1; i++) {
 						pw.printf("%-40s", rs.getString(i));
@@ -171,6 +153,30 @@ public class Scheda {
 			
 	}
 	
+	private String ottieniQueryElementi(ArrayList<String> attr, ArrayList<String> vincoli) {
+
+		String query = "SELECT ";
+		int attrSize = attr.size();
+		for (int i = 0; i < attrSize; i++) {
+			query = query + attr.get(i);
+			if (attr.size() - i > 1)
+				query = query + ", ";
+		}
+		query += " FROM " + tipo;
+		
+		if (!vincoli.isEmpty()) {
+			query += " WHERE ";
+			int nVincoli = vincoli.size();
+			for (int i = 0; i < nVincoli; i++) {
+				query = query + vincoli.get(i);
+				if (vincoli.size() - i > 1)
+					query = query + " AND ";
+			}
+		}
+		
+		return query;
+	}
+
 	private String getTime() {
 
 		String time = LocalDateTime.now().toString();

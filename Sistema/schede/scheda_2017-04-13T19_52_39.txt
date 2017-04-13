@@ -1,0 +1,7 @@
+Scheda descrittiva Personale
+Titolo: scheda
+Testo statico di default.
+
+Nome                                    Cognome                                 
+marco                                   spaziato                                
+giuseppe                                nospazio                                

@@ -35,7 +35,8 @@ import entita.Scheda;
 import entita.Template;
 
 /**
- * 
+ * Pannello della GUI per la produzione delle schede. E' possibile dare a una scheda un nome, un tipo,
+ * un testo statico e una serie di attributi da visualizzare e di vincoli su di essi.
  */
 public class PannelloProduciSchede extends JPanel implements ActionListener {
 
@@ -49,6 +50,9 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 	private DefaultListModel<String> listModel;
 	private JPanel pannelloAttributi;
 	
+	/**
+	 * Crea il pannello e inizializza tutte le sue componenti.
+	 */
 	public PannelloProduciSchede() {
 		
 		super();
@@ -379,8 +383,14 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		file = new File("TestoStatico.txt");
 		try {
 			s = new Scanner(file);
-			while (s.hasNextLine())
+			boolean continua = false;
+			if (s.hasNextLine()) {
+				continua = true;
+			}
+			while (continua) {
 				testo = testo + s.nextLine() + "\n";
+				continua = continua && s.hasNextLine();
+			}
 		} catch (FileNotFoundException e) {;}
 		
 		return testo;
