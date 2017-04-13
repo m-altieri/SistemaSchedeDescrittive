@@ -111,69 +111,64 @@ public class Scheda {
 			String percorso = "schede/" + titolo + "_" + getTime() + ".txt";
 			
 			f = new File(percorso);
-			if (f.isFile())
+			if (f.isFile()) {
 				throw new TitoloSchedaInvalidoException();
+			}
+	
+			pw = new PrintWriter(f);
+			// stampa cose iniziali
+			pw.println("Scheda descrittiva " + tipo);
+			pw.println("Titolo: " + titolo);
+			pw.println(template.getTestoStatico());
+			
+			// in attr ho esattamente gli attributi da visualizzare
+			ArrayList<String> attr = new ArrayList<String>();
+			attr.addAll(template.getAttributi().keySet());
+			
+			// stampa colonne
+			int attrSize = attr.size();
+			for (int i = 0; i < attrSize; i++) {
+				pw.printf("%-40s", attr.get(i));
+			}
+			pw.println();
+	
+			
+			// stampa elementi
+			Database elementi;
+			String query = "SELECT ";
+			for (int i = 0; i < attrSize; i++) {
+				query = query + attr.get(i);
+				if (attr.size() - i > 1)
+					query = query + ", ";
+			}
+			query += " FROM " + tipo;
+			
+			if (!vincoli.isEmpty()) {
+				query += " WHERE ";
+				int nVincoli = vincoli.size();
+				for (int i = 0; i < nVincoli; i++) {
+					query = query + vincoli.get(i);
+					if (vincoli.size() - i > 1)
+						query = query + " AND ";
+				}
+			}
 			
 			try {
-				
-				pw = new PrintWriter(f);
-				// stampa cose iniziali
-				pw.println("Scheda descrittiva " + tipo);
-				pw.println("Titolo: " + titolo);
-				pw.println(template.getTestoStatico());
-				
-				// in attr ho esattamente gli attributi da visualizzare
-				ArrayList<String> attr = new ArrayList<String>();
-				attr.addAll(template.getAttributi().keySet());
-				
-				// stampa colonne
-				{
-					for (int i = 0; i < attr.size(); i++) {
-						pw.printf("%-40s", attr.get(i));
+				elementi = new Database();
+				ResultSet rs = elementi.eseguiQueryRitorno(query);
+				while (rs.next()) {
+					for (int i = 1; i < attrSize + 1; i++) {
+						pw.printf("%-40s", rs.getString(i));
 					}
 					pw.println();
 				}
-				
-				// stampa elementi
-				Database elementi;
-				String query = "SELECT ";
-				for (int i = 0; i < attr.size(); i++) {
-					query += attr.get(i);
-					if (attr.size() - i > 1)
-						query += ", ";
-				}
-				query += " FROM " + tipo;
-				
-				if (!vincoli.isEmpty()) {
-					query += " WHERE ";
-					for (int i = 0; i < vincoli.size(); i++) {
-						query += vincoli.get(i);
-						if (vincoli.size() - i > 1)
-							query += " AND ";
-					}
-				}
-				
-				try {
-					elementi = new Database();
-					ResultSet rs = elementi.eseguiQueryRitorno(query);
-					while (rs.next()) {
-						for (int i = 1; i < attr.size() + 1; i++) {
-							pw.printf("%-40s", rs.getString(i));
-						}
-						pw.println();
-					}
 
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
-				
-				pw.flush();
-				
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+			} catch (ClassNotFoundException | SQLException | IOException e) {;}
 			
-		} catch (TitoloSchedaInvalidoException e) {;}
+			pw.flush();
+				
+		} catch (FileNotFoundException | TitoloSchedaInvalidoException e) {;}
+			
 	}
 	
 	private String getTime() {

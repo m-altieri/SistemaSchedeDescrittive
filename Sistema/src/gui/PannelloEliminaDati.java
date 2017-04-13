@@ -58,7 +58,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 						eliminaElemento(id.getText());
 					}
 					
-				} catch (/*InputInvalidoException*/ Exception e1) {e1.printStackTrace();}
+				} catch (InputInvalidoException f) {;}
 			}
 			
 		});
@@ -104,7 +104,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 		remove(tSpazio);
 	}
 	
-	private void eliminaElemento(String id) {
+	private void eliminaElemento(String idElemento) {
 
 		Database dbElementi = null;
 		String query = null;
@@ -119,7 +119,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 		
 		try {
 			dbElementi = new Database();
-			query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(id);
+			query = "DELETE FROM " + tabella + " WHERE id = " + Integer.parseInt(idElemento);
 			dbElementi.eseguiQuery(query);
 		} catch (Exception f) {
 			JOptionPane.showMessageDialog(null, "Elemento presente in una relazione", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -132,7 +132,7 @@ public class PannelloEliminaDati extends PannelloGestisciDati {
 				tStrumentazione.caricaPannelloDati();
 			else
 				tSpazio.caricaPannelloDati();
-		} catch (ClassNotFoundException | IOException e) {}
+		} catch (ClassNotFoundException | IOException e) {;}
 		
 		this.paintAll(getGraphics());
 	}

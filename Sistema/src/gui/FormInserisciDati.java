@@ -131,7 +131,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 		if (!c.getSimpleName().equals("Spazio")) {
 			cmbSpazio = new JComboBox<String>();
 			cmbSpazio.setEditable(true);
-			cmbSpazio.setSelectedItem(new String("Spazio occupato"));
+			cmbSpazio.setSelectedItem("Spazio occupato");
 			cmbSpazio.setFont(fontCampi);
 			
 			popolaSpazi();
@@ -162,9 +162,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				String nome = rs.getString(2);
 				cmbSpazio.addItem(Integer.toString(id) + " - " + nome);
 			}
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			e.printStackTrace();
-		}
+		} catch (ClassNotFoundException | SQLException | IOException e) {;}
 		
 	}
 
@@ -189,7 +187,6 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				if (!className.equals(Spazio.class.getSimpleName())) {
 					if (!cmbSpazio.getSelectedItem().equals("Spazio occupato") && !cmbSpazio.getSelectedItem().equals("")) {
 						spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
-						System.out.println(spazio);
 					}
 				}
 								
@@ -267,7 +264,7 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 				
 				try {
 					visualizzatore.caricaPannelloDati();
-				} catch (ClassNotFoundException | IOException e1) {e1.printStackTrace();}
+				} catch (ClassNotFoundException | IOException e1) {;}
 		
 			} catch (InputInvalidoException f) {;}
 		}

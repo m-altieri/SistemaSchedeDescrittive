@@ -47,6 +47,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 	private JComboBox<String> cmbTipo;
 	private JList<String> lstVincoli;
 	private DefaultListModel<String> listModel;
+	private JPanel pannelloAttributi;
 	
 	public PannelloProduciSchede() {
 		
@@ -79,19 +80,19 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		cmbTipo = new JComboBox<String>();
 		cmbTipo.setFont(font);
 		cmbTipo.setPreferredSize(new Dimension(500, 50));
-		cmbTipo.addItem(new String("Personale"));
-		cmbTipo.addItem(new String("Strumentazione"));
-		cmbTipo.addItem(new String("Spazio"));
-		cmbTipo.addItem(new String("Utilizzo"));
+		cmbTipo.addItem("Personale");
+		cmbTipo.addItem("Strumentazione");
+		cmbTipo.addItem("Spazio");
+		cmbTipo.addItem("Utilizzo");
 		cmbTipo.setEditable(true);
-		cmbTipo.setSelectedItem(new String(""));
+		cmbTipo.setSelectedItem("");
 		pannelloTipo.add(cmbTipo);
 		north.add(pannelloTipo);
 		add(north, BorderLayout.NORTH);
 		
 		JPanel attrvinc = new JPanel(new GridLayout(1, 2));
 		attributi = new ArrayList<JCheckBox>();
-		JPanel pannelloAttributi = new JPanel(new GridLayout(0, 1));
+		pannelloAttributi = new JPanel(new GridLayout(0, 1));
 		attrvinc.add(pannelloAttributi);
 		
 		JPanel pannelloVincoli = new JPanel(new FlowLayout());
@@ -142,30 +143,10 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				boolean inputErrato = txtNome.getText().isEmpty() || cmbTipo.getSelectedItem().toString().isEmpty() || info.isEmpty();
-				if (inputErrato)
-					try {
-						throw new InputInvalidoException(null);
-					} catch (InputInvalidoException e2) {
-						return;
-					}				
-				
-				Template t = new Template();
-				t.setTestoStatico(txtTestoStatico.getText());
-				t.setAttributi(info);
-				Scheda s = new Scheda(cmbTipo.getSelectedItem().toString(), t, txtNome.getText());
-				
-				for (int i = 0; i < listModel.size(); i++) {
-					String vincolo = listModel.getElementAt(i);
-					vincolo = vincolo.replace("Simile", "LIKE");
-					s.aggiungiVincolo(vincolo);
-				}
-				
-				s.produci();
-				JOptionPane.showMessageDialog(null, "Scheda prodotta. Controllare nella cartella schede.", "Successo", JOptionPane.INFORMATION_MESSAGE);
+				PannelloProduciSchede.this.produciScheda();	
 			}
-			
 		});
+		
 		pannelloProduci.add(cmdProduci);
 		add(pannelloProduci, BorderLayout.SOUTH);
 		
@@ -181,12 +162,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 					@SuppressWarnings("unchecked")
 					String tipo = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
 					
-					for (JCheckBox c : attributi) {
-						pannelloAttributi.remove(c);
-					}
-					attributi.clear();
-					info.clear();
-					listModel.clear();
+					PannelloProduciSchede.this.azzeraAttributi();
 					
 					switch (tipo) {
 					case "Personale":
@@ -275,7 +251,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 							pw.println(txtTestoStatico.getText());
 							pw.flush();
 							pw.close();
-						} catch (FileNotFoundException g) {}
+						} catch (FileNotFoundException g) {;}
 						
 						PannelloProduciSchede.this.txtTestoStatico.setText(txtTestoStatico.getText());
 						d.dispose();
@@ -359,6 +335,41 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		});
 	}
 	
+	private void azzeraAttributi() {
+		
+		for (JCheckBox c : attributi) {
+			pannelloAttributi.remove(c);
+		}
+		attributi.clear();
+		info.clear();
+		listModel.clear();	
+	}
+
+	private void produciScheda() {
+
+		try {
+			boolean inputErrato = txtNome.getText().isEmpty() || cmbTipo.getSelectedItem().toString().isEmpty() || info.isEmpty();
+			if (!inputErrato) {
+				Template t = new Template();
+				t.setTestoStatico(txtTestoStatico.getText());
+				t.setAttributi(info);
+				Scheda s = new Scheda(cmbTipo.getSelectedItem().toString(), t, txtNome.getText());
+				
+				int listModelSize = listModel.size();
+				for (int i = 0; i < listModelSize; i++) {
+					String vincolo = listModel.getElementAt(i);
+					vincolo = vincolo.replace("Simile", "LIKE");
+					s.aggiungiVincolo(vincolo);
+				}
+				
+				s.produci();
+				JOptionPane.showMessageDialog(null, "Scheda prodotta. Controllare nella cartella schede.", "Successo", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				throw new InputInvalidoException(null);
+			}
+		} catch (InputInvalidoException f) {;}	
+	}
+
 	private String ottieniTestoStatico() {
 		
 		String testo = "";
@@ -369,14 +380,13 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		try {
 			s = new Scanner(file);
 			while (s.hasNextLine())
-				testo += s.nextLine() + "\n";
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+				testo = testo + s.nextLine() + "\n";
+		} catch (FileNotFoundException e) {;}
 		
 		return testo;
 	}
 
+	// Eseguito quando si clicca sulle checkbox
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

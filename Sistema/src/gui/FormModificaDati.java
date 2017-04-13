@@ -58,16 +58,15 @@ public class FormModificaDati extends FormInserisciDati {
 						
 						ResultSet rs = db.eseguiQueryRitorno(query);
 						rs.next();
-						for (int i = 0; i < campi.size(); i++) {
+						int nCampi = campi.size();
+						for (int i = 0; i < nCampi; i++) {
 							campi.get(i).setText(rs.getString(i + 2)); // + 2 perchè la prima colonna è l'id, quindi partiamo dalla seconda
 						}
 						if (cmbSpazio != null && rs.getString(campi.size() + 2) != null) {
 							cmbSpazio.setSelectedItem(rs.getString(campi.size() + 2));
 						} else if (cmbSpazio != null)
-							cmbSpazio.setSelectedItem(new String(""));
-					} catch (SQLException | ClassNotFoundException | IOException f) {
-						f.printStackTrace();
-					}
+							cmbSpazio.setSelectedItem("");
+					} catch (SQLException | ClassNotFoundException | IOException f) {;}
 				}
 			}
 			
@@ -92,9 +91,7 @@ public class FormModificaDati extends FormInserisciDati {
 				int id = rs.getInt(1);
 				cmbId.addItem(id);
 			}
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			e.printStackTrace();
-		}
+		} catch (ClassNotFoundException | SQLException | IOException e) {;}
 	}
 	
 	/**
@@ -135,8 +132,6 @@ public class FormModificaDati extends FormInserisciDati {
 							inputValido = false;
 						if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
 							inputValido = false;
-						if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
-							inputValido = false;
 						if (!inputValido)
 							throw new InputInvalidoException(null);
 						
@@ -159,7 +154,6 @@ public class FormModificaDati extends FormInserisciDati {
 							db.eseguiQuery(queryModifica);
 							
 						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							e2.printStackTrace();
 							JOptionPane.showMessageDialog(null, "Errore durante la modifica del personale", "Errore", JOptionPane.ERROR_MESSAGE);
 						}
 						
@@ -191,7 +185,6 @@ public class FormModificaDati extends FormInserisciDati {
 							db.eseguiQuery(queryModifica);
 							
 						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							e2.printStackTrace();
 							JOptionPane.showMessageDialog(null, "Errore durante la modifica della strumentazione", "Errore", JOptionPane.ERROR_MESSAGE);
 						}
 										
@@ -221,7 +214,6 @@ public class FormModificaDati extends FormInserisciDati {
 							db.eseguiQuery(queryModifica);
 							
 						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							e2.printStackTrace();
 							JOptionPane.showMessageDialog(null, "Errore durante la modifica dello spazio", "Errore", JOptionPane.ERROR_MESSAGE);
 						}
 						

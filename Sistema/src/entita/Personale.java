@@ -1,6 +1,7 @@
 package entita;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -64,38 +65,33 @@ public class Personale extends Elemento {
 		
 		Database dbElementi = null;
 		String queryInserimento = null;
+		PreparedStatement ps = null;
 		
 		try {
 
 			dbElementi = new Database();
 			
 			if (idSpazio != 0) {
-			
 				queryInserimento = "INSERT INTO Personale(nome, cognome, email, telefono, residenza, mansione, cittaNascita, spazio) "
-						+ "VALUES ( " + 
-				"'" + nome + "', " +
-				"'" + cognome + "', " +
-				"'" + email + "', " +
-				"'" + telefono + "', " +
-				"'" + residenza + "', " +
-				"'" + mansione + "', " +
-				"'" + cittaNascita + "', " +
-				idSpazio + ")";
-			
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			} else {
-			
 				queryInserimento = "INSERT INTO Personale(nome, cognome, email, telefono, residenza, mansione, cittaNascita) "
-						+ "VALUES ( " + 
-				"'" + nome + "', " +
-				"'" + cognome + "', " +
-				"'" + email + "', " +
-				"'" + telefono + "', " +
-				"'" + residenza + "', " +
-				"'" + mansione + "', " +
-				"'" + cittaNascita + "')";
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			}
+			ps = dbElementi.preparaQuery(queryInserimento);
+			ps.setString(1, nome);
+			ps.setString(2, cognome);
+			ps.setString(3, email);
+			ps.setString(4, telefono);
+			ps.setString(5, residenza);
+			ps.setString(6, mansione);
+			ps.setString(7, cittaNascita);
+			
+			if (idSpazio != 0) {
+				ps.setInt(8, idSpazio);
 			}
 			
-			dbElementi.eseguiQuery(queryInserimento);
+			dbElementi.eseguiQueryPreparata(ps);
 		
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
 		
@@ -109,52 +105,52 @@ public class Personale extends Elemento {
 	 * Questo costruttore è stato aggiunto poter realizzare la funzione di modifica.
 	 * @param id L'id con cui verrà inserito nel database.
 	 */
-	public void crea(int id) {
-
-		Database dbElementi = null;
-		String queryInserimento = null;
-		
-		try {
-			
-			dbElementi = new Database();
-
-			if (idSpazio != 0) {
-
-				queryInserimento = "SET IDENTITY_INSERT Personale ON"
-						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita, spazio) VALUES ( " + 
-				id + ", " +
-				"'" + nome + "', " +
-				"'" + cognome + "', " +
-				"'" + email + "', " +
-				"'" + telefono + "', " +
-				"'" + residenza + "', " +
-				"'" + mansione + "', " +
-				"'" + cittaNascita + "', " +
-				idSpazio + ")"
-						+ " SET IDENTITY_INSERT Personale OFF";
-			
-			} else {
-				
-				queryInserimento = "SET IDENTITY_INSERT Personale ON"
-						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita) VALUES ( " + 
-				id + ", " +
-				"'" + nome + "', " +
-				"'" + cognome + "', " +
-				"'" + email + "', " +
-				"'" + telefono + "', " +
-				"'" + residenza + "', " +
-				"'" + mansione + "', " +
-				"'" + cittaNascita + "')"
-						+ " SET IDENTITY_INSERT Personale OFF";
-			}
-			
-			dbElementi.eseguiQuery(queryInserimento);
-		
-		} catch (ClassNotFoundException | SQLException | IOException e1) {
-		
-			JOptionPane.showMessageDialog(null, "Errore nella creazione del personale", "Errore", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+//	public void crea(int id) {
+//
+//		Database dbElementi = null;
+//		String queryInserimento = null;
+//		
+//		try {
+//			
+//			dbElementi = new Database();
+//
+//			if (idSpazio != 0) {
+//
+//				queryInserimento = "SET IDENTITY_INSERT Personale ON"
+//						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita, spazio) VALUES ( " + 
+//				id + ", " +
+//				"'" + nome + "', " +
+//				"'" + cognome + "', " +
+//				"'" + email + "', " +
+//				"'" + telefono + "', " +
+//				"'" + residenza + "', " +
+//				"'" + mansione + "', " +
+//				"'" + cittaNascita + "', " +
+//				idSpazio + ")"
+//						+ " SET IDENTITY_INSERT Personale OFF";
+//			
+//			} else {
+//				
+//				queryInserimento = "SET IDENTITY_INSERT Personale ON"
+//						+ " INSERT INTO Personale(id, nome, cognome, email, telefono, residenza, mansione, cittaNascita) VALUES ( " + 
+//				id + ", " +
+//				"'" + nome + "', " +
+//				"'" + cognome + "', " +
+//				"'" + email + "', " +
+//				"'" + telefono + "', " +
+//				"'" + residenza + "', " +
+//				"'" + mansione + "', " +
+//				"'" + cittaNascita + "')"
+//						+ " SET IDENTITY_INSERT Personale OFF";
+//			}
+//			
+//			dbElementi.eseguiQuery(queryInserimento);
+//		
+//		} catch (ClassNotFoundException | SQLException | IOException e1) {
+//		
+//			JOptionPane.showMessageDialog(null, "Errore nella creazione del personale", "Errore", JOptionPane.ERROR_MESSAGE);
+//		}
+//	}
 
 	/**
 	 * Metodo get del nome.

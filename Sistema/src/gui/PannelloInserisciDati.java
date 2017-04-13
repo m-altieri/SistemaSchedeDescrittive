@@ -57,6 +57,8 @@ public class PannelloInserisciDati extends PannelloGestisciDati {
 			this.add(tSpazio, BorderLayout.CENTER);
 			this.add(fSpazio, BorderLayout.SOUTH);
 			break;
+		default:
+			break;
 		}
 		
 		this.paintAll(this.getGraphics());

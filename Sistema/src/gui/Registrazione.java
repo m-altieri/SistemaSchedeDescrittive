@@ -119,8 +119,9 @@ public class Registrazione extends JFrame implements ActionListener {
 			String nome = username.get();
 			String pass = "";
 			
-			for (int i = 0; i < password.getPassword().length; i++) {
-				pass += password.getPassword()[i];
+			char[] passChar = password.getPassword();
+			for (int i = 0; i < passChar.length; i++) {
+				pass = pass + password.getPassword()[i];
 			}
 			
 			try {
@@ -172,9 +173,7 @@ public class Registrazione extends JFrame implements ActionListener {
 					l.setVisible(true);
 					dispose();
 					
-				} catch (SQLException | ClassNotFoundException | IOException f) {
-					f.printStackTrace();
-				}
+				} catch (SQLException | ClassNotFoundException | IOException f) {;}
 				
 			} catch (UtenteGiaEsistenteException | ClassNotFoundException | IOException | SQLException | InputInvalidoException g) {;}
 		}
@@ -218,9 +217,7 @@ public class Registrazione extends JFrame implements ActionListener {
 			res.next();
 			cod = res.getString(1);
 			
-		} catch (ClassNotFoundException | IOException | SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (ClassNotFoundException | IOException | SQLException e) {;}
 		
 		return cod.equals(codice);
 	}

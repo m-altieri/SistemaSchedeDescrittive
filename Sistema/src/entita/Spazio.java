@@ -1,6 +1,7 @@
 package entita;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -146,20 +147,23 @@ public class Spazio extends Elemento {
 
 		Database dbElementi = null;
 		String queryInserimento = null;
+		PreparedStatement ps = null;
 		
 		try {
 			
 			dbElementi = new Database();
 
 			queryInserimento = "INSERT INTO Spazio(nome, ubicazione, numeroFinestre, numeroPorte, grandezza) "
-					+ "VALUES ( " + 
-			"'" + nome + "', " +
-			"'" + ubicazione + "', " +
-			numeroFinestre + ", " +
-			numeroPorte + ", " +
-			grandezza + ")";
+					+ "VALUES (?, ?, ?, ?, ?)";
 			
-			dbElementi.eseguiQuery(queryInserimento);
+			ps = dbElementi.preparaQuery(queryInserimento);
+			ps.setString(1, nome);
+			ps.setString(2, ubicazione);
+			ps.setInt(3, numeroFinestre);
+			ps.setInt(4, numeroPorte);
+			ps.setDouble(5, grandezza);
+
+			dbElementi.eseguiQueryPreparata(ps);
 			
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
 			
@@ -173,31 +177,31 @@ public class Spazio extends Elemento {
 	 * Questo costruttore è stato aggiunto poter realizzare la funzione di modifica.
 	 * @param id L'id con cui verrà inserito nel database.
 	 */
-	public void crea(int id) {
-			
-		Database dbElementi = null;
-		String queryInserimento = null;
-		
-		try {
-		
-			dbElementi = new Database();
-			
-			queryInserimento = "INSERT INTO Spazio(id, nome, ubicazione, numeroFinestre, numeroPorte, grandezza) "
-					+ "VALUES ( " + 
-			id + ", " +
-			"'" + nome + "', " +
-			"'" + ubicazione + "', " +
-			numeroFinestre + ", " +
-			numeroPorte + ", " +
-			grandezza + ")";
-					
-			queryInserimento = "SET IDENTITY_INSERT Spazio ON " + queryInserimento + " SET IDENTITY_INSERT Spazio OFF";
-			dbElementi.eseguiQuery(queryInserimento);
-		
-		} catch (ClassNotFoundException | SQLException | IOException e1) {
-			
-			JOptionPane.showMessageDialog(null, "Errore nella creazione dello spazio", "Errore", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+//	public void crea(int id) {
+//			
+//		Database dbElementi = null;
+//		String queryInserimento = null;
+//		
+//		try {
+//		
+//			dbElementi = new Database();
+//			
+//			queryInserimento = "INSERT INTO Spazio(id, nome, ubicazione, numeroFinestre, numeroPorte, grandezza) "
+//					+ "VALUES ( " + 
+//			id + ", " +
+//			"'" + nome + "', " +
+//			"'" + ubicazione + "', " +
+//			numeroFinestre + ", " +
+//			numeroPorte + ", " +
+//			grandezza + ")";
+//					
+//			queryInserimento = "SET IDENTITY_INSERT Spazio ON " + queryInserimento + " SET IDENTITY_INSERT Spazio OFF";
+//			dbElementi.eseguiQuery(queryInserimento);
+//		
+//		} catch (ClassNotFoundException | SQLException | IOException e1) {
+//			
+//			JOptionPane.showMessageDialog(null, "Errore nella creazione dello spazio", "Errore", JOptionPane.ERROR_MESSAGE);
+//		}
+//	}
 	
 }

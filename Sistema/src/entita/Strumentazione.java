@@ -1,6 +1,7 @@
 package entita;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -156,34 +157,32 @@ public class Strumentazione extends Elemento {
 
 		Database dbElementi = null;
 		String queryInserimento = null;
+		PreparedStatement ps = null;
 		
 		try {
 			
 			dbElementi = new Database();
 			
 			if (idSpazio != 0) {
-				
 				queryInserimento = "INSERT INTO Strumentazione(nome, modello, marca, tipologia, annoAcquisto, spazio) "
-						+ "VALUES ( " + 
-				"'" + nome + "', " +
-				"'" + modello + "', " +
-				"'" + marca + "', " +
-				"'" + tipologia + "', " +
-				annoAcquisto + ", " +
-				idSpazio + ")";
-				
+						+ "VALUES (?, ?, ?, ?, ?, ?)";
 			} else {
-				
 				queryInserimento = "INSERT INTO Strumentazione(nome, modello, marca, tipologia, annoAcquisto) "
-						+ "VALUES ( " + 
-				"'" + nome + "', " +
-				"'" + modello + "', " +
-				"'" + marca + "', " +
-				"'" + tipologia + "', " +
-				annoAcquisto + ")";
+						+ "VALUES (?, ?, ?, ?, ?)";
 			}
 			
-			dbElementi.eseguiQuery(queryInserimento);
+			ps = dbElementi.preparaQuery(queryInserimento);
+			ps.setString(1, nome);
+			ps.setString(2, modello);
+			ps.setString(3, marca);
+			ps.setString(4, tipologia);
+			ps.setInt(5, annoAcquisto);
+			
+			if (idSpazio != 0) {
+				ps.setInt(6, idSpazio);
+			}
+			
+			dbElementi.eseguiQueryPreparata(ps);
 			
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
 			
@@ -197,47 +196,47 @@ public class Strumentazione extends Elemento {
 	 * Questo costruttore è stato aggiunto poter realizzare la funzione di modifica.
 	 * @param id L'id con cui verrà inserito nel database.
 	 */
-	public void crea(int id) {
-
-		Database dbElementi = null;
-		String queryInserimento = null;
-		
-		try {
-			
-			dbElementi = new Database();
-			
-			if (idSpazio != 0) {
-				
-				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto, spazio) "
-						+ "VALUES ( " + 
-				id + ", " +
-				"'" + nome + "', " +
-				"'" + modello + "', " +
-				"'" + marca + "', " +
-				"'" + tipologia + "', " +
-				annoAcquisto + ", " +
-				idSpazio + ")";
-				
-			} else {
-				
-				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto) "
-						+ "VALUES ( " + 
-				id + ", " +
-				"'" + nome + "', " +
-				"'" + modello + "', " +
-				"'" + marca + "', " +
-				"'" + tipologia + "', " +
-				annoAcquisto + ")";
-			}
-			
-			queryInserimento = "SET IDENTITY_INSERT Strumentazione ON " + queryInserimento + " SET IDENTITY_INSERT Strumentazione OFF";
-			
-			dbElementi.eseguiQuery(queryInserimento);
-			
-		} catch (ClassNotFoundException | SQLException | IOException e1) {
-			
-			JOptionPane.showMessageDialog(null, "Errore nella creazione della strumentazione", "Errore", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+//	public void crea(int id) {
+//
+//		Database dbElementi = null;
+//		String queryInserimento = null;
+//		
+//		try {
+//			
+//			dbElementi = new Database();
+//			
+//			if (idSpazio != 0) {
+//				
+//				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto, spazio) "
+//						+ "VALUES ( " + 
+//				id + ", " +
+//				"'" + nome + "', " +
+//				"'" + modello + "', " +
+//				"'" + marca + "', " +
+//				"'" + tipologia + "', " +
+//				annoAcquisto + ", " +
+//				idSpazio + ")";
+//				
+//			} else {
+//				
+//				queryInserimento = "INSERT INTO Strumentazione(id, nome, modello, marca, tipologia, annoAcquisto) "
+//						+ "VALUES ( " + 
+//				id + ", " +
+//				"'" + nome + "', " +
+//				"'" + modello + "', " +
+//				"'" + marca + "', " +
+//				"'" + tipologia + "', " +
+//				annoAcquisto + ")";
+//			}
+//			
+//			queryInserimento = "SET IDENTITY_INSERT Strumentazione ON " + queryInserimento + " SET IDENTITY_INSERT Strumentazione OFF";
+//			
+//			dbElementi.eseguiQuery(queryInserimento);
+//			
+//		} catch (ClassNotFoundException | SQLException | IOException e1) {
+//			
+//			JOptionPane.showMessageDialog(null, "Errore nella creazione della strumentazione", "Errore", JOptionPane.ERROR_MESSAGE);
+//		}
+//	}
 	
 }

@@ -44,15 +44,14 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		
 		try {
 			colonne = ottieniColonne();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {;}
 		this.setLayout(new BorderLayout());
 		
 		pannelloColonne.setLayout(new GridLayout(1, colonne.size()));
 		pannelloDati.setLayout(new GridLayout(0, colonne.size()));
 		
-		for (int i = 0; i < colonne.size(); i++) {
+		int nColonne = colonne.size();
+		for (int i = 0; i < nColonne; i++) {
 			String c = colonne.get(i);
 			c = c.toUpperCase();
 			JLabel colonna = new JLabel(c);
@@ -62,9 +61,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 
 		try {
 			caricaPannelloDati();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
+		} catch (ClassNotFoundException | IOException e) {;}
 		
 		this.add(pannelloColonne, BorderLayout.NORTH);
 		this.add(pannelloDati, BorderLayout.CENTER);
@@ -91,7 +88,7 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			;
 		} finally {
 			rs.close();
 		}
@@ -117,16 +114,19 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 			rs = elementi.eseguiQueryRitorno(query);
 			while (rs.next()) {
 				riga = new ArrayList<String>();
-				for (int i = 0; i < colonne.size(); riga.add(rs.getString(i++ + 1)));
-				for (int i = 0; i < riga.size(); i++) {
+				int nColonne = colonne.size();
+				for (int i = 0; i < nColonne; i++) {
+					riga.add(rs.getString(i + 1));
+				}
+				
+				int rigaSize = riga.size();
+				for (int i = 0; i < rigaSize; i++) {
 					JLabel dato = new JLabel(riga.get(i));
 					dato.setFont(fontDati);
 					pannelloDati.add(dato);
 				}
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {;}
 		
 		this.paintAll(this.getGraphics());
 	}
