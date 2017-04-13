@@ -42,10 +42,10 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		fontColonne = new Font("Arial", Font.BOLD, 20);
 		fontDati = new Font("Arial", Font.PLAIN, 14);
 		
-		try {
-			colonne = ottieniColonne();
-		} catch (SQLException e) {;}
-		this.setLayout(new BorderLayout());
+
+		colonne = ottieniColonnePrivato();
+
+		setLayout(new BorderLayout());
 		
 		pannelloColonne.setLayout(new GridLayout(1, colonne.size()));
 		pannelloDati.setLayout(new GridLayout(0, colonne.size()));
@@ -67,6 +67,17 @@ public class TabellaDati extends JPanel implements Visualizzatore {
 		this.add(pannelloDati, BorderLayout.CENTER);
 	}
 	
+	private ArrayList<String> ottieniColonnePrivato() {
+		
+		ArrayList<String> colonne = null;
+		
+		try {
+			colonne = ottieniColonne();
+		} catch (SQLException e) {;}
+		
+		return colonne;
+	}
+
 	/**
 	 * Estrae l'insieme delle colonne dal database del personale, strumentazioni, o spazi a seconda dell'oggetto su cui viene invocato.
 	 * @return Colonne del database.

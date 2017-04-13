@@ -173,102 +173,107 @@ public class FormInserisciDati extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getActionCommand().equals("Conferma")) {
-			try {
+		try {
+			
+			boolean inputValido = controllaInput();
+			if (inputValido) {
 				
-				// controllo sintattico sull'input
-				for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
-					CampoCredenziale campoCredenziale = iterator.next();
-					if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
-						throw new InputInvalidoException(null);
-				}
-				
-				int spazio = 0;
-				if (!className.equals(Spazio.class.getSimpleName())) {
-					if (!cmbSpazio.getSelectedItem().equals("Spazio occupato") && !cmbSpazio.getSelectedItem().equals("")) {
-						spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
-					}
-				}
-								
-				if (className.equals(Personale.class.getSimpleName())) {
-					
-					// controllo semantico sull'input
-					boolean inputValido = true;
-					
-					if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-						inputValido = false;
-					if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-						inputValido = false;
-					if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
-						inputValido = false;
-					if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
-						inputValido = false;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Personale p = new Personale();
-					p.setNome(txtNome.get()); 
-					p.setCognome(txtCognome.get());
-					p.setEmail(txtEmail.get());
-					p.setTelefono(txtTelefono.get());
-					p.setResidenza(txtResidenza.get());
-					p.setMansione(txtMansione.get());
-					p.setCittaNascita(txtCittaNascita.get());
-					p.setSpazio(spazio);
-					p.crea();
-					
-				} else if (className.equals(Strumentazione.class.getSimpleName())) {
-					
-					// controllo semantico sull'input
-					boolean inputValido = true;
-					
-					if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
-						inputValido = false;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Strumentazione s = new Strumentazione();
-					s.setNome(txtNome.getText());
-					s.setModello(txtModello.getText());
-					s.setMarca(txtMarca.getText());
-					s.setTipologia(txtTipologia.getText());
-					s.setAnnoAcquisto(Integer.parseInt(txtAnnoAcquisto.getText()));
-					s.setSpazio(spazio);
-					s.crea();
-					
-				} else {
-					
-					// controllo semantico dell'input
-					boolean inputValido = true;
-					
-					if (!txtNumeroFinestre.get().matches("\\d+"))
-						inputValido = false;
-					if (!txtNumeroPorte.get().matches("\\d+"))
-						inputValido = false;
-					if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
-						inputValido = false;
-					
-					if (!inputValido)
-						throw new InputInvalidoException(null);
-					
-					Spazio s = new Spazio();
-					s.setNome(txtNome.getText());
-					s.setUbicazione(txtUbicazione.getText());
-					s.setNumeroFinestre(Integer.parseInt(txtNumeroFinestre.getText()));
-					s.setNumeroPorte(Integer.parseInt(txtNumeroPorte.getText()));
-					s.setGrandezza(Double.parseDouble(txtGrandezza.getText()));
-					s.crea();
-				}
+				inserisciElemento();
 				
 				try {
 					visualizzatore.caricaPannelloDati();
 				} catch (ClassNotFoundException | IOException e1) {;}
-		
-			} catch (InputInvalidoException f) {;}
-		}
+			} else
+				throw new InputInvalidoException(null);
+		} catch (InputInvalidoException f) {;}
 		
 	}
 
+	private void inserisciElemento() {
+
+		int spazio = 0;
+		if (!className.equals(Spazio.class.getSimpleName())) {
+			if (!cmbSpazio.getSelectedItem().equals("Spazio occupato") && !cmbSpazio.getSelectedItem().equals("")) {
+				spazio = Integer.parseInt(cmbSpazio.getSelectedItem().toString().substring(0, cmbSpazio.getSelectedItem().toString().indexOf(" ")));
+			}
+		}
+		
+		if (className.equals(Personale.class.getSimpleName())) {
+			Personale p = new Personale();
+			p.setNome(txtNome.get()); 
+			p.setCognome(txtCognome.get());
+			p.setEmail(txtEmail.get());
+			p.setTelefono(txtTelefono.get());
+			p.setResidenza(txtResidenza.get());
+			p.setMansione(txtMansione.get());
+			p.setCittaNascita(txtCittaNascita.get());
+			p.setSpazio(spazio);
+			p.crea();
+		} else if (className.equals(Strumentazione.class.getSimpleName())) {
+
+			Strumentazione s = new Strumentazione();
+			s.setNome(txtNome.getText());
+			s.setModello(txtModello.getText());
+			s.setMarca(txtMarca.getText());
+			s.setTipologia(txtTipologia.getText());
+			s.setAnnoAcquisto(Integer.parseInt(txtAnnoAcquisto.getText()));
+			s.setSpazio(spazio);
+			s.crea();
+		} else {
+			
+			Spazio s = new Spazio();
+			s.setNome(txtNome.getText());
+			s.setUbicazione(txtUbicazione.getText());
+			s.setNumeroFinestre(Integer.parseInt(txtNumeroFinestre.getText()));
+			s.setNumeroPorte(Integer.parseInt(txtNumeroPorte.getText()));
+			s.setGrandezza(Double.parseDouble(txtGrandezza.getText()));
+			s.crea();
+		}
+	}
+
+	private boolean controllaInput() {
+		
+		boolean isValid = true;
+		
+		// controllo sintattico sull'input
+		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
+			CampoCredenziale campoCredenziale = iterator.next();
+			if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
+				isValid = false;
+		}
+						
+		if (className.equals(Personale.class.getSimpleName())) {
+			
+			// controllo semantico sull'input
+			
+			if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+				isValid = false;
+			if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+				isValid = false;
+			if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
+				isValid = false;
+			if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
+				isValid = false;
+			
+		} else if (className.equals(Strumentazione.class.getSimpleName())) {
+			
+			// controllo semantico sull'input
+			
+			if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+				isValid = false;
+			
+		} else {
+			
+			// controllo semantico dell'input
+			
+			if (!txtNumeroFinestre.get().matches("\\d+"))
+				isValid = false;
+			if (!txtNumeroPorte.get().matches("\\d+"))
+				isValid = false;
+			if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
+				isValid = false;
+		}
+		
+		return isValid;
+	}
 }

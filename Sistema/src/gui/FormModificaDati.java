@@ -96,138 +96,83 @@ public class FormModificaDati extends FormInserisciDati {
 	
 	/**
 	 * Esegue tutte le operazioni di basso livello per inserire nel database il nuovo elemento.
-	 * Inoltre aggiorna la tabella per mostrare il nuovo elemento creato.
+	 * Inoltre aggiorna la tabella per mostrare il nuovo elemento modificato.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 			
-			try {
-				// Controllo sui dati inseriti
-				controlloSintatticoInput();
-					
-			
-				// Estrazione id spazio
-				int idSpazio = 0;
-				if (cmbSpazio != null) {
-					String spazio = cmbSpazio.getSelectedItem().toString();
+		try {
+			// Controllo sui dati inseriti
+			boolean inputValido = controllaInput();
+			if (inputValido) {
 				
-					if (spazio.contains("-"))
-						idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
-					else if (!spazio.isEmpty())
-						idSpazio = Integer.parseInt(spazio);
-				}
-				
+				modificaElemento();
 				try {
-					
-					if (className.equals(Personale.class.getSimpleName())) {
-						
-						// controllo semantico sull'input
-						boolean inputValido = true;
-						
-						if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-							inputValido = false;
-						if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
-							inputValido = false;
-						if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
-							inputValido = false;
-						if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
-							inputValido = false;
-						if (!inputValido)
-							throw new InputInvalidoException(null);
-						
-						Database db = null;
-						String queryModifica = null;
-						try {
-							
-							db = new Database();
-							
-							if (idSpazio != 0)
-								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
-									"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
-									txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
-									"', spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-							else
-								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
-								"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
-								txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
-								"' WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-							db.eseguiQuery(queryModifica);
-							
-						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							JOptionPane.showMessageDialog(null, "Errore durante la modifica del personale", "Errore", JOptionPane.ERROR_MESSAGE);
-						}
-						
-					} else if (className.equals(Strumentazione.class.getSimpleName())) {
-						
-						// controllo semantico sull'input
-						boolean inputValido = true;
-						
-						if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
-							inputValido = false;
-						
-						if (!inputValido)
-							throw new InputInvalidoException(null);
-						
-						Database db = null;
-						String queryModifica = null;
-						try {
-							
-							db = new Database();
-							
-							if (idSpazio != 0)
-								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
-									"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
-									txtAnnoAcquisto.get() + ", spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-							else
-								queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
-										"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
-										txtAnnoAcquisto.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-							db.eseguiQuery(queryModifica);
-							
-						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							JOptionPane.showMessageDialog(null, "Errore durante la modifica della strumentazione", "Errore", JOptionPane.ERROR_MESSAGE);
-						}
-										
-					} else {
-						
-						// controllo semantico dell'input
-						boolean inputValido = true;
-						
-						if (!txtNumeroFinestre.get().matches("\\d+"))
-							inputValido = false;
-						if (!txtNumeroPorte.get().matches("\\d+"))
-							inputValido = false;
-						if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
-							inputValido = false;
-						
-						if (!inputValido)
-							throw new InputInvalidoException(null);
-						
-						Database db = null;
-						String queryModifica = null;
-						try {
-							
-							db = new Database();
-							queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', ubicazione = '" + txtUbicazione.get() +
-									"', numeroFinestre = " + txtNumeroFinestre.get() + ", numeroPorte = " + txtNumeroPorte.get() + 
-									", grandezza = " + txtGrandezza.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
-							db.eseguiQuery(queryModifica);
-							
-						} catch (ClassNotFoundException | SQLException | IOException e2) {
-							JOptionPane.showMessageDialog(null, "Errore durante la modifica dello spazio", "Errore", JOptionPane.ERROR_MESSAGE);
-						}
-						
-					}
-					
-					try {
-						visualizzatore.caricaPannelloDati();
-					} catch (ClassNotFoundException | IOException e1) {;}
-				}
+					visualizzatore.caricaPannelloDati();
+				} catch (ClassNotFoundException | IOException e1) {;}
 				
-				catch (InputInvalidoException f) {;}
+			} else
+				throw new InputInvalidoException(null);
+				
+		} catch (InputInvalidoException f) {;}		
+	}
+
+	private void modificaElemento() {
+		
+		// Estrazione id spazio
+		int idSpazio = 0;
+		if (cmbSpazio != null) {
+			String spazio = cmbSpazio.getSelectedItem().toString();
+		
+			if (spazio.contains("-"))
+				idSpazio = Integer.parseInt(spazio.substring(0, spazio.indexOf(" ")));
+			else if (!spazio.isEmpty())
+				idSpazio = Integer.parseInt(spazio);
+		}
+		
+		Database db = null;
+		String queryModifica = null;
+		
+		try {
 			
-			} catch (InputInvalidoException f) {;}
+			db = new Database();
 			
+			if (className.equals(Personale.class.getSimpleName())) {
+
+					if (idSpazio != 0)
+						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
+							"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
+							txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
+							"', spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+					else
+						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', cognome = '" + txtCognome.get() +
+						"', email = '" + txtEmail.get() + "', telefono = '" + txtTelefono.get() + "', residenza = '" +
+						txtResidenza.get() + "', mansione = '" + txtMansione.get() + "', cittaNascita = '" + txtCittaNascita.get() +
+						"' WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+								
+			} else if (className.equals(Strumentazione.class.getSimpleName())) {
+
+					if (idSpazio != 0)
+						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
+							"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
+							txtAnnoAcquisto.get() + ", spazio = " + idSpazio + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+					else
+						queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', modello = '" + txtModello.get() +
+								"', marca = '" + txtMarca.get() + "', tipologia = '" + txtTipologia.get() + "', annoAcquisto = " +
+								txtAnnoAcquisto.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());
+							
+			} else {
+		
+					queryModifica = "UPDATE " + className + " SET nome = '" + txtNome.get() + "', ubicazione = '" + txtUbicazione.get() +
+							"', numeroFinestre = " + txtNumeroFinestre.get() + ", numeroPorte = " + txtNumeroPorte.get() + 
+							", grandezza = " + txtGrandezza.get() + " WHERE id = " + Integer.parseInt(cmbId.getSelectedItem().toString());				
+			}
+			
+			db.eseguiQuery(queryModifica);
+
+		} catch (ClassNotFoundException | SQLException | IOException e2) {
+			JOptionPane.showMessageDialog(null, "Errore durante la modifica del personale", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -235,17 +180,42 @@ public class FormModificaDati extends FormInserisciDati {
 	 * lasciati vuoti.
 	 * @throws InputInvalidoException
 	 */
-	private void controlloSintatticoInput() throws InputInvalidoException {
+	private boolean controllaInput() {
 
-		boolean inputErrato = false;
+		boolean isValid = true;
 		
 		for (Iterator<CampoCredenziale> iterator = campi.iterator(); iterator.hasNext();) {
 			CampoCredenziale campoCredenziale = iterator.next();
-			inputErrato |= campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint());
+			if (campoCredenziale.getText().equals("") || campoCredenziale.getText().equals(campoCredenziale.getHint()))
+				isValid = false;
 		}
 		
-		if (inputErrato)
-			throw new InputInvalidoException(null);
-	}
+		if (className.equals(Personale.class.getSimpleName())) {
+						
+			if (!txtNome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+				isValid = false;
+			if (!txtCognome.get().matches("([A-Z]|[a-z]|\\ù|\\à|\\è|\\ò|\\ì)+(\\s([A-z]|[a-z]|\\ù|\\à|\\ò|\\ì)+)?"))
+				isValid = false;
+			if (!txtTelefono.get().matches("\\+?[0-9]+(( )[0-9]+)*"))
+				isValid = false;
+			if (!txtEmail.get().matches("(\\w|\\d).+(\\w|\\d)@.+\\..+"))
+				isValid = false;
+			
+		} else if (className.equals(Strumentazione.class.getSimpleName())) {
+						
+			if (Integer.parseInt(txtAnnoAcquisto.get()) < 1900 || Integer.parseInt(txtAnnoAcquisto.get()) > 2020)
+				isValid = false;
+							
+		} else {
+						
+			if (!txtNumeroFinestre.get().matches("\\d+"))
+				isValid = false;
+			if (!txtNumeroPorte.get().matches("\\d+"))
+				isValid = false;
+			if (!txtGrandezza.get().matches("\\d+(\\.\\d+)?"))
+				isValid = false;
+		}
 		
+		return isValid;
+	}
 }

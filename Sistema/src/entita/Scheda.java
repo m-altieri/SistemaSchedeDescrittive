@@ -153,7 +153,7 @@ public class Scheda {
 			
 	}
 	
-	private String ottieniQueryElementi(ArrayList<String> attr, ArrayList<String> vincoli) {
+	private String ottieniQueryElementi(ArrayList<String> attr, ArrayList<String> vincoliAttr) {
 
 		String query = "SELECT ";
 		int attrSize = attr.size();
@@ -164,12 +164,12 @@ public class Scheda {
 		}
 		query += " FROM " + tipo;
 		
-		if (!vincoli.isEmpty()) {
+		if (!vincoliAttr.isEmpty()) {
 			query += " WHERE ";
-			int nVincoli = vincoli.size();
+			int nVincoli = vincoliAttr.size();
 			for (int i = 0; i < nVincoli; i++) {
-				query = query + vincoli.get(i);
-				if (vincoli.size() - i > 1)
+				query = query + vincoliAttr.get(i);
+				if (vincoliAttr.size() - i > 1)
 					query = query + " AND ";
 			}
 		}

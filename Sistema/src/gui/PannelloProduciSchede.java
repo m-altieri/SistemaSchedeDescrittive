@@ -167,41 +167,7 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 					String tipo = (String) ((JComboBox<String>) e.getSource()).getSelectedItem();
 					
 					PannelloProduciSchede.this.azzeraAttributi();
-					
-					switch (tipo) {
-					case "Personale":
-						attributi.add(new JCheckBox("Nome"));
-						attributi.add(new JCheckBox("Cognome"));
-						attributi.add(new JCheckBox("Email"));
-						attributi.add(new JCheckBox("Telefono"));
-						attributi.add(new JCheckBox("Residenza"));
-						attributi.add(new JCheckBox("Mansione"));
-						attributi.add(new JCheckBox("CittaNascita"));
-						break;
-					case "Strumentazione":
-						attributi.add(new JCheckBox("Nome"));
-						attributi.add(new JCheckBox("Modello"));
-						attributi.add(new JCheckBox("Marca"));
-						attributi.add(new JCheckBox("Tipologia"));
-						attributi.add(new JCheckBox("AnnoAcquisto"));
-						break;
-					case "Spazio":
-						attributi.add(new JCheckBox("Nome"));
-						attributi.add(new JCheckBox("Ubicazione"));
-						attributi.add(new JCheckBox("NumeroFinestre"));
-						attributi.add(new JCheckBox("NumeroPorte"));
-						attributi.add(new JCheckBox("Grandezza"));
-						break;
-					case "Utilizzo":
-						attributi.add(new JCheckBox("IdPersonale"));
-						attributi.add(new JCheckBox("IdStrumentazione"));
-						break;
-					default:
-						try {
-							throw new InputInvalidoException(null);
-						} catch (InputInvalidoException e1) {;}
-						break;
-					}
+					PannelloProduciSchede.this.popolaAttributi(tipo);
 					
 					for (JCheckBox c : attributi) {
 						c.setFont(font);
@@ -339,6 +305,44 @@ public class PannelloProduciSchede extends JPanel implements ActionListener {
 		});
 	}
 	
+	private void popolaAttributi(String tipo) {
+
+		switch (tipo) {
+		case "Personale":
+			attributi.add(new JCheckBox("Nome"));
+			attributi.add(new JCheckBox("Cognome"));
+			attributi.add(new JCheckBox("Email"));
+			attributi.add(new JCheckBox("Telefono"));
+			attributi.add(new JCheckBox("Residenza"));
+			attributi.add(new JCheckBox("Mansione"));
+			attributi.add(new JCheckBox("CittaNascita"));
+			break;
+		case "Strumentazione":
+			attributi.add(new JCheckBox("Nome"));
+			attributi.add(new JCheckBox("Modello"));
+			attributi.add(new JCheckBox("Marca"));
+			attributi.add(new JCheckBox("Tipologia"));
+			attributi.add(new JCheckBox("AnnoAcquisto"));
+			break;
+		case "Spazio":
+			attributi.add(new JCheckBox("Nome"));
+			attributi.add(new JCheckBox("Ubicazione"));
+			attributi.add(new JCheckBox("NumeroFinestre"));
+			attributi.add(new JCheckBox("NumeroPorte"));
+			attributi.add(new JCheckBox("Grandezza"));
+			break;
+		case "Utilizzo":
+			attributi.add(new JCheckBox("IdPersonale"));
+			attributi.add(new JCheckBox("IdStrumentazione"));
+			break;
+		default:
+			try {
+				throw new InputInvalidoException(null);
+			} catch (InputInvalidoException e1) {;}
+			break;
+		}
+	}
+
 	private void azzeraAttributi() {
 		
 		for (JCheckBox c : attributi) {
