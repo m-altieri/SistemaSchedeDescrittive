@@ -1,4 +1,4 @@
-package entità;
+package entita;
 
 /**
  * Identifica gli oggetti contenuti in una scheda.

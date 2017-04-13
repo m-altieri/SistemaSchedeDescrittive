@@ -12,9 +12,9 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import database.Database;
-import entità.Elemento;
-import entità.Personale;
-import entità.Strumentazione;
+import entita.Elemento;
+import entita.Personale;
+import entita.Strumentazione;
 
 /**
  * Sottoclasse di FormInserisciDati.

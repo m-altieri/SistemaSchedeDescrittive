@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import database.Database;
-import entità.Elemento;
+import entita.Elemento;
 
 /**
  * Costituisce la tabella contenente tutti gli elementi di un certo tipo per permettere la visualizzazione all'utente.

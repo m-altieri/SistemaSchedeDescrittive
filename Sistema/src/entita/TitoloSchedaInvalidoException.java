@@ -1,4 +1,4 @@
-package entità;
+package entita;
 
 import javax.swing.JOptionPane;
 

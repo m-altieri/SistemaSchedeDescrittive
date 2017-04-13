@@ -16,10 +16,10 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import database.Database;
-import entità.Elemento;
-import entità.Personale;
-import entità.Spazio;
-import entità.Strumentazione;
+import entita.Elemento;
+import entita.Personale;
+import entita.Spazio;
+import entita.Strumentazione;
 
 /**
  * Form utilizzata insieme al pannello di inserimento.

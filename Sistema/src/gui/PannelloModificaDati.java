@@ -3,9 +3,9 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
-import entità.Personale;
-import entità.Spazio;
-import entità.Strumentazione;
+import entita.Personale;
+import entita.Spazio;
+import entita.Strumentazione;
 
 /**
  * Finestra della GUI per modificare elementi già presenti nel database.

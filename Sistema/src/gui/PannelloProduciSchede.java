@@ -31,8 +31,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import entità.Scheda;
-import entità.Template;
+import entita.Scheda;
+import entita.Template;
 
 /**
  * 

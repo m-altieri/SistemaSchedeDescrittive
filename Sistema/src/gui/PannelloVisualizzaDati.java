@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-import entità.Personale;
-import entità.Spazio;
-import entità.Strumentazione;
+import entita.Personale;
+import entita.Spazio;
+import entita.Strumentazione;
 
 /**
  * Finestra della GUI per visualizzare gli elementi del database.

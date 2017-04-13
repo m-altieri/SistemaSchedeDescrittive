@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import database.Database;
-import entità.Personale;
-import entità.Spazio;
-import entità.Strumentazione;
+import entita.Personale;
+import entita.Spazio;
+import entita.Strumentazione;
 
 /**
  * Finestra della GUI per eliminare elementi dal database.

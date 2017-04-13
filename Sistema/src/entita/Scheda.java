@@ -1,4 +1,4 @@
-package entità;
+package entita;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package entità;
+package entita;
 
 import java.util.LinkedHashMap;
 
